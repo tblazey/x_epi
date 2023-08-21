@@ -1,12 +1,17 @@
 #Load libraries
+from itertools import product
+import glob
+import nibabel as nib
 import numpy as np  
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.patches import Rectangle
 from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.pyplot as plt
 import os
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QMessageBox, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QMessageBox, QPushButton, QButtonGroup
 from PyQt5 import QtCore
+import subprocess as sp
 import sys 
 import re
 import x_epi
@@ -30,202 +35,420 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.setupUi(self)
       self.Tabs.setCurrentIndex(0)  
       
-      #Class variables that are modified by UI
-      try:
+      #Acquisition mode button group
+      self.button_group_acq_3d = QButtonGroup()
+      self.button_group_acq_3d.addButton(self.radio_acq_2d)
+      self.button_group_acq_3d.addButton(self.radio_acq_3d)
       
-         #Load in json data
-         fid = open(json_path, 'r')
-         json_data = json.load(fid)
-
-         #Set values
-         self.flips = json_data['flips']
-         self.rf_paths = json_data['rf_paths']
-         self.grd_paths = json_data['grd_paths']
-         self.rf_types = json_data['rf_types']
-         self.max_grd = json_data['max_grd']
-         self.max_b1 = json_data['max_b1']
-         self.rf_delta = json_data['rf_delta']
-         self.grd_delta = json_data['grd_delta']
-         self.freq_offset = json_data['freq_offset']
-         self.sinc_dur = json_data['sinc_dur']
-         self.sinc_cf = json_data['sinc_cf']
-         self.sinc_tbw = json_data['sinc_tbw']
-         self.gamma = json_data['gamma']
-         self.size = np.array(json_data['size'])
-         self.pf = np.array(json_data['pf'])
-         self.grd_forms = json_data['grd_forms']
-         self.spin_fov_x.setValue(json_data['fov'][0])
-         self.spin_fov_y.setValue(json_data['fov'][1])
-         self.spin_fov_z.setValue(json_data['fov'][2])
-         self.spin_band.setValue(json_data['bandwidth'])
-         self.spin_avg.setValue(json_data["n_avg"])
-         self.spin_rep.setValue(json_data["n_rep"])
-         self.dbl_spin_tr.setValue(json_data["tr"])
-         self.dbl_spin_tv.setValue(json_data["tv"])
-         self.dbl_spin_ts.setValue(json_data["ts"])
-         self.spin_met.setValue(json_data["n_met"])
-         self.dbl_spin_grd_limit.setValue(json_data["grd_limit"])
-         self.dbl_spin_slew_limit.setValue(json_data["slew_limit"])
-         self.dbl_spin_ringdown.setValue(json_data["ringdown"])
-         self.dbl_spin_dead_time.setValue(json_data["dead_time"])
-         self.dbl_spin_b0.setValue(json_data["b0"])
-         self.check_spectra_start.setChecked(bool(json_data["spectra_start"]))
-         self.check_spectra_end.setChecked(bool(json_data["spectra_end"]))
-         self.spin_spectra_points.setValue(json_data["spectra_points"])
-         self.spin_spectra_band.setValue(json_data["spectra_band"])
-         self.dbl_spin_spectra_flip.setValue(json_data["spectra_flip"])
-         self.combo_slice_axis_sel.setCurrentText(json_data["slice_axis"])
-         self.check_read_alt.setChecked(bool(json_data["read_alt"]))
-         self.check_phase_alt.setChecked(bool(json_data["phase_alt"]))
-         self.check_slice_alt.setChecked(bool(json_data["slice_alt"]))
-         self.update_met_sel()
-
-         #Set radiobuttons
-         groups = [self.button_group_readout, self.button_group_mode,
-                   self.button_group_phase, self.button_group_slice, 
-                   self.button_group_spoil, self.button_group_skip,
-                   self.button_group_scale]
-         vals = [json_data['readout'], json_data['mode'], json_data['phase'],
-                 json_data['slice'], json_data['spoil'], json_data['skip'],
-                 json_data['scale']]
-         for group, val in zip(groups, vals):
-            for elem in group.buttons():
-               if elem.text() == val:
-                  elem.setChecked(True)
-               
-      except Exception as e:
-         print(e)
-         #Set default values
-         self.flips = [20, 90, 90, 90, 90]
-         self.rf_paths = [os.path.join(basedir, 'ssrf', 'siemens_pyr_plateau_slab.RF'),
-                          os.path.join(basedir, 'ssrf', 'siemens_lac_plateau_slab.RF'),
-                          os.path.join(basedir, 'ssrf', 'siemens_bic_plateau_slab.RF'),
-                          '', '']
-         self.grd_paths = [os.path.join(basedir, 'ssrf', 'siemens_pyr_plateau_slab.GRD'),
-                           os.path.join(basedir, 'ssrf', 'siemens_lac_plateau_slab.GRD'),
-                           os.path.join(basedir, 'ssrf', 'siemens_bic_plateau_slab.GRD'),
-                           '', '']
-         self.rf_types = [0, 0, 0, 0, 0]
-         self.max_grd = [1.4898, 1.4751, 1.4751, 0, 0]
-         self.max_b1 = [0.1146, 0.1247, 0.1301, 0, 0]
-         self.rf_delta = [4E-6, 4E-6, 4E-6, 4E-6, 4E-6]
-         self.grd_delta = [4E-6, 4E-6, 4E-6, 4E-6, 4E-6]
+      #Readout button group
+      self.button_group_symm_ro = QButtonGroup()
+      self.button_group_symm_ro.addButton(self.radio_fly_ro)
+      self.button_group_symm_ro.addButton(self.radio_symm_ro)
       
-         self.freq_offset = [0, 0, 0, 0, 0]
-         self.sinc_dur = [4E-3, 4E-3, 4E-3, 4E-3, 4E-3]
-         self.sinc_cf = [0.5, 0.5, 0.5, 0.5, 0.5]
-         self.sinc_tbw = [4, 4, 4, 4, 4]
-         self.gamma = 10.7084E6
-         self.size = np.array([[32, 32, 32], [24, 24, 24], [16, 16, 16],
-                               [8, 8, 8], [8, 8, 8]])
-         self.pf = np.array([[1, 0.8], [1, 1], [1, 1], [1, 1], [1, 1]])
-         self.grd_forms = ['1', '1', '1', '1', '1']
-      self.met_idx = 0
-      self.esp = [0, 0, 0, 0, 0]
+      #Phase button group
+      self.button_group_no_pe = QButtonGroup()
+      self.button_group_no_pe.addButton(self.radio_phase_on)
+      self.button_group_no_pe.addButton(self.radio_phase_off)
+   
+      #Slice button group
+      self.button_group_no_slc = QButtonGroup()
+      self.button_group_no_slc.addButton(self.radio_slice_grad_on)
+      self.button_group_no_slc.addButton(self.radio_slice_grad_off)
+      
+      #Slice button group
+      self.button_group_grad_spoil = QButtonGroup()
+      self.button_group_grad_spoil.addButton(self.radio_spoil_off)
+      self.button_group_grad_spoil.addButton(self.radio_spoil_on)
       
       #Prep for figure
       self.figure = plt.figure(figsize=(10, 5.5))
       self.canvas = FigureCanvasQTAgg(self.figure)
       self.plot_layout = QVBoxLayout()
       self.plot_layout.addWidget(self.canvas, alignment=QtCore.Qt.AlignTop)
-      self.centralwidget.setLayout(self.plot_layout)
-      self.update_time()
+      self.central_widget.setLayout(self.plot_layout)
+      
+      #Load in sequence information
+      self.met_idx = 0
       self.updating = False
+      self.load_json(json_path)
       
-      #Updates for spectra
-      self.button_group_spectra.buttonToggled.connect(self.spectra_update)
+      #Create initial sequence
+      self.update_for_plot()
       
-      #If number of metabolites is changed
-      self.spin_met.valueChanged.connect(self.update_met_sel)
-               
-      #If metabolite selection is changed on plot page        
-      list(map(self.combo_met_sel.currentIndexChanged.connect,
-               [self.update_met_idx, self.update_met_vals]))
+      #Update ui
+      self.dic_to_ui()
+      self.update_combo_met()
+      self.update_combo_pe_dir()
+      self.update_combo_plot()
       
-      #If flip angle is changed
-      list(map(self.dbl_spin_flip.valueChanged.connect,
-               [self.record_flip, self.update_flips]))
+      #####################
+      ###General Updates###
+      #####################
       
-      #If load rf/gradient buttons are pressed
-      self.button_load_rf.clicked.connect(self.load_rf)
-      self.button_load_grd.clicked.connect(self.load_grd)
+      #FOV
+      self.map_signal(self.spin_fov_ro.editingFinished,
+                      [self.ui_to_dic, self.update_localizer])
+      self.map_signal(self.spin_fov_pe.editingFinished,
+                      [self.ui_to_dic, self.update_localizer])
+      self.map_signal(self.spin_fov_slc.editingFinished,
+                      [self.ui_to_dic, self.update_localizer])
       
-      #If time update/save buttons are pressed
-      self.button_update.clicked.connect(self.update_time)
-      self.button_save.clicked.connect(self.save_seq)
+      #Offsets
+      self.map_signal(self.dbl_spin_ro_off.editingFinished,
+                      [self.ui_to_dic, self.update_localizer])
+      self.map_signal(self.dbl_spin_pe_off.editingFinished,
+                      [self.ui_to_dic, self.update_localizer])
+      self.map_signal(self.dbl_spin_slc_off.editingFinished,
+                      [self.ui_to_dic, self.update_localizer])
+                                      
+      #Number of metabolites, reps, averages
+      self.map_signal(self.spin_n_met.textChanged, [self.update_combo_met, self.ui_to_dic])
+      self.map_signal(self.spin_n_rep.textChanged, [self.ui_to_dic, self.update_flips])
+      self.map_signal(self.spin_n_avg.textChanged, [self.ui_to_dic, self.update_flips])
       
-      #If readout is changed
-      self.button_group_readout.buttonToggled.connect(self.readout_update)
+      #Bandwidth and slice axis
+      self.spin_rbw.textChanged.connect(self.ui_to_dic)
+      self.combo_slice_axis.currentIndexChanged.connect(self.ui_to_dic)
       
-      #If nucleus is changed
-      self.combo_nucleus.currentIndexChanged.connect(self.update_gamma)
+      #Polarity options
+      self.check_alt_read.stateChanged.connect(self.ui_to_dic)
+      self.check_alt_pha.stateChanged.connect(self.ui_to_dic)
+      self.check_alt_slc.stateChanged.connect(self.ui_to_dic)
+      
+      #Timing options
+      self.dbl_spin_tr.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_tv.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_ts.valueChanged.connect(self.ui_to_dic)
+      
+      #Orientation options
+      self.map_signal(self.combo_ori.currentIndexChanged,
+                     [self.update_combo_pe_dir, self.ui_to_dic, self.update_localizer])
+      self.map_signal(self.combo_pe_dir.currentIndexChanged, 
+                      [self.ui_to_dic, self.update_localizer])
+      
+      #Echo options
+      self.spin_n_echo.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_delta_te.valueChanged.connect(self.ui_to_dic)
+      
+      #Spectra options
+      self.spin_spec_size.textChanged.connect(self.ui_to_dic)
+      self.spin_spec_bw.textChanged.connect(self.ui_to_dic)
+      self.dbl_spin_spec_flip.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_spec_tr.valueChanged.connect(self.ui_to_dic)
+      self.spin_spec_n.textChanged.connect(self.ui_to_dic)
+      
+      #Acquisition options
+      self.button_group_acq_3d.buttonToggled.connect(self.ui_to_dic)
+      self.button_group_symm_ro.buttonToggled.connect(self.ui_to_dic)
+      self.button_group_no_pe.buttonToggled.connect(self.ui_to_dic)
+      self.button_group_no_slc.buttonToggled.connect(self.ui_to_dic)
+      self.button_group_grad_spoil.buttonToggled.connect(self.ui_to_dic)
+      self.map_signal(self.button_group_spec.buttonToggled, [self.spec_enable,
+                                                             self.ui_to_dic])
+      
+      ########################
+      ###Metabolite updates###
+      ########################
       
       #If pulse type is changed
-      self.combo_pulse_type_sel.currentIndexChanged.connect(self.update_rf_type)
+      self.map_signal(self.combo_use_sinc.currentIndexChanged, [self.update_rf_type,
+                                                                self.ui_to_dic])
       
-      #If image grid items are changed
-      self.spin_size_x.textChanged.connect(self.record_size)
-      self.spin_size_y.textChanged.connect(self.record_size)
-      self.spin_size_z.textChanged.connect(self.record_size)
+      #If load rf/gradient buttons are pressed.
+      self.map_signal(self.button_load_rf.clicked, [self.update_ssrf_rf, self.ui_to_dic])
+      self.map_signal(self.button_load_grd.clicked, [self.update_ssrf_grd, self.ui_to_dic])
       
-      #Flip angle updates
-      self.spin_size_z.textChanged.connect(self.update_flips)
-      self.spin_rep.textChanged.connect(self.update_flips)
-      self.spin_avg.textChanged.connect(self.update_flips)
+      #If formula is updated
+      self.line_formula.textChanged.connect(self.ui_to_dic)
       
-      #If partial fourier options are changed
-      self.dbl_spin_pf_y.textChanged.connect(self.record_pf)
-      self.dbl_spin_pf_z.textChanged.connect(self.record_pf)
+      #If sinc options are changed
+      self.dbl_spin_sinc_dur.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_sinc_frac.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_sinc_tbw.valueChanged.connect(self.ui_to_dic)
       
-      #If frequency offset is changed
-      self.dbl_spin_freq.textChanged.connect(self.record_freq)
+      #If excitation options are changed
+      self.dbl_spin_freq_off.valueChanged.connect(self.ui_to_dic)
+      self.map_signal(self.dbl_spin_flip.valueChanged, [self.ui_to_dic, self.update_flips])
       
-      #If gradient scale formula
-      self.line_grd_form.textChanged.connect(self.record_form)
+      #Acquisition options
+      self.spin_size_ro.textChanged.connect(self.ui_to_dic)
+      self.spin_size_pe.textChanged.connect(self.ui_to_dic)
+      self.spin_size_slc.textChanged.connect(self.ui_to_dic)
+      self.dbl_spin_pf_pe.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_pf_pe2.valueChanged.connect(self.ui_to_dic)
+            
+      ####################
+      ###System Updates###
+      ####################
       
-      #If plot type is changed
-      self.combo_plot_sel.currentIndexChanged.connect(self.plot_k_space)
+      #Limits
+      self.dbl_spin_max_grad.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_max_slew.valueChanged.connect(self.ui_to_dic)
       
-      #Record sinc pulse updates
-      self.dbl_spin_sinc_dur.textChanged.connect(self.record_sinc)
-      self.dbl_spin_sinc_cf.textChanged.connect(self.record_sinc)
-      self.dbl_spin_sinc_tbw.textChanged.connect(self.record_sinc)
+      #Misc
+      self.dbl_spin_b0.valueChanged.connect(self.ui_to_dic)
+      self.combo_nuc.currentIndexChanged.connect(self.ui_to_dic)
+      
+      #RF timing
+      self.dbl_spin_rf_ringdown_time.valueChanged.connect(self.ui_to_dic)
+      self.dbl_spin_rf_dead_time.valueChanged.connect(self.ui_to_dic)
+      
+      ###################
+      ###Menu Updates###
+      ###################
+   
+      #Menu bar actions
+      self.menu_open.triggered.connect(self.load_pars)
+      self.menu_save.triggered.connect(self.save_seq)
+      self.map_signal(self.menu_load_localizer.triggered,
+                     [self.load_localizer, self.update_combo_plot, self.update_localizer])
 
-   def readout_update(self):
-      if self.button_group_readout.checkedButton().text() == 'Flyback':
-         state = True
-      else:
-         state = False
-      self.radio_skip_off.setHidden(state)
-      self.radio_skip_on.setHidden(state)
-      self.label_skip_echo.setHidden(state)
+      #If metabolite selection is changed on ui bar      
+      self.map_signal(self.combo_met.currentIndexChanged,
+                      [self.update_met_idx, self.dic_to_ui])
+
+      #If plot type is changed
+      self.combo_plot.currentIndexChanged.connect(self.plot)
+      
+      #If time update/save buttons are pressed
+      self.button_update.clicked.connect(self.update_for_plot)
+      self.button_save.clicked.connect(self.save_seq)
+      
+   def map_signal(self, signal, funcs):
+      """
+      Function to map a signal to multiple functions
+      
+      Parameters
+      ----------
+      signal : object
+         Pyqt signal
+      funcs : list
+         List of functions to amp
+      """
+      list(map(signal.connect, funcs))
+            
+   def load_json(self, json_path, use_default=True):
+      """
+      Load in json parameter file defining xEPI sequence and save it into param_dic
+      
+      Parameters
+      ----------
+      json_path : str
+         Path to json file
+      use_default : bool
+         Load in default parameters if json_path cannot be read
+      """
+      
+      try:
+         jid = open(json_path, 'r')  
+         self.param_dic = json.load(jid)
+      except:
+         if use_default is True:
+            jid = open(os.path.join(basedir, 'default.json'), 'r')
+            self.param_dic = json.load(jid)
+
+   def dic_to_seq(self, return_plot=True, no_reps=False):
+      """
+      Converts parameter dictionary to xEPI sequence
+      
+      Parameters
+      ----------
+      return_plot : bool
+         Returns a sequence with no reps or averages for plotting
+      no_reps : bool
+         Ignores averages and reps when computing sequence
+      """
+      
+      #Define common sequence parameters
+      self.seq = x_epi.xEPI(**self.param_dic)
+      
+      #Add spectra options if needed
+      try:
+         if self.param_dic['run_spec'] != "NO":
+            self.seq.add_spec(**self.param_dic)
+      except:
+         pass
          
-   def spectra_update(self):
-      if self.check_spectra_start.isChecked() or self.check_spectra_end.isChecked():
+      #Add metabolite options. 
+      for i in range(self.param_dic['n_met']):
+         self.seq.add_met(**self.param_dic['mets'][i])
+      
+      #Create sequence
+      self.plot_seq = self.seq.create_seq(return_plot=return_plot, no_reps=no_reps)
+      
+   def ui_to_dic(self):
+      """
+      Updates dictionary based on UI
+      """ 
+      
+      #General options
+      self.param_dic['fov'][0] = self.spin_fov_ro.value()
+      self.param_dic['fov'][1] = self.spin_fov_pe.value()
+      self.param_dic['fov'][2] = self.spin_fov_slc.value()
+      self.param_dic['rbw'] = self.spin_rbw.value()
+      self.param_dic['tr'] = self.dbl_spin_tr.value()
+      self.param_dic['tv'] = self.dbl_spin_tv.value()
+      self.param_dic['ts'] = self.dbl_spin_ts.value()
+      self.param_dic['ro_off'] = self.dbl_spin_ro_off.value()
+      self.param_dic['pe_off'] = self.dbl_spin_pe_off.value()
+      self.param_dic['slc_off'] = self.dbl_spin_slc_off.value()
+      self.param_dic['n_echo'] = self.spin_n_echo.value()
+      self.param_dic['delta_te'] = self.dbl_spin_delta_te.value()
+      self.param_dic['n_met'] = self.spin_n_met.value()
+      self.param_dic['n_avg'] = self.spin_n_avg.value()
+      self.param_dic['n_rep'] = self.spin_n_rep.value()
+      self.param_dic['symm_ro'] = self.button_group_symm_ro.buttons()[1].isChecked()
+      self.param_dic['acq_3d'] = self.button_group_acq_3d.buttons()[1].isChecked()
+      self.param_dic['no_pe'] = self.button_group_no_pe.buttons()[1].isChecked()
+      self.param_dic['no_slc'] = self.button_group_no_slc.buttons()[1].isChecked()
+      self.param_dic['grad_spoil'] = self.button_group_grad_spoil.buttons()[1].isChecked()
+      self.param_dic['slice_axis'] = self.combo_slice_axis.currentText()
+      self.param_dic['alt_read'] = self.check_alt_read.isChecked()
+      self.param_dic['alt_pha'] = self.check_alt_pha.isChecked()
+      self.param_dic['alt_slc'] = self.check_alt_slc.isChecked()
+      self.param_dic['b0'] = self.dbl_spin_b0.value()
+      self.param_dic['nuc'] = self.combo_nuc.currentText()
+      self.param_dic['max_grad'] = self.dbl_spin_max_grad.value()
+      self.param_dic['max_slew'] = self.dbl_spin_max_slew.value()
+      self.param_dic['rf_ringdown_time'] = self.dbl_spin_rf_ringdown_time.value()
+      self.param_dic['rf_dead_time'] = self.dbl_spin_rf_dead_time.value()
+      self.param_dic['ori'] = self.combo_ori.currentText()
+      self.param_dic['pe_dir'] = self.combo_pe_dir.currentText()
+      
+      #Spectra options
+      if self.check_spec_start.isChecked() and self.check_spec_end.isChecked():
+         self.param_dic['run_spec'] == 'BOTH'
+      elif self.check_spec_start.isChecked():
+         self.param_dic['run_spec'] == 'START'
+      elif self.check_spec_end.isChecked():
+         self.param_dic['run_spec'] == 'END'
+      else:
+         self.param_dic['run_spec'] = "NO"
+      self.param_dic['spec_size'] = self.spin_spec_size.value()
+      self.param_dic['spec_bw'] = self.spin_spec_bw.value()
+      self.param_dic['spec_flip'] = self.dbl_spin_spec_flip.value()
+      self.param_dic['spec_tr'] = self.dbl_spin_spec_tr.value()
+      self.param_dic['spec_n'] = self.spin_spec_n.value()
+      
+      #Save info from current metabolite
+      curr_met = self.param_dic['mets'][self.met_idx]
+      curr_met['formula'] = self.line_formula.text()
+      curr_met['use_sinc'] = self.combo_use_sinc.currentText() == 'Sinc'
+      curr_met['flip'] = self.dbl_spin_flip.value()
+      curr_met['freq_off'] = self.dbl_spin_freq_off.value()
+      curr_met['sinc_dur'] = self.dbl_spin_sinc_dur.value()
+      curr_met['sinc_frac'] = self.dbl_spin_sinc_frac.value()
+      curr_met['sinc_tbw'] = self.dbl_spin_sinc_tbw.value()  
+      curr_met['size'][0] = self.spin_size_ro.value()
+      curr_met['size'][1] = self.spin_size_pe.value()
+      curr_met['size'][2] = self.spin_size_slc.value()
+      curr_met['pf_pe'] = self.dbl_spin_pf_pe.value()
+      curr_met['pf_pe2'] = self.dbl_spin_pf_pe2.value()
+      
+   def dic_to_ui(self):
+      """
+      Updates UI based on dictionary"
+      """
+      #Set parameter values that are the same for all metabolites
+      if self.updating is False:
+         self.spin_fov_ro.setValue(self.param_dic['fov'][0])
+         self.spin_fov_pe.setValue(self.param_dic['fov'][1])
+         self.spin_fov_slc.setValue(self.param_dic['fov'][2])
+         self.spin_rbw.setValue(self.param_dic['rbw'])
+         self.dbl_spin_tr.setValue(self.param_dic['tr'])
+         self.dbl_spin_tv.setValue(self.param_dic['tv'])
+         self.dbl_spin_ts.setValue(self.param_dic['ts'])
+         self.dbl_spin_ro_off.setValue(self.param_dic['ro_off'])
+         self.dbl_spin_pe_off.setValue(self.param_dic['pe_off'])
+         self.dbl_spin_slc_off.setValue(self.param_dic['slc_off'])
+         self.spin_n_echo.setValue(self.param_dic['n_echo'])
+         self.dbl_spin_delta_te.setValue(self.param_dic['delta_te']) 
+         self.spin_n_met.setValue(self.param_dic['n_met'])
+         self.spin_n_avg.setValue(self.param_dic['n_avg'])
+         self.spin_n_rep.setValue(self.param_dic['n_rep'])
+         self.button_group_symm_ro.buttons()[self.param_dic['symm_ro']].setChecked(True)
+         self.button_group_acq_3d.buttons()[self.param_dic['acq_3d']].setChecked(True)
+         self.button_group_no_pe.buttons()[self.param_dic['no_pe']].setChecked(True)
+         self.button_group_no_slc.buttons()[self.param_dic['no_slc']].setChecked(True)
+         self.button_group_grad_spoil.buttons()[self.param_dic['grad_spoil']].setChecked(True)
+         self.combo_slice_axis.setCurrentText(self.param_dic['slice_axis'])
+         self.check_alt_read.setChecked(self.param_dic['alt_read'])
+         self.check_alt_pha.setChecked(self.param_dic['alt_pha'])
+         self.check_alt_slc.setChecked(self.param_dic['alt_slc'])
+         self.dbl_spin_b0.setValue(self.param_dic['b0'])
+         self.combo_nuc.setCurrentText(self.param_dic['nuc'])
+         self.dbl_spin_max_grad.setValue(self.param_dic['max_grad'])
+         self.dbl_spin_max_slew.setValue(self.param_dic['max_slew'])
+         self.dbl_spin_rf_ringdown_time.setValue(self.param_dic['rf_ringdown_time'])
+         self.dbl_spin_rf_dead_time.setValue(self.param_dic['rf_dead_time'])
+         self.combo_ori.setCurrentText(self.param_dic['ori'])
+         self.combo_pe_dir.setCurrentText(self.param_dic['pe_dir'])
+      
+         #Try to set spectra info
+         try:
+      
+            if self.param_dic['run_spec'] == 'START' or self.param_dic['run_spec'] == 'BOTH':
+               self.check_spec_start.setChecked(True)
+            if self.param_dic['run_spec'] == 'END' or self.param_dic['run_spec'] == 'BOTH':
+               self.check_spec_end.setChecked(True)
+            self.spin_spec_size.setValue(self.param_dic['spec_size'])
+            self.spin_spec_bw.setValue(self.param_dic['spec_bw'])
+            self.dbl_spin_spec_flip.setValue(self.param_dic['spec_flip'])
+            self.dbl_spin_spec_tr.setValue(self.param_dic['spec_tr'])
+            self.spin_spec_n.setValue(self.param_dic['spec_n'])
+         except:
+            pass
+      
+         #Update metabolite info
+         self.update_met_vals()
+   
+   def spec_enable(self):
+      """
+      Function to enable spectra options based on UI
+      """
+      
+      if self.check_spec_start.isChecked() or self.check_spec_end.isChecked():
          state = True
       else:
          state = False
-      self.spin_spectra_points.setEnabled(state)
-      self.spin_spectra_band.setEnabled(state)
-      self.dbl_spin_spectra_flip.setEnabled(state)
+      self.spin_spec_size.setEnabled(state)
+      self.spin_spec_bw.setEnabled(state)
+      self.dbl_spin_spec_flip.setEnabled(state)
+      self.spin_n_spec.setEnabled(state)
+      self.dbl_spin_spec_tr.setEnabled(state)
       
    def update_rf_type(self):
-      self.rf_types[self.met_idx] = self.combo_pulse_type_sel.currentIndex()
-      if self.combo_pulse_type_sel.currentIndex() == 0:
+      """
+      Quick function to change RF pane
+      """
+      if self.combo_use_sinc.currentIndex() == 0:
          self.stacked_pulse_type.setCurrentIndex(0)
       else:
          self.stacked_pulse_type.setCurrentIndex(1)
+         
+   def update_localizer(self):
+      """
+      Function to update localizer
+      """
+      
+      if self.combo_plot.currentText() == 'Localizer':
+         self.plot()      
         
-   def plot_k_space(self):
+   def plot(self):
+      """
+      Function to add various plots to top window
+      """
+      if self.updating is True:
+         return
       self.figure.clear()
 
       #Make sure we don't have to update plot
+      plot_type = self.combo_plot.currentText()
       met = self.met_idx
-      if len(self.waves[2]) <= met:
-         self.update_time()
+      if plot_type != 'Localizer' and len(self.waves[2]) <= met:
+         self.update_for_plot()
 
       #Determine which plot to do
-      plot_type = self.combo_plot_sel.currentText()
       if plot_type == "2D k-space" or plot_type == "3D k-space":
          
          if plot_type == "2D k-space":
@@ -246,7 +469,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
          ax.set_xlabel(r'$k_x$ ($mm^{-1}$)')
          ax.set_ylabel(r'$k_y$ ($mm^{-1}$)')
          
-      else:
+      elif plot_type == 'Waveforms':
       
          #Common options
          t = np.arange(self.waves[4][self.met_idx].shape[1]) * \
@@ -299,69 +522,220 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
          
          #Adjust spacing
          self.figure.subplots_adjust(hspace=0.1)
+         
+      else:
+         
+         #Epi stuff
+         epi_fov = self.param_dic['fov']
+
+         #Get coordinates of bounding box
+         verts = np.zeros((3, 8))
+         for idx, coords in enumerate(product([-epi_fov[0] / 2, epi_fov[0] / 2],
+                                              [-epi_fov[1] / 2, epi_fov[1] / 2],
+                                              [-epi_fov[2] / 2, epi_fov[2] / 2])):
+            verts[:, idx,] = coords
+         offsets = np.array([self.param_dic['ro_off'], self.param_dic['pe_off'], self.param_dic['slc_off']])
+
+         #Define what orientation we are going to use
+         use_ori = self.param_dic['ori'].lower()[0:3]
+         pha_sec = self.param_dic['pe_dir'] != self.loc_dic[use_ori]['pe_prim']
+         if pha_sec is True:
+            pha_swap = np.array([[0, 1, 0, 0], [1, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+         else:
+            pha_swap = np.eye(4)
+         use_aff = self.ori_dic[use_ori]['aff'] @ pha_swap
+         use_codes = nib.aff2axcodes(use_aff)
+         use_codes_neg = nib.aff2axcodes(use_aff @ np.array([[-1, 0, 0, 0],
+                                                             [0, -1, 0, 0],
+                                                             [0, 0, -1, 0],
+                                                             [0, 0, 0, 1]]))
+         verts = use_aff[0:3, 0:3] @ (verts + offsets[:, np.newaxis])
+
+         #Define colors for readout, phase encoding, and slice directions
+         colors = ['#006bb6', '#00b64b', '#b6006b']
+
+         #Add localizer to plot
+         ax = self.figure.subplots(1, 3)
+         for axis, ori in zip(ax, ['sag', 'cor', 'tra']):
+
+            #Add image for current orientation
+            axis.matshow(self.loc_dic[ori]['img'][:, :, self.loc_dic[ori]['slice']].T, cmap='gray',
+                         origin='lower')
+            axis.set_title(self.ori_dic[ori]['name'], fontweight='bold', fontsize=16)
+            axis.axis('off')
+   
+            #Define color for labels
+            if self.loc_dic[ori]['codes+'][0] in use_codes:
+               x_color = colors[use_codes.index(self.loc_dic[ori]['codes+'][0])]
+            elif self.loc_dic[ori]['codes+'][0] in use_codes_neg:
+               x_color = colors[use_codes_neg.index(self.loc_dic[ori]['codes+'][0])]
+            if self.loc_dic[ori]['codes+'][1] in use_codes:
+               y_color = colors[use_codes.index(self.loc_dic[ori]['codes+'][1])]
+            elif self.loc_dic[ori]['codes+'][1] in use_codes_neg:
+               y_color = colors[use_codes_neg.index(self.loc_dic[ori]['codes+'][1])] 
+                    
+            #Add axis label codes
+            axis.annotate(self.loc_dic[ori]['codes+'][1], xy=[0.5, 0.9], xycoords='axes fraction', 
+                          fontweight='bold', fontsize=14, rotation=0, color=y_color)  
+            axis.annotate(self.loc_dic[ori]['codes+'][0], xy=[0.9, 0.5], xycoords='axes fraction', 
+                          fontweight='bold', fontsize=14, rotation=0, color=x_color)
+            axis.annotate(self.loc_dic[ori]['codes-'][1], xy=[0.5, 0.05], xycoords='axes fraction', 
+                          fontweight='bold', fontsize=14, rotation=0, color=y_color)  
+            axis.annotate(self.loc_dic[ori]['codes-'][0], xy=[0.05, 0.5], xycoords='axes fraction', 
+                          fontweight='bold', fontsize=14, rotation=0, color=x_color)
+   
+            #Get voxel coordinates of box
+            vox_c = self.loc_dic[ori]['scan_to_vox'][0:3, 0:3] @ verts + \
+                    self.loc_dic[ori]['scan_to_vox'][0:3, 3][:, np.newaxis]     
+            box_min = np.min(vox_c[0:2, :], axis=1)  
+            box_delta = np.max(vox_c[0:2, :], axis=1) - box_min     
+   
+            #Make box
+            rect = Rectangle(box_min, box_delta[0], box_delta[1], color='yellow', fill=None)
+            axis.add_patch(rect)
+
       
       plt.tight_layout()   
       self.canvas.draw()
         
+  
+   def update_ssrf_grd(self):
+      """
+      Load in new ssrf gradient data
+      """
+      try:
+      
+         #Load in gradient data
+         grd_path = QFileDialog.getOpenFileName(self, 'Load Gradient File')[0]
+         _, grd_max, grd_delta = x_epi.load_ssrf_grad(grd_path)
+         
+         #Update interface
+         self.line_grd_path.setText(grd_path)
+         self.line_grd_max.setText(grd_max)
+         self.line_grd_delta.setText(grd_delta * 1E6)
+         
+      except:
+         self.update_ssrf_grd()
+   
+   def update_ssrf_rf(self):
+      """
+      Load in new ssrf rf data
+      """
+      try:
+         
+         #Load in rf data
+         rf_path = QFileDialog.getOpenFileName(self, 'Load RF File')[0]  
+         _, _, b1_max, rf_delta = x_epi.load_ssrf_rf(rf_path)
+         
+         #Update interface
+         self.line_rf_path.setText(rf_path)
+         self.line_b1_max.setText(b1_max)
+         self.line_rf_delta.setText(rf_delta)
+         
+      except:
+         self.update_ssrf_rf()
+  
+  
    #Change metabolite number for all tabs
    def update_met_idx(self):
-      self.met_idx = self.combo_met_sel.currentIndex()
+      """
+      Save metabolite index so we can access it easily later
+      """
+      if self.updating is False:
+         self.met_idx = self.combo_met.currentIndex()
       
    #Update metabolite number dropdowns to account for number of metabolites
-   def update_met_sel(self):
-      self.combo_met_sel.clear()
-      n_met = self.spin_met.value()
-      met_list = ['Met. %i'%(i + 1) for i in range(n_met)]
-      self.combo_met_sel.addItems(met_list)
+   def update_combo_met(self):
+      self.updating = True
+      self.combo_met.clear()
       
-   #Save flip angle to class variable
-   def record_flip(self):
-      if self.updating is False:
-         self.flips[self.met_idx] = self.dbl_spin_flip.value()
-   
-   #Save sinc pulse data
-   def record_sinc(self):
-      if self.updating is False:
-         self.sinc_dur[self.met_idx] = self.dbl_spin_sinc_dur.value() / 1E3
-         self.sinc_cf[self.met_idx] = self.dbl_spin_sinc_cf.value()
-         self.sinc_tbw[self.met_idx] = self.dbl_spin_sinc_tbw.value()
-   
-   #Save flip angle to class variable
-   def record_freq(self):
-      if self.updating is False:
-         self.freq_offset[self.met_idx] = self.dbl_spin_freq.value()
-   
-   #Save image grid sizes for current metabolites   
-   def record_size(self):
-      if self.updating is False:
-         self.size[self.met_idx, :] = [self.spin_size_x.value(),
-                                       self.spin_size_y.value(),
-                                       self.spin_size_z.value()]
-   
-   #Save formula
-   def record_form(self):
-      if self.updating is False:
-         self.grd_forms[self.met_idx] = self.line_grd_form.text()
-   
-   #Save partial fourier fractions
-   def record_pf(self):
-      if self.updating is False:
-         self.pf[self.met_idx, :] = [self.dbl_spin_pf_y.value(),
-                                     self.dbl_spin_pf_z.value()]                                     
-   
-   #Update sequence time
-   def update_time(self):
-      self.seq, self.plot_seq = x_epi.create_seq(self, only_plot=True)
+      #Update dropdown
+      n_met = self.spin_n_met.value()
+      met_list = ['Met. %i'%(i + 1) for i in range(n_met)]
+      self.combo_met.addItems(met_list)  
+      
+      #Update param dictionary
+      delta_met = n_met - len(self.param_dic['mets'])
+      if delta_met > 0:
+         for i in range(delta_met):
+            self.param_dic['mets'].append(x_epi.deepcopy(self.param_dic['mets'][0]))                        
+      self.updating = False
+      
+   #Update plot selector
+   def update_combo_plot(self):
+      """
+      Function to update plot selector based on current parameters
+      """
+      
+      #Clear current selector
+      self.updating = True
+      self.combo_plot.clear()
+      
+      #Get new options
+      plot_list = ['Waveforms', '2D k-space']
+      if self.param_dic['acq_3d'] is True:
+         plot_list.append('3D k-space')
+      if hasattr(self, 'loc_dic'):
+         plot_list.append('Localizer')
+      
+      #Update dropdown
+      self.combo_plot.addItems(plot_list)  
+      if hasattr(self, 'loc_dic'):
+         if self.local_loaded is True:
+            self.combo_plot.setCurrentText('Localizer')
+            self.local_loaded = False
+      self.updating = False
+      
+   #Update orientation selector
+   def update_combo_pe_dir(self):
+      """
+      Function to update phase encoding dir based on current parameters
+      """
+      self.updating = True
+      if self.combo_ori.currentText() == 'Sagittal':
+         self.combo_pe_dir.setItemText(0, 'AP')
+         self.combo_pe_dir.setItemText(1, 'SI')
+      elif self.combo_ori.currentText() == 'Coronal':
+         self.combo_pe_dir.setItemText(0, 'RL')
+         self.combo_pe_dir.setItemText(1, 'SI')
+      else:
+         self.combo_pe_dir.setItemText(0, 'AP')
+         self.combo_pe_dir.setItemText(1, 'RL')
+      self.updating = False
+         
+   #Update sequence for plotting
+   def update_for_plot(self):
+      """
+      Creates a new sequence and updates UI and plot
+      """
+      self.dic_to_seq(no_reps=True)
       self.update_app()
    
    #Updates to application after creating sequences
    def update_app(self):
-      n_acq = self.spin_rep.value() * self.spin_avg.value()
+      """
+      Update UI application based on current parameters
+      """
+      
+      #Make sure we have current parameters
+      self.param_dic = self.seq.create_param_dic()
+      
+      #Compute duration
+      n_acq = self.param_dic['n_rep'] * self.param_dic['n_avg']
       self.duration = self.seq.duration()[0] * n_acq
+      
+      #Set total sequence duration
       self.dbl_spin_tscan.setValue(np.round(self.duration, 5))
-      self.line_esp.setText(str(np.round(self.esp[self.met_idx] * 1E3, 2)))
-      self.waves = x_epi.compute_k_space(self.plot_seq, self.spin_met.value())
-      self.plot_k_space()
+      
+      #Plot k-space
+      self.waves = x_epi.compute_k_space(self.plot_seq, self.param_dic['n_met'])
+      self.update_combo_plot()
+      self.plot()
+      
+      #Update UI
+      self.dic_to_ui()
+      
+      #Run timing check
       status = self.seq.check_timing()
       
       if status[0] == True:
@@ -377,161 +751,143 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
    #Calculate cumulative flip angle
    def update_flips(self):
-       flip = self.dbl_spin_flip.value()
-       n_z = self.size[self.met_idx, 2]
-       n_r = self.spin_rep.value()
-       n_a = self.spin_avg.value()
-       n_acq = n_z * n_r * n_a
-       cum_flip = np.rad2deg(np.arccos(np.power(np.cos(np.deg2rad(flip)), n_acq)))
-       vol_flip =  np.rad2deg(np.arccos(np.power(np.cos(np.deg2rad(flip)), n_z)))
-       self.line_cum_flip.setText(str(np.round(cum_flip, 1)))
-       self.line_vol_flip.setText(str(np.round(vol_flip, 1)))
+      """
+      Compute cumulative flip angles
+      """
+      flip = self.param_dic['mets'][self.met_idx]['flip']
+      n_z = self.param_dic['mets'][self.met_idx]['size'][2]
+      n_r = self.param_dic['n_rep']
+      n_a = self.param_dic['n_avg']
+      if self.param_dic['acq_3d'] is True:
+         n_acq = n_z * n_r * n_a
+         n_vol = n_z
+      else:
+         n_acq = n_r * n_a
+         n_vol = 1  
+      cum_flip = np.rad2deg(np.arccos(np.power(np.cos(np.deg2rad(flip)), n_acq)))
+      vol_flip =  np.rad2deg(np.arccos(np.power(np.cos(np.deg2rad(flip)), n_vol)))
+      self.line_cum_flip.setText(str(np.round(cum_flip, 1)))
+      self.line_vol_flip.setText(str(np.round(vol_flip, 1)))
        
    def save_seq(self):
+      """
+      Generate Pulseq 'seq' file
+      """
       save_path = QFileDialog.getSaveFileName(self, 'Save Sequence')[0]  
-      self.seq, self.plot_seq = x_epi.create_seq(self, return_plot=True)
+      self.dic_to_seq()
       self.seq.write(save_path)
-      self.save_params(save_path)
       self.update_app()
-   
-   def save_params(self, save_path):
-      out_dict = {
-                   "flips":self.flips,
-                   "rf_paths":self.rf_paths,
-                   "grd_paths":self.grd_paths,
-                   "rf_types":self.rf_types,
-                   "max_grd":self.max_grd,
-                   "max_b1":self.max_b1,
-                   "rf_delta":self.rf_delta,
-                   "grd_delta":self.grd_delta,
-                   "freq_offset":self.freq_offset,
-                   "sinc_dur":self.sinc_dur,
-                   "sinc_cf":self.sinc_cf,
-                   "sinc_tbw":self.sinc_tbw,
-                   "gamma":self.gamma,
-                   "size":self.size.tolist(),
-                   "pf":self.pf.tolist(),
-                   "grd_forms":self.grd_forms,
-                   "fov":[self.spin_fov_x.value(), self.spin_fov_y.value(), 
-                         self.spin_fov_z.value()],
-                   "bandwidth":self.spin_band.value(),
-                   "n_avg":self.spin_avg.value(),
-                   "n_rep":self.spin_rep.value(),
-                   "tr":self.dbl_spin_tr.value(),
-                   "tv":self.dbl_spin_tv.value(),
-                   "ts":self.dbl_spin_ts.value(),
-                   "n_met":self.spin_met.value(),
-                   "grd_limit":self.dbl_spin_grd_limit.value(),
-                   "slew_limit":self.dbl_spin_slew_limit.value(),
-                   "ringdown":self.dbl_spin_ringdown.value(),
-                   "dead_time":self.dbl_spin_dead_time.value(),
-                   "b0":self.dbl_spin_b0.value(),
-                   "spectra_start":self.check_spectra_start.isChecked(),
-                   "spectra_end":self.check_spectra_end.isChecked(),
-                   "spectra_points":self.spin_spectra_points.value(),
-                   "spectra_band":self.spin_spectra_band.value(),
-                   "spectra_flip":self.dbl_spin_spectra_flip.value(),
-                   "slice_axis":self.combo_slice_axis_sel.currentText(),
-                   "readout":self.button_group_readout.checkedButton().text(),
-                   "mode":self.button_group_mode.checkedButton().text(),
-                   "phase":self.button_group_phase.checkedButton().text(),
-                   "slice":self.button_group_slice.checkedButton().text(),
-                   "spoil":self.button_group_spoil.checkedButton().text(),
-                   "skip":self.button_group_skip.checkedButton().text(),
-                   "read_alt":self.check_read_alt.isChecked(),
-                   "phase_alt":self.check_phase_alt.isChecked(),
-                   "slice_alt":self.check_slice_alt.isChecked(),
-                   "scale":self.button_group_scale.checkedButton().text()   
-                  }
-
-      with open('%s.json'%(save_path), "w") as fid:
-         json.dump(out_dict, fid, indent=2)
-      
-   #Load gradient waveforms
-   def load_grd(self):
-      grd_path = QFileDialog.getOpenFileName(self, 'Load Gradient File')[0]  
-      
-      #Get max gradient strength for scaling
-      with open(grd_path) as fid:
-         grd_txt = fid.read()
-      max_grd = float(re.search('Max Gradient Strength = .*', grd_txt)[0].split()[4])
-      delta = float(re.search('Resolution = .*', grd_txt)[0].split()[2])
-
-      #Save path and maximum gradient
-      self.grd_paths[self.met_idx] = grd_path
-      self.max_grd[self.met_idx] = max_grd
-      self.grd_delta[self.met_idx] = delta * 1E-6
-      self.line_grd_path.setText(self.grd_paths[self.met_idx])
-      self.line_max_grd.setText(str(self.max_grd[self.met_idx]))
-      
-   #Load rf waveforms
-   def load_rf(self):
-      rf_path = QFileDialog.getOpenFileName(self, 'Load RF File')[0]  
-      
-      #Get max b1 for scaling
-      with open(rf_path) as fid:
-         rf_txt = fid.read()
-      max_b1 = float(re.search('Max B1 = .*', rf_txt)[0].split()[3])
-      delta = float(re.search('Resolution = .*', rf_txt)[0].split()[2])
-      
-      #Save path and maximum gradient
-      self.rf_paths[self.met_idx] = rf_path
-      self.max_b1[self.met_idx] = max_b1
-      self.rf_delta[self.met_idx] = delta * 1E-6
-      self.line_rf_path.setText(self.rf_paths[self.met_idx])
-      self.line_max_b1.setText(str(self.max_b1[self.met_idx]))
+      self.seq.save_params(save_path)
      
    #Update all the variables that change when selected metabolite change 
    def update_met_vals(self):
-      self.updating = True
-      self.combo_met_sel.setCurrentIndex(self.met_idx)
-      self.combo_pulse_type_sel.setCurrentIndex(self.rf_types[self.met_idx])
-      self.line_rf_path.setText(self.rf_paths[self.met_idx])
-      self.line_grd_path.setText(self.grd_paths[self.met_idx])
-      self.line_max_b1.setText(str(self.max_b1[self.met_idx]))
-      self.line_max_grd.setText(str(self.max_grd[self.met_idx]))
-      self.line_rf_delta.setText(str(self.rf_delta[self.met_idx] * 1E6))
-      self.line_grd_delta.setText(str(self.grd_delta[self.met_idx] * 1E6))
-      self.dbl_spin_flip.setValue(self.flips[self.met_idx])
-      self.spin_size_x.setValue(self.size[self.met_idx, 0])
-      self.spin_size_y.setValue(self.size[self.met_idx, 1])
-      self.spin_size_z.setValue(self.size[self.met_idx, 2])
-      self.dbl_spin_pf_y.setValue(self.pf[self.met_idx, 0])
-      self.dbl_spin_pf_z.setValue(self.pf[self.met_idx, 1])
-      self.line_esp.setText(str(np.round(self.esp[self.met_idx] * 1E3, 2)))
-      self.dbl_spin_freq.setValue(self.freq_offset[self.met_idx])
-      self.dbl_spin_sinc_dur.setValue(self.sinc_dur[self.met_idx] * 1E3)
-      self.dbl_spin_sinc_cf.setValue(self.sinc_cf[self.met_idx])
-      self.dbl_spin_sinc_tbw.setValue(self.sinc_tbw[self.met_idx])
-      self.line_grd_form.setText(self.grd_forms[self.met_idx])
-      self.update_flips()
-      self.plot_k_space()
-      self.updating = False
-  
-   #Update gyromagnetic ratio
-   def update_gamma(self):
-      match self.combo_nucleus.currentText():
-         case "13C":
-            self.gamma = 10.7084E6
-         case "1H":
-            self.gamma = 42.57638474E6
-         case "2H":
-            self.gamma = 6.536E6
-         case "15N":
-            self.gamma = -4.316E6
-         case "17O":
-            self.gamma = -5.722E6
-         case "31P":
-            self.gamma = 17.235E6
-         case "19F":
-            self.gamma = 40.078E6
-         case "23Na":
-            self.gamma = 11.262E6
-         case "129Xe":
-            self.gamma = -11.777E6
-         case _:
-            raise ValueError('Unknown nucleus')
+      """
+      Updates metabolite values in interface using current sequence
+      """
             
+      #Update interface values based on dictionary
+      if self.updating is False:
+         curr_met = self.param_dic['mets'][self.met_idx]
+         self.line_grd_path.setText(curr_met['grd_path'])
+         self.line_rf_path.setText(curr_met['rf_path'])
+         self.line_formula.setText(curr_met['formula'])
+         self.combo_use_sinc.setCurrentIndex(curr_met['use_sinc'])
+         self.dbl_spin_flip.setValue(curr_met['flip'])
+         self.dbl_spin_freq_off.setValue(curr_met['freq_off'])
+         self.dbl_spin_sinc_dur.setValue(curr_met['sinc_dur'])
+         self.dbl_spin_sinc_frac.setValue(curr_met['sinc_frac'])
+         self.dbl_spin_sinc_tbw.setValue(curr_met['sinc_tbw'])
+         self.spin_size_ro.setValue(curr_met['size'][0])
+         self.spin_size_pe.setValue(curr_met['size'][1])
+         self.spin_size_slc.setValue(curr_met['size'][2])
+         self.dbl_spin_pf_pe.setValue(curr_met['pf_pe'])
+         self.dbl_spin_pf_pe2.setValue(curr_met['pf_pe2'])
+         self.line_esp.setText(str(np.round(curr_met['esp'] * 1E3, 2)))
+         self.line_b1_max.setText(str(curr_met['b1_max']))
+         self.line_rf_delta.setText(str(curr_met['rf_delta']))
+         self.line_grd_max.setText(str(curr_met['grd_max']))
+         self.line_grd_delta.setText(str(curr_met['grd_delta']))
+         self.update_flips()
+         self.plot()
+  
+   def load_pars(self):
+      """
+      Function to load in parameters for json and update plot
+      """
+      json_path = QFileDialog.getOpenFileName(qm, 'Load Parameter File')[0]
+      self.load_json(json_path, use_default=False)
+      self.update_for_plot()
+      
+   def load_localizer(self):
+      """
+      Function to load in localizer info
+      """
+      
+      #Convert dicom images into niftti
+      dcm_dir = QFileDialog.getExistingDirectory(qm, 'Load Localizer DICOM Direcotry')
+      dcm_out = sp.run([f"dcm2niix -z y {dcm_dir}"], shell=True, capture_output=True, text=True)
+
+      #Loop through json files
+      self.loc_dic = {}
+      for j_path in glob.glob(f'{dcm_dir}/*.json'):
+   
+         #Load in json data
+         with open(j_path, 'r') as j_id:
+            j_data = json.load(j_id)
+   
+         #Use json to figure out orientation string
+         ori_str = j_data['ImageOrientationText'][0:3].lower()
+   
+         #Load in image data
+         nii_path = j_path.split(os.extsep, 1)[0] + '.nii.gz'
+         img_hdr = nib.load(nii_path)
+         img_data = img_hdr.get_fdata()
+   
+         #Get orientation codes for each axis
+         ax_codes = nib.aff2axcodes(img_hdr.affine)
+         ax_codes_neg = nib.aff2axcodes(img_hdr.affine @ np.array([[-1, 0, 0, 0],
+                                                                   [0, -1, 0, 0],
+                                                                   [0, 0, -1, 0],
+                                                                   [0, 0, 0, 1]]))
+                                                             
+         #Get affine matrixes
+         vox_to_scan = img_hdr.affine
+         scan_to_vox = np.linalg.inv(vox_to_scan)
+                                                       
+         #Add data to dictionary
+         self.loc_dic[ori_str] = {'hdr':img_hdr, 'img':img_data, 'codes+':ax_codes,
+                                  'codes-':ax_codes_neg, 'vox_to_scan':vox_to_scan,
+                                  'scan_to_vox':scan_to_vox}
+
+      #Define rotation matrices for each orientation
+      sag_mat = np.array([[0, 0, 1, 0], [0, 1, 0, 0], 
+                          [1, 0, 0, 0], [0, 0, 0, 1]])  #phase encode is A/P
+      cor_mat = np.array([[0, 1, 0, 0], [0, 0, 1, 0], 
+                          [1, 0, 0, 0], [0, 0, 0, 1]])  #phase encode is R/L
+      tra_mat = np.array([[1, 0, 0, 0], [0, 1, 0, 0], 
+                          [0, 0, 1, 0], [0, 0, 0, 1]])  #phase encode is A/P
+
+      #Get axes codes
+      sag_codes = nib.aff2axcodes(sag_mat)
+      cor_codes = nib.aff2axcodes(cor_mat)
+      tra_codes = nib.aff2axcodes(tra_mat)
+
+      #Define dictionary with orientation information
+      self.ori_dic = {'sag':{'name':'Sagittal', 'aff':sag_mat, 'codes':sag_codes},
+                      'cor':{'name':'Coronal', 'aff':cor_mat, 'codes':cor_codes},
+                      'tra':{'name':'Transverse', 'aff':tra_mat, 'codes':tra_codes}}
+
+      #Define slices
+      self.loc_dic['sag']['slice'] = 5
+      self.loc_dic['cor']['slice'] = 1
+      self.loc_dic['tra']['slice'] = 1
+      
+      #Create primary phase encoding directions
+      self.loc_dic['sag']['pe_prim'] = 'AP'
+      self.loc_dic['cor']['pe_prim'] = 'RL'
+      self.loc_dic['tra']['pe_prim'] = 'AP'
+      self.local_loaded = True
+      
 if __name__ == '__main__':
 
    #Setup application
