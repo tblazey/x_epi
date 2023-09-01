@@ -106,10 +106,10 @@ met_parser.add_argument('-name', help='Metabolite name')
 #Parameters describing metabolite specific waveforms
 wav_grp = met_parser.add_argument_group('Metabolite Specific Waveforms')
 wav_grp.add_argument('-grd_path', type=str, metavar='PATH',
-                     default='siemens_pyr_plateau_slab.GRD',
+                     default=f'{ssrf_dir}/siemens_singleband_pyr_3T.GRD',
                      help='Path to gradient file from Spectral-Spatial RF Toolbox')                     
 wav_grp.add_argument('-rf_path', type=str, metavar='PATH',
-                     default='siemens_pyr_plateau_slab.RF',
+                     default=f'{ssrf_dir}/siemens_singleband_pyr_3T.RF',
                      help='Path to RF file from Spectral-Spatial RF Toolbox')
 wav_grp.add_argument('-formula', type=str, default='1',
                      help='Formula for scaling SSRF gradient where x is slice' \
@@ -139,6 +139,9 @@ met_grp.add_argument('-pf_pe', type=range_wrapper(0.5, 1.0), default=1, metavar=
                      help='Partial Fourier in phase encoding dimension')   
 met_grp.add_argument('-pf_pe2', type=range_wrapper(0.5, 1.0), default=1, metavar='FRAC',
                      help='Partial Fourier in second phase encoding dimension')
+met_grp.add_argument('-z_centric', action='store_true',
+                     help='Use centric encoding instead of linear for second phase' \
+                          ' encoding dimension.')                 
 
 #Parse main arguments and return a list of unparsed metabolite specific arguments
 img_args, met_up_args = main_parser.parse_known_args()

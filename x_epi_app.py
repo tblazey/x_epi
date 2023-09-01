@@ -29,6 +29,10 @@ class ScalarFormatterForceFormat(ScalarFormatter):
 basedir = os.path.dirname(__file__)
 class MyMainWindow(QMainWindow, Ui_MainWindow):
    def __init__(self, json_path=None):
+      """
+      Creates x_epi_app window
+      """
+      
       super().__init__()
       
       #Add UI to class
@@ -169,6 +173,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       #If excitation options are changed
       self.dbl_spin_freq_off.valueChanged.connect(self.ui_to_dic)
       self.map_signal(self.dbl_spin_flip.valueChanged, [self.ui_to_dic, self.update_flips])
+      self.line_name.textChanged.connect(self.ui_to_dic)
       
       #Acquisition options
       self.spin_size_ro.textChanged.connect(self.ui_to_dic)
@@ -176,6 +181,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.spin_size_slc.textChanged.connect(self.ui_to_dic)
       self.dbl_spin_pf_pe.valueChanged.connect(self.ui_to_dic)
       self.dbl_spin_pf_pe2.valueChanged.connect(self.ui_to_dic)
+      self.check_z_centric.stateChanged.connect(self.ui_to_dic)
             
       ####################
       ###System Updates###
@@ -281,6 +287,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       Updates dictionary based on UI
       """ 
       
+      if self.updating is True:
+         return
+         
       #General options
       self.param_dic['fov'][0] = self.spin_fov_ro.value()
       self.param_dic['fov'][1] = self.spin_fov_pe.value()
@@ -344,63 +353,75 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       curr_met['size'][2] = self.spin_size_slc.value()
       curr_met['pf_pe'] = self.dbl_spin_pf_pe.value()
       curr_met['pf_pe2'] = self.dbl_spin_pf_pe2.value()
-      
+      curr_met['z_centric'] = self.check_z_centric.isChecked()
+      curr_met['grd_path'] = self.line_grd_path.text()
+      curr_met['rf_path'] = self.line_rf_path.text()
+      curr_met['b1_max'] = self.line_b1_max.text()
+      curr_met['grd_max'] = self.line_grd_max.text()
+      curr_met['grd_delta'] = self.line_grd_delta.text()
+      curr_met['rf_delta'] = self.line_rf_delta.text()
+      curr_met['name'] = self.line_name.text()
+    
    def dic_to_ui(self):
       """
       Updates UI based on dictionary"
       """
+      if self.updating is True:
+         return
+      
       #Set parameter values that are the same for all metabolites
-      if self.updating is False:
-         self.spin_fov_ro.setValue(self.param_dic['fov'][0])
-         self.spin_fov_pe.setValue(self.param_dic['fov'][1])
-         self.spin_fov_slc.setValue(self.param_dic['fov'][2])
-         self.spin_rbw.setValue(self.param_dic['rbw'])
-         self.dbl_spin_tr.setValue(self.param_dic['tr'])
-         self.dbl_spin_tv.setValue(self.param_dic['tv'])
-         self.dbl_spin_ts.setValue(self.param_dic['ts'])
-         self.dbl_spin_ro_off.setValue(self.param_dic['ro_off'])
-         self.dbl_spin_pe_off.setValue(self.param_dic['pe_off'])
-         self.dbl_spin_slc_off.setValue(self.param_dic['slc_off'])
-         self.spin_n_echo.setValue(self.param_dic['n_echo'])
-         self.dbl_spin_delta_te.setValue(self.param_dic['delta_te']) 
-         self.spin_n_met.setValue(self.param_dic['n_met'])
-         self.spin_n_avg.setValue(self.param_dic['n_avg'])
-         self.spin_n_rep.setValue(self.param_dic['n_rep'])
-         self.button_group_symm_ro.buttons()[self.param_dic['symm_ro']].setChecked(True)
-         self.button_group_acq_3d.buttons()[self.param_dic['acq_3d']].setChecked(True)
-         self.button_group_no_pe.buttons()[self.param_dic['no_pe']].setChecked(True)
-         self.button_group_no_slc.buttons()[self.param_dic['no_slc']].setChecked(True)
-         self.button_group_grad_spoil.buttons()[self.param_dic['grad_spoil']].setChecked(True)
-         self.combo_slice_axis.setCurrentText(self.param_dic['slice_axis'])
-         self.check_alt_read.setChecked(self.param_dic['alt_read'])
-         self.check_alt_pha.setChecked(self.param_dic['alt_pha'])
-         self.check_alt_slc.setChecked(self.param_dic['alt_slc'])
-         self.dbl_spin_b0.setValue(self.param_dic['b0'])
-         self.combo_nuc.setCurrentText(self.param_dic['nuc'])
-         self.dbl_spin_max_grad.setValue(self.param_dic['max_grad'])
-         self.dbl_spin_max_slew.setValue(self.param_dic['max_slew'])
-         self.dbl_spin_rf_ringdown_time.setValue(self.param_dic['rf_ringdown_time'])
-         self.dbl_spin_rf_dead_time.setValue(self.param_dic['rf_dead_time'])
-         self.combo_ori.setCurrentText(self.param_dic['ori'])
-         self.combo_pe_dir.setCurrentText(self.param_dic['pe_dir'])
-      
-         #Try to set spectra info
-         try:
-      
-            if self.param_dic['run_spec'] == 'START' or self.param_dic['run_spec'] == 'BOTH':
-               self.check_spec_start.setChecked(True)
-            if self.param_dic['run_spec'] == 'END' or self.param_dic['run_spec'] == 'BOTH':
-               self.check_spec_end.setChecked(True)
-            self.spin_spec_size.setValue(self.param_dic['spec_size'])
-            self.spin_spec_bw.setValue(self.param_dic['spec_bw'])
-            self.dbl_spin_spec_flip.setValue(self.param_dic['spec_flip'])
-            self.dbl_spin_spec_tr.setValue(self.param_dic['spec_tr'])
-            self.spin_spec_n.setValue(self.param_dic['spec_n'])
-         except:
-            pass
-      
-         #Update metabolite info
-         self.update_met_vals()
+      self.updating = True
+      self.spin_fov_ro.setValue(self.param_dic['fov'][0])
+      self.spin_fov_pe.setValue(self.param_dic['fov'][1])
+      self.spin_fov_slc.setValue(self.param_dic['fov'][2])
+      self.spin_rbw.setValue(int(self.param_dic['rbw']))
+      self.dbl_spin_tr.setValue(self.param_dic['tr'])
+      self.dbl_spin_tv.setValue(self.param_dic['tv'])
+      self.dbl_spin_ts.setValue(self.param_dic['ts'])
+      self.dbl_spin_ro_off.setValue(self.param_dic['ro_off'])
+      self.dbl_spin_pe_off.setValue(self.param_dic['pe_off'])
+      self.dbl_spin_slc_off.setValue(self.param_dic['slc_off'])
+      self.spin_n_echo.setValue(self.param_dic['n_echo'])
+      self.dbl_spin_delta_te.setValue(self.param_dic['delta_te']) 
+      self.spin_n_met.setValue(self.param_dic['n_met'])
+      self.spin_n_avg.setValue(self.param_dic['n_avg'])
+      self.spin_n_rep.setValue(self.param_dic['n_rep'])
+      self.button_group_symm_ro.buttons()[self.param_dic['symm_ro']].setChecked(True)
+      self.button_group_acq_3d.buttons()[self.param_dic['acq_3d']].setChecked(True)
+      self.button_group_no_pe.buttons()[self.param_dic['no_pe']].setChecked(True)
+      self.button_group_no_slc.buttons()[self.param_dic['no_slc']].setChecked(True)
+      self.button_group_grad_spoil.buttons()[self.param_dic['grad_spoil']].setChecked(True)
+      self.combo_slice_axis.setCurrentText(self.param_dic['slice_axis'])
+      self.check_alt_read.setChecked(self.param_dic['alt_read'])
+      self.check_alt_pha.setChecked(self.param_dic['alt_pha'])
+      self.check_alt_slc.setChecked(self.param_dic['alt_slc'])
+      self.dbl_spin_b0.setValue(self.param_dic['b0'])
+      self.combo_nuc.setCurrentText(self.param_dic['nuc'])
+      self.dbl_spin_max_grad.setValue(self.param_dic['max_grad'])
+      self.dbl_spin_max_slew.setValue(self.param_dic['max_slew'])
+      self.dbl_spin_rf_ringdown_time.setValue(self.param_dic['rf_ringdown_time'])
+      self.dbl_spin_rf_dead_time.setValue(self.param_dic['rf_dead_time'])
+      self.combo_ori.setCurrentText(self.param_dic['ori'])
+      self.combo_pe_dir.setCurrentText(self.param_dic['pe_dir'])
+   
+      #Try to set spectra info
+      try:
+   
+         if self.param_dic['run_spec'] == 'START' or self.param_dic['run_spec'] == 'BOTH':
+            self.check_spec_start.setChecked(True)
+         if self.param_dic['run_spec'] == 'END' or self.param_dic['run_spec'] == 'BOTH':
+            self.check_spec_end.setChecked(True)
+         self.spin_spec_size.setValue(self.param_dic['spec_size'])
+         self.spin_spec_bw.setValue(self.param_dic['spec_bw'])
+         self.dbl_spin_spec_flip.setValue(self.param_dic['spec_flip'])
+         self.dbl_spin_spec_tr.setValue(self.param_dic['spec_tr'])
+         self.spin_spec_n.setValue(self.param_dic['spec_n'])
+      except:
+         pass
+   
+      #Update metabolite info
+      self.update_met_ui()
+      self.updating = False
    
    def spec_enable(self):
       """
@@ -438,12 +459,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       """
       Function to add various plots to top window
       """
-      if self.updating is True:
+      
+      plot_type = self.combo_plot.currentText()
+      if plot_type is None or plot_type == "":
          return
       self.figure.clear()
 
       #Make sure we don't have to update plot
-      plot_type = self.combo_plot.currentText()
       met = self.met_idx
       if plot_type != 'Localizer' and len(self.waves[2]) <= met:
          self.update_for_plot()
@@ -534,7 +556,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                                               [-epi_fov[1] / 2, epi_fov[1] / 2],
                                               [-epi_fov[2] / 2, epi_fov[2] / 2])):
             verts[:, idx,] = coords
-         offsets = np.array([self.param_dic['ro_off'], self.param_dic['pe_off'], self.param_dic['slc_off']])
+         offsets = np.array([self.param_dic['ro_off'], self.param_dic['pe_off'], 
+                             self.param_dic['slc_off']])
 
          #Define what orientation we are going to use
          use_ori = self.param_dic['ori'].lower()[0:3]
@@ -559,8 +582,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
          for axis, ori in zip(ax, ['sag', 'cor', 'tra']):
 
             #Add image for current orientation
-            axis.matshow(self.loc_dic[ori]['img'][:, :, self.loc_dic[ori]['slice']].T, cmap='gray',
-                         origin='lower')
+            axis.matshow(self.loc_dic[ori]['img'][:, :, self.loc_dic[ori]['slice']].T, 
+                         cmap='gray', origin='lower')
             axis.set_title(self.ori_dic[ori]['name'], fontweight='bold', fontsize=16)
             axis.axis('off')
    
@@ -575,14 +598,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                y_color = colors[use_codes_neg.index(self.loc_dic[ori]['codes+'][1])] 
                     
             #Add axis label codes
-            axis.annotate(self.loc_dic[ori]['codes+'][1], xy=[0.5, 0.9], xycoords='axes fraction', 
-                          fontweight='bold', fontsize=14, rotation=0, color=y_color)  
-            axis.annotate(self.loc_dic[ori]['codes+'][0], xy=[0.9, 0.5], xycoords='axes fraction', 
-                          fontweight='bold', fontsize=14, rotation=0, color=x_color)
-            axis.annotate(self.loc_dic[ori]['codes-'][1], xy=[0.5, 0.05], xycoords='axes fraction', 
-                          fontweight='bold', fontsize=14, rotation=0, color=y_color)  
-            axis.annotate(self.loc_dic[ori]['codes-'][0], xy=[0.05, 0.5], xycoords='axes fraction', 
-                          fontweight='bold', fontsize=14, rotation=0, color=x_color)
+            axis.annotate(self.loc_dic[ori]['codes+'][1], xy=[0.5, 0.9],
+                          xycoords='axes fraction', fontweight='bold', fontsize=14, 
+                          rotation=0, color=y_color)  
+            axis.annotate(self.loc_dic[ori]['codes+'][0], xy=[0.9, 0.5], 
+                          xycoords='axes fraction', fontweight='bold', fontsize=14, 
+                          rotation=0, color=x_color)
+            axis.annotate(self.loc_dic[ori]['codes-'][1], xy=[0.5, 0.05], 
+                          xycoords='axes fraction', fontweight='bold', fontsize=14, 
+                          rotation=0, color=y_color)  
+            axis.annotate(self.loc_dic[ori]['codes-'][0], xy=[0.05, 0.5], 
+                          xycoords='axes fraction', fontweight='bold', fontsize=14, 
+                          rotation=0, color=x_color)
    
             #Get voxel coordinates of box
             vox_c = self.loc_dic[ori]['scan_to_vox'][0:3, 0:3] @ verts + \
@@ -591,7 +618,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             box_delta = np.max(vox_c[0:2, :], axis=1) - box_min     
    
             #Make box
-            rect = Rectangle(box_min, box_delta[0], box_delta[1], color='yellow', fill=None)
+            rect = Rectangle(box_min, box_delta[0], box_delta[1], color='yellow',
+                             fill=None)
             axis.add_patch(rect)
 
       
@@ -603,24 +631,31 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       """
       Load in new ssrf gradient data
       """
+      self.updating = True
+      
       try:
       
          #Load in gradient data
          grd_path = QFileDialog.getOpenFileName(self, 'Load Gradient File')[0]
-         _, grd_max, grd_delta = x_epi.load_ssrf_grad(grd_path)
+         _, grd_max, grd_delta = x_epi.load_ssrf_grd(grd_path)
          
          #Update interface
-         self.line_grd_path.setText(grd_path)
-         self.line_grd_max.setText(grd_max)
-         self.line_grd_delta.setText(grd_delta * 1E6)
+         self.line_grd_path.setText(str(grd_path))
+         self.line_grd_max.setText(str(grd_max))
+         self.line_grd_delta.setText(str(grd_delta * 1E6))
          
       except:
          self.update_ssrf_grd()
+         
+      self.updating = False
    
    def update_ssrf_rf(self):
       """
       Load in new ssrf rf data
       """
+      
+      self.updating = True
+      
       try:
          
          #Load in rf data
@@ -628,14 +663,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
          _, _, b1_max, rf_delta = x_epi.load_ssrf_rf(rf_path)
          
          #Update interface
-         self.line_rf_path.setText(rf_path)
-         self.line_b1_max.setText(b1_max)
-         self.line_rf_delta.setText(rf_delta)
+         self.line_rf_path.setText(str(rf_path))
+         self.line_b1_max.setText(str(b1_max))
+         self.line_rf_delta.setText(str(rf_delta))
          
       except:
          self.update_ssrf_rf()
   
-  
+      self.updating = False
+      
    #Change metabolite number for all tabs
    def update_met_idx(self):
       """
@@ -644,8 +680,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       if self.updating is False:
          self.met_idx = self.combo_met.currentIndex()
       
-   #Update metabolite number dropdowns to account for number of metabolites
+   #Update metabolite dropdowns to account for number of metabolites
    def update_combo_met(self):
+      """
+      Updates metabolite selector dropbox
+      """
+      
       self.updating = True
       self.combo_met.clear()
       
@@ -780,35 +820,38 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.seq.save_params(save_path)
      
    #Update all the variables that change when selected metabolite change 
-   def update_met_vals(self):
+   def update_met_ui(self):
       """
       Updates metabolite values in interface using current sequence
       """
             
       #Update interface values based on dictionary
-      if self.updating is False:
-         curr_met = self.param_dic['mets'][self.met_idx]
-         self.line_grd_path.setText(curr_met['grd_path'])
-         self.line_rf_path.setText(curr_met['rf_path'])
-         self.line_formula.setText(curr_met['formula'])
-         self.combo_use_sinc.setCurrentIndex(curr_met['use_sinc'])
-         self.dbl_spin_flip.setValue(curr_met['flip'])
-         self.dbl_spin_freq_off.setValue(curr_met['freq_off'])
-         self.dbl_spin_sinc_dur.setValue(curr_met['sinc_dur'])
-         self.dbl_spin_sinc_frac.setValue(curr_met['sinc_frac'])
-         self.dbl_spin_sinc_tbw.setValue(curr_met['sinc_tbw'])
-         self.spin_size_ro.setValue(curr_met['size'][0])
-         self.spin_size_pe.setValue(curr_met['size'][1])
-         self.spin_size_slc.setValue(curr_met['size'][2])
-         self.dbl_spin_pf_pe.setValue(curr_met['pf_pe'])
-         self.dbl_spin_pf_pe2.setValue(curr_met['pf_pe2'])
-         self.line_esp.setText(str(np.round(curr_met['esp'] * 1E3, 2)))
-         self.line_b1_max.setText(str(curr_met['b1_max']))
-         self.line_rf_delta.setText(str(curr_met['rf_delta']))
-         self.line_grd_max.setText(str(curr_met['grd_max']))
-         self.line_grd_delta.setText(str(curr_met['grd_delta']))
-         self.update_flips()
-         self.plot()
+      self.updating = True
+      curr_met = self.param_dic['mets'][self.met_idx]
+      self.line_grd_path.setText(curr_met['grd_path'])
+      self.line_rf_path.setText(curr_met['rf_path'])
+      self.line_formula.setText(curr_met['formula'])
+      self.combo_use_sinc.setCurrentIndex(curr_met['use_sinc'])
+      self.dbl_spin_flip.setValue(curr_met['flip'])
+      self.dbl_spin_freq_off.setValue(curr_met['freq_off'])
+      self.dbl_spin_sinc_dur.setValue(curr_met['sinc_dur'])
+      self.dbl_spin_sinc_frac.setValue(curr_met['sinc_frac'])
+      self.dbl_spin_sinc_tbw.setValue(curr_met['sinc_tbw'])
+      self.spin_size_ro.setValue(curr_met['size'][0])
+      self.spin_size_pe.setValue(curr_met['size'][1])
+      self.spin_size_slc.setValue(curr_met['size'][2])
+      self.dbl_spin_pf_pe.setValue(curr_met['pf_pe'])
+      self.dbl_spin_pf_pe2.setValue(curr_met['pf_pe2'])
+      self.line_esp.setText(str(np.round(curr_met['esp'] * 1E3, 2)))
+      self.line_b1_max.setText(str(curr_met['b1_max']))
+      self.line_rf_delta.setText(str(curr_met['rf_delta']))
+      self.line_grd_max.setText(str(curr_met['grd_max']))
+      self.line_grd_delta.setText(str(curr_met['grd_delta']))
+      self.check_z_centric.setChecked(curr_met['z_centric'])
+      self.line_name.setText(str(curr_met['name']))
+      self.update_flips()
+      self.plot()
+      self.updating = False
   
    def load_pars(self):
       """
@@ -825,7 +868,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       
       #Convert dicom images into niftti
       dcm_dir = QFileDialog.getExistingDirectory(qm, 'Load Localizer DICOM Direcotry')
-      dcm_out = sp.run([f"dcm2niix -z y {dcm_dir}"], shell=True, capture_output=True, text=True)
+      dcm_out = sp.run([f"dcm2niix -z y {dcm_dir}"], shell=True, capture_output=True, 
+                       text=True)
 
       #Loop through json files
       self.loc_dic = {}
@@ -878,9 +922,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                       'tra':{'name':'Transverse', 'aff':tra_mat, 'codes':tra_codes}}
 
       #Define slices
-      self.loc_dic['sag']['slice'] = 5
-      self.loc_dic['cor']['slice'] = 1
-      self.loc_dic['tra']['slice'] = 1
+      self.loc_dic['sag']['slice'] = 0
+      self.loc_dic['cor']['slice'] = 0
+      self.loc_dic['tra']['slice'] = 0
       
       #Create primary phase encoding directions
       self.loc_dic['sag']['pe_prim'] = 'AP'
@@ -908,6 +952,6 @@ if __name__ == '__main__':
       
    #Load app
    window = MyMainWindow(json_path=json_path)
-   window.update_met_vals()
+   window.update_met_ui()
    window.show()
    sys.exit(app.exec_())
