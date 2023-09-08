@@ -59,10 +59,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.button_group_no_slc.addButton(self.radio_slice_grad_on)
       self.button_group_no_slc.addButton(self.radio_slice_grad_off)
       
-      #Slice button group
+      #Spoil button group
       self.button_group_grad_spoil = QButtonGroup()
       self.button_group_grad_spoil.addButton(self.radio_spoil_off)
       self.button_group_grad_spoil.addButton(self.radio_spoil_on)
+      
+      #Ramp sampling button group
+      self.button_group_ramp_samp = QButtonGroup()
+      self.button_group_ramp_samp.addButton(self.radio_ramp_off)
+      self.button_group_ramp_samp.addButton(self.radio_ramp_on)
       
       #Prep for figure
       self.figure = plt.figure(figsize=(10, 5.5))
@@ -81,6 +86,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       
       #Update ui
       self.dic_to_ui()
+      self.toggle_ro_os()
       self.update_combo_met()
       self.update_combo_pe_dir()
       self.update_combo_plot()
@@ -149,6 +155,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.button_group_grad_spoil.buttonToggled.connect(self.ui_to_dic)
       self.map_signal(self.button_group_spec.buttonToggled, [self.spec_enable,
                                                              self.ui_to_dic])
+      self.map_signal(self.button_group_ramp_samp.buttonToggled, [self.toggle_ro_os,
+                                                                  self.ui_to_dic])
+      self.dbl_spin_ro_os.valueChanged.connect(self.ui_to_dic)
       
       ########################
       ###Metabolite updates###
@@ -180,7 +189,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.spin_size_pe.textChanged.connect(self.ui_to_dic)
       self.spin_size_slc.textChanged.connect(self.ui_to_dic)
       self.dbl_spin_pf_pe.valueChanged.connect(self.ui_to_dic)
-      self.dbl_spin_pf_pe2.valueChanged.connect(self.ui_to_dic)
+      self.map_signal(self.dbl_spin_pf_pe2.valueChanged, ([self.ui_to_dic,
+                                                           self.update_flips]))
       self.check_z_centric.stateChanged.connect(self.ui_to_dic)
             
       ####################
@@ -253,6 +263,19 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             jid = open(os.path.join(basedir, 'default.json'), 'r')
             self.param_dic = json.load(jid)
 
+   def toggle_ro_os(self):
+      """
+      Shows/hides readout oversampling ui elements
+      """
+      self.updating = True
+      if self.radio_ramp_off.isChecked():
+         status = False
+      else:
+         status = True
+      self.dbl_spin_ro_os.setVisible(status)
+      self.label_ro_os.setVisible(status)
+      self.updating = False
+      
    def dic_to_seq(self, return_plot=True, no_reps=False):
       """
       Converts parameter dictionary to xEPI sequence
@@ -286,10 +309,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       """
       Updates dictionary based on UI
       """ 
-      
       if self.updating is True:
          return
-         
+
       #General options
       self.param_dic['fov'][0] = self.spin_fov_ro.value()
       self.param_dic['fov'][1] = self.spin_fov_pe.value()
@@ -311,10 +333,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.param_dic['no_pe'] = self.button_group_no_pe.buttons()[1].isChecked()
       self.param_dic['no_slc'] = self.button_group_no_slc.buttons()[1].isChecked()
       self.param_dic['grad_spoil'] = self.button_group_grad_spoil.buttons()[1].isChecked()
+      self.param_dic['ramp_samp'] = self.button_group_ramp_samp.buttons()[1].isChecked()
       self.param_dic['slice_axis'] = self.combo_slice_axis.currentText()
       self.param_dic['alt_read'] = self.check_alt_read.isChecked()
       self.param_dic['alt_pha'] = self.check_alt_pha.isChecked()
       self.param_dic['alt_slc'] = self.check_alt_slc.isChecked()
+      self.param_dic['ro_os'] = self.dbl_spin_ro_os.value()
       self.param_dic['b0'] = self.dbl_spin_b0.value()
       self.param_dic['nuc'] = self.combo_nuc.currentText()
       self.param_dic['max_grad'] = self.dbl_spin_max_grad.value()
@@ -391,10 +415,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.button_group_no_pe.buttons()[self.param_dic['no_pe']].setChecked(True)
       self.button_group_no_slc.buttons()[self.param_dic['no_slc']].setChecked(True)
       self.button_group_grad_spoil.buttons()[self.param_dic['grad_spoil']].setChecked(True)
+      self.button_group_ramp_samp.buttons()[self.param_dic['ramp_samp']].setChecked(True)
       self.combo_slice_axis.setCurrentText(self.param_dic['slice_axis'])
       self.check_alt_read.setChecked(self.param_dic['alt_read'])
       self.check_alt_pha.setChecked(self.param_dic['alt_pha'])
       self.check_alt_slc.setChecked(self.param_dic['alt_slc'])
+      self.dbl_spin_ro_os.setValue(self.param_dic['ro_os'])
       self.dbl_spin_b0.setValue(self.param_dic['b0'])
       self.combo_nuc.setCurrentText(self.param_dic['nuc'])
       self.dbl_spin_max_grad.setValue(self.param_dic['max_grad'])
@@ -486,6 +512,27 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     self.waves[0][met][2, :])
             ax.scatter(self.waves[1][met][0, :], self.waves[1][met][1, :],
                        self.waves[1][met][2, :], c='red', s=2)
+            
+            #Get "coordinates" for each dim
+            k_extent = np.max(np.abs(self.waves[0][met]), axis=1)
+            k_coords = []
+            for i in range(3):
+               k_coords.append([-k_extent[i], 0, k_extent[i]])
+            
+            #Loop through dimensions again
+            for i in range(3):
+            
+               #Make grids
+               dims = [0, 1, 2]
+               dims.remove(i)
+               c1, c2 = np.meshgrid(k_coords[dims[0]], k_coords[dims[1]], indexing='ij')
+               coords = [[], [], []]
+               coords[dims[0]] = c1
+               coords[dims[1]] = c2
+               coords[i] = c1 * 0
+               
+               #Add plane
+               ax.plot_surface(coords[0], coords[1], coords[2], color='gray', alpha=0.5)                                                       
          
          #Common k-space plot optionsn   
          ax.set_xlabel(r'$k_x$ ($mm^{-1}$)')
@@ -768,7 +815,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.dbl_spin_tscan.setValue(np.round(self.duration, 5))
       
       #Plot k-space
-      self.waves = x_epi.compute_k_space(self.plot_seq, self.param_dic['n_met'])
+      self.waves = x_epi.compute_k_space(self.plot_seq)
       self.update_combo_plot()
       self.plot()
       
@@ -790,15 +837,25 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.time_label.setAlignment(QtCore.Qt.AlignCenter)
 
    #Calculate cumulative flip angle
-   def update_flips(self):
+   def update_flips(self, no_update=False):
       """
       Compute cumulative flip angles
+      
+      Parameters
+      ----------
+      no_update : bool
+         If true, does not change updating status 
       """
+      
+      if no_update is False:
+         self.updating = True
+         
       flip = self.param_dic['mets'][self.met_idx]['flip']
       n_z = self.param_dic['mets'][self.met_idx]['size'][2]
       n_r = self.param_dic['n_rep']
       n_a = self.param_dic['n_avg']
       if self.param_dic['acq_3d'] is True:
+         n_z = np.round(self.param_dic['mets'][self.met_idx]['pf_pe2'] * n_z)
          n_acq = n_z * n_r * n_a
          n_vol = n_z
       else:
@@ -808,14 +865,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       vol_flip =  np.rad2deg(np.arccos(np.power(np.cos(np.deg2rad(flip)), n_vol)))
       self.line_cum_flip.setText(str(np.round(cum_flip, 1)))
       self.line_vol_flip.setText(str(np.round(vol_flip, 1)))
+      
+      if no_update is False:
+         self.updating = False
        
    def save_seq(self):
       """
-      Generate Pulseq 'seq' file
+      Generate Pulseq 'seq' file, json file of parameters, and k-space locations
       """
       save_path = QFileDialog.getSaveFileName(self, 'Save Sequence')[0]  
       self.dic_to_seq()
       self.seq.write(save_path)
+      x_epi.save_k_space(self.plot_seq, save_path)
       self.update_app()
       self.seq.save_params(save_path)
      
@@ -849,7 +910,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.line_grd_delta.setText(str(curr_met['grd_delta']))
       self.check_z_centric.setChecked(curr_met['z_centric'])
       self.line_name.setText(str(curr_met['name']))
-      self.update_flips()
+      self.update_flips(no_update=True)
       self.plot()
       self.updating = False
   

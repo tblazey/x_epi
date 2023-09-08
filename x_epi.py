@@ -148,7 +148,7 @@ def interp_waveform(sig, delta_t, delta_ti, ti_end=None):
    #Interpolate
    return interp.interp1d(t, sig, bounds_error=False, fill_value=0)(ti)
 
-def compute_k_space(seq, n_met):
+def compute_k_space(seq):
       """
       Computes rf, gradient, and k-space waveforms of current sequence
       
@@ -156,8 +156,6 @@ def compute_k_space(seq, n_met):
       ----------
       seq : xEPI object
          Sequence object containing waveforms
-      n_met : int
-         Number of metabolites
          
       Returns
       -------
@@ -198,8 +196,8 @@ def compute_k_space(seq, n_met):
                              fill_value=0.0, bounds_error=False)(t_i)                       
 
       #Find right edges of rf/blocks
-      rf_edges = [[] for i in range(n_met)]
-      rf_durs = [[] for i in range(n_met)]
+      rf_edges = [[] for i in range(seq.n_met)]
+      rf_durs = [[] for i in range(seq.n_met)]
       block_edges = np.cumsum(seq.block_durations)                    
       for i in range(1, len(seq.block_events) + 1):
          rf_num = seq.block_events[i][1]
@@ -215,41 +213,67 @@ def compute_k_space(seq, n_met):
       adc_2d_list = []           #adc times in 2d plane
       g_list = []                #interpolated gradients
       rf_list = []               #interpolated rf waveforms
-         
+      
       #Loop through metabolites
-      for m in range(n_met):
-                  
+      for m in range(seq.n_met):
+               
          #Compute k-space, restart integration at each rf edge
          k_x = np.zeros(t_i.shape[0])
          k_y = np.zeros_like(k_x)
          k_z = np.zeros_like(k_x)
          k_mask = np.zeros(k_x.shape[0], dtype=bool)
          for idx, edge in enumerate(rf_edges[m]):
+      
+            #Different logic for last rf
             if idx == len(rf_edges[m]) - 1:
-               if m == n_met - 1:
-                  mask = t_i > rf_edges[m][idx]
-                  if idx == 0:
+         
+               #Get edge that is common for last rf for all metabolites
+               edge_time = np.round(rf_edges[m][idx] / seq.system.grad_raster_time) * \
+                           seq.system.grad_raster_time
+               mask = t_i >= edge_time
+            
+               #Edges that very depending on if we are doing last metabolite or not
+               if m == seq.n_met - 1 and idx == 0:
                      grad_mask =  t_i > (rf_edges[m][idx] - rf_durs[m][0])
-               else:
-                  mask = np.logical_and(t_i > rf_edges[m][idx], 
-                                        t_i <= (rf_edges[m + 1][0] - rf_durs[m + 1][0]))
+               if m != seq.n_met - 1:
+                  edge_time_2 = rf_edges[m + 1][0] - rf_durs[m + 1][0]
+                  edge_time_2 = np.round(edge_time_2 / seq.system.grad_raster_time) * \
+                                seq.system.grad_raster_time
+                  mask = np.logical_and(mask, t_i <= edge_time_2)
                   if idx == 0:
                      grad_mask = np.logical_and(t_i > (rf_edges[m][idx]- rf_durs[m][0]), 
                                                 t_i <= (rf_edges[m + 1][0] - 
                                                         rf_durs[m + 1][0]))
             else:
-               start_mask = t_i >= (rf_edges[m][idx] - rf_durs[m][idx])
-               end_mask = t_i <= (rf_edges[m][idx + 1] - rf_durs[m][idx + 1])
+         
+               #Mask for all times before end of block
+               end_time = rf_edges[m][idx + 1] - rf_durs[m][idx + 1]
+               end_time = np.round(end_time / seq.system.grad_raster_time) * \
+                          seq.system.grad_raster_time
+               end_mask = t_i <= end_time
+            
+               #Mask for gradients
                if idx == 0:
+                  start_time = rf_edges[m][idx] - rf_durs[m][idx]
+                  start_time = np.round(start_time / seq.system.grad_raster_time) * \
+                               seq.system.grad_raster_time
+                  start_mask = t_i >= start_time
                   grad_mask = np.logical_and(start_mask, end_mask)
-               mask = np.logical_and(t_i > rf_edges[m][idx], end_mask) 
+               
+               #Get mask for curent block
+               edge_time = np.round(rf_edges[m][idx] / seq.system.grad_raster_time) * \
+                           seq.system.grad_raster_time
+               edge_mask = t_i >= edge_time
+               mask = np.logical_and(edge_mask , end_mask) 
+
+            #Compute k-space
             k_x[mask] = integ.cumulative_trapezoid(x_i[mask], t_i[mask], initial=0.0)
             k_y[mask] = integ.cumulative_trapezoid(y_i[mask], t_i[mask], initial=0.0)
             k_z[mask] = integ.cumulative_trapezoid(z_i[mask], t_i[mask], initial=0.0)
             if idx == 0:
                k_mask_2d = np.copy(mask)
             k_mask = np.logical_or(k_mask, mask)
-   
+
          #Figure out k-space locations for each adc sample time
          t_mask = np.logical_and(t_adc >= np.min(t_i[k_mask]), 
                                  t_adc <= np.max(t_i[k_mask]))
@@ -268,13 +292,38 @@ def compute_k_space(seq, n_met):
       #Return waveforms
       return k_list, adc_list, k_2d_list, adc_2d_list, g_list, rf_list
 
+#Save k-space data
+def save_k_space(seq, out):
+   """
+   Parameters
+   ----------
+   seq : xEPI sequence object
+      Sequence object to compute k-space data
+   out : str
+      Root for output files
+   
+   Returns
+   -------
+   k_space : list of ndarrays
+      List containing k_space data for each metabolite
+   """
+   
+   #Get k-space data
+   _, k_adc, _, _, _, _ = compute_k_space(seq)
+   
+   #Save it as a numpy file
+   k_arr = np.empty(len(k_adc), dtype=object)
+   k_arr[:] = k_adc
+   np.save(out  + '_kspace.npy', k_arr)
+
 class xEPI(pp.Sequence):
    def __init__(self, fov=[240, 240, 240], rbw=50, n_avg=1, n_rep=1, tr=0, 
                 tv=0, ts=0, ro_off=0, pe_off=0, slc_off=0, slice_axis='Z',
                 n_echo=1, delta_te=0, symm_ro=True, acq_3d=True, no_pe=False,
-                grad_spoil=False, no_slc=False, alt_read=False, alt_pha=False,
-                alt_slc=False, b0=3, nuc='13C', rf_dead_time=100, rf_ringdown_time=30,
-                max_slew=200, max_grad=100, ori='Transverse', pe_dir='AP', **kwargs):
+                grad_spoil=False, ramp_samp=False, no_slc=False, alt_read=False, 
+                alt_pha=False, alt_slc=False, ro_os=1, b0=3, nuc='13C', rf_dead_time=100, 
+                rf_ringdown_time=30, max_slew=200, max_grad=100, ori='Transverse', 
+                pe_dir='AP', **kwargs):
       """
       Initialize X EPI sequence object, inherits from pypulseq Sequence object
       
@@ -323,6 +372,8 @@ class xEPI(pp.Sequence):
          Alternate polarity of phase encoding every repetition
       alt_slc : bool
          Alternate polarity of second phase encoding every repetition
+      ro_os : float
+         Readout oversampling factor
       b0 : float
          Main magnetic field strength (T)
       nuc : str
@@ -374,15 +425,17 @@ class xEPI(pp.Sequence):
       self.no_pe = no_pe                              #True = No phase encoding grads
       self.grad_spoil = grad_spoil                    #True = Gradient spoilers
       self.no_slc = no_slc                            #True = No slice grads
+      self.ramp_samp = ramp_samp                      #True = ramp sampling
       self.alt_read = alt_read                        #True = Alternate polarity of readout every repetition
       self.alt_pha = alt_pha                          #True = Alternate polarity of phase encoding every repetition
       self.alt_slc = alt_slc                          #True = Alternate polarity of second phase encoding every repetition      
+      self.ro_os = ro_os                              #Oversampling factor
       self.ori = ori                                  #Image orientation
       self.pe_dir = pe_dir                            #Phase encoding direction
       
       #Compute parameters that don't vary between metabolites
       self.delta_v = self.rbw / 2 * 1E3               #half the receiver bandwidth (hz)
-      self.dwell = 1 / self.delta_v                   #Time between readout points (s)
+      self.dwell = 1 / self.delta_v / 2               #Time between readout points (s)
       self.gx_amp = 2 * self.delta_v / self.fov[0]    #Readout amplitude (Hz/m) 
       
       #Create empty list for labeling blocks
@@ -507,13 +560,63 @@ class xEPI(pp.Sequence):
       #Grid grid size that will be acquired
       met_obj.size_acq = np.int32(np.round(np.array(met_obj.size) * \
                                            np.array([1, met_obj.pf_pe, met_obj.pf_pe2])))
+      
+      #Construct basic phase encoding blip
+      gy_blip = pp.make_trapezoid('y', system=self.system, area= 1 / self.fov[1])
+      gy_dur = gy_blip.flat_time + gy_blip.rise_time + gy_blip.fall_time
+      met_obj.gy_blip_amp = gy_blip.amplitude
                                   
       #Construct readout gradient (in Hz/m)
       t_acq = met_obj.size[0] / self.delta_v / 2;
       flat_time = np.ceil(t_acq / self.system.grad_raster_time) * \
                   self.system.grad_raster_time
-      met_obj.gx = pp.make_trapezoid(channel='x', system=self.system, flat_time=flat_time,
-                                     amplitude=self.gx_amp)
+      if self.ramp_samp is False:
+         met_obj.gx = pp.make_trapezoid(channel='x', system=self.system,
+                                        flat_time=flat_time, amplitude=self.gx_amp)
+         met_obj.gx_amp = met_obj.gx.amplitude
+         met_obj.dwell = self.dwell
+                                       
+         #Check blip/readout timing
+         if gy_dur > (met_obj.gx.rise_time + met_obj.gx.fall_time) and \
+            self.symm_ro is True:
+            raise Exception('Phase encoding blip cannot fit in between readout plateaus') 
+         
+      else:
+        
+         #First make gradient with area needed for imaging + half a pe blip on each side
+         #At this point, we are assuming maximum slew rate
+         gy_blip_area = np.power(gy_dur / 2, 2) * self.system.max_slew
+         gx_samp_area = met_obj.size[0] / self.fov[0]
+         gx_area = gx_samp_area + gy_blip_area
+         
+         #Make gradient object
+         try:        
+            met_obj.gx = pp.make_trapezoid('x', area=gx_area, duration=gy_dur + t_acq,
+                                           system=self.system)
+         except AssertionError as msg:
+            min_dur = float(re.findall("\d+\.\d+", msg.args[0])[0]) * 1E-6
+            min_dur  = np.ceil(min_dur / self.system.grad_raster_time) * \
+                       self.system.grad_raster_time
+            t_acq = min_dur - gy_dur
+            met_obj.gx = pp.make_trapezoid('x', area=gx_area, duration=min_dur,
+                                           system=self.system)
+         
+         #However the gradient might not use the maximum slew rate, so we need to fix the
+         #area within the imaging portion to account for the slower slew rate
+         #This is done by adjusting the amplitude in portion to the desired area
+         gx_slew = met_obj.gx.amplitude / met_obj.gx.rise_time
+         gx_samp_area_slow = met_obj.gx.area - np.power(gy_dur / 2, 2) * gx_slew
+         met_obj.gx.amplitude = met_obj.gx.amplitude / gx_samp_area_slow * gx_samp_area
+         ramp_time = met_obj.gx.rise_time + met_obj.gx.fall_time
+         met_obj.gx.area = met_obj.gx.amplitude * (met_obj.gx.flat_time + 0.5 * ramp_time)
+         met_obj.gx.flat_area = met_obj.gx.amplitude * met_obj.gx.flat_time
+         met_obj.gx_amp = met_obj.gx.amplitude
+         
+         #Compute new dwell time for ramp sampling
+         rs_dwell = 1 / met_obj.gx.amplitude / self.fov[0] / self.ro_os
+         met_obj.dwell = np.floor(rs_dwell / self.system.adc_raster_time) * \
+                         self.system.adc_raster_time
+         met_obj.size_acq[0] = np.floor(t_acq / met_obj.dwell / 4) * 4
       
       #Excitation thickness
       if self.acq_3d is True:
@@ -532,11 +635,20 @@ class xEPI(pp.Sequence):
       time for rounding is divided evenly on each side of the readout gradient. The dwell
       time can be removed from remove (t_acq - t_dwell) if you want no odd/even offset
       """
-      adc_delay = met_obj.gx.rise_time + flat_time / 2 - (t_acq) / 2
-      met_obj.adc = pp.make_adc(met_obj.size[0], duration=t_acq, delay=adc_delay,
-                                system=self.system,
-                                freq_offset=met_obj.freq_off + self.ro_off * self.gx_amp)
-      
+      adc_freq_off = met_obj.freq_off + self.ro_off * met_obj.gx_amp
+      if self.ramp_samp is False:
+         adc_delay = met_obj.gx.rise_time + flat_time / 2 - (t_acq) / 2
+         met_obj.adc = pp.make_adc(met_obj.size[0], duration=t_acq, 
+                                   system=self.system, delay=adc_delay,
+                                   freq_offset=adc_freq_off)
+      else:
+         adc_delay = met_obj.gx.rise_time + met_obj.gx.flat_time / 2 - \
+                     met_obj.size_acq[0] / 2 * met_obj.dwell
+         adc_delay = np.round(adc_delay / 1E-6) * 1E-6
+         met_obj.adc = pp.make_adc(met_obj.size_acq[0], 
+                                   system=self.system, delay=adc_delay,
+                                   freq_offset=adc_freq_off, dwell=met_obj.dwell)
+                                   
       #Construct x prephasing gradient
       met_obj.gx_pre = pp.make_trapezoid('x', system=self.system,
                                         area=-met_obj.gx.area / 2)
@@ -559,24 +671,9 @@ class xEPI(pp.Sequence):
          met_obj.gz_pre = pp.make_trapezoid(self.slice_axis, system=self.system, 
                                             area=gz_pre_area)
          met_obj.gz_pre_amp = met_obj.gz_pre.amplitude
-         
-      #If using symmetric readout, start the phase blip during readout descending ramp
-      if self.symm_ro is False:
-         gy_delay = 0;
-      else:
-         gy_delay = met_obj.gx.rise_time + met_obj.gx.flat_time;
-
-      #Construct basic phase encoding blip
-      gy_blip = pp.make_trapezoid('y', system=self.system, area= 1 / self.fov[1],
-                                  delay=gy_delay)
-      met_obj.gy_blip_amp = gy_blip.amplitude
-      gy_dur = gy_blip.rise_time + gy_blip.fall_time + gy_blip.flat_time
-      if gy_dur > (met_obj.gx.rise_time + met_obj.gx.fall_time) and self.symm_ro is True:
-         raise Exception('Phase encoding blip cannot fit in between readout plateaus') 
 
       #Split phase encoding gradient if necessary
       if self.symm_ro is True:
-         gy_blip.delay = 0
          gy_split = pp.split_gradient_at(gy_blip, gy_dur / 2, system=self.system)
          gy_up, gy_dn, _ = pp.align(right=gy_split[0], left=[gy_split[1], met_obj.gx])
          gy_dnup = pp.add_gradients((gy_dn, gy_up), system=self.system)
@@ -638,13 +735,15 @@ class xEPI(pp.Sequence):
                                               center_pos=met_obj.sinc_frac)
          met_obj.rf.freq_offset = met_obj.freq_off + met_obj.rf_gz.amplitude * \
                                   self.slc_off
+         met_obj.rf_gz.channel = self.slice_axis
+         met_obj.rf_gz_r.channel = self.slice_axis
          
          #Create frequency slices for slices
          if self.acq_3d is False:
             
             #Loop through slice multipliers
             met_obj.rf_freq_offs = []
-            for z in range(met_obj.z_range):
+            for z in met_obj.z_range:
             
                #Compute the slice offset
                slice_offset = met_obj.rf_gz.amplitude * \
@@ -813,7 +912,7 @@ class xEPI(pp.Sequence):
                if r > 0:
                   if self.alt_read is True:
                      if m == 0:
-                        self.gx_amp *= -1
+                        met.gx_amp *= -1
                      met.gx_pre.amplitude *= -1
                   if self.alt_pha is True:
                      met.gy_pre.amplitude *= -1
@@ -897,8 +996,7 @@ class xEPI(pp.Sequence):
                            if met.use_sinc is False:
                               self.add_blck_lbl(met.gx_pre, met.gy_pre, lbl=m)
                            else:
-                              self.add_blck_lbl(met.gx_pre, met.gy_pre,
-                                                    met.rf_gz_r, lbl=m)
+                              self.add_blck_lbl(met.gx_pre, met.gy_pre, lbl=m)
                         else:
                            if met.use_sinc is False:
                               #self.add_blck_lbl(pp.make_delay(10E-6), lbl=m)
@@ -912,9 +1010,9 @@ class xEPI(pp.Sequence):
          
                         #Flip readout polarity if necessary
                         if self.symm_ro is True and i % 2 == 1:
-                           met.gx.amplitude = self.gx_amp * -1
+                           met.gx.amplitude = met.gx_amp * -1
                         else:
-                           met.gx.amplitude = self.gx_amp
+                           met.gx.amplitude = met.gx_amp
 
                         #Add data acquisition and readout gradient
                         if self.symm_ro is True and met.size_acq[1] > 1:
@@ -927,11 +1025,13 @@ class xEPI(pp.Sequence):
                         else:
                            self.add_blck_lbl(met.adc, met.gx, lbl=m)
                   
-                        #Add flack gradient and phase blip if necessary
+                        #Add flyback gradient and phase blip if necessary
                         cond_1 = i != met.size_acq[1] - 1
                         cond_2 = i == met.size_acq[1] - 1 and echo != self.n_echo - 1
-                        if ( cond_1 or cond_2 ) and self.symm_ro is False:
+                        if cond_1 and self.symm_ro is False:
                            self.add_blck_lbl(met.gy, met.fly, lbl=m)
+                        elif cond_2 and self.symm_ro is False:
+                           self.add_blck_lbl(met.fly, lbl=m)
                         
                      #Add a delta te delay if necessary
                      if self.n_echo > 1:
@@ -947,7 +1047,7 @@ class xEPI(pp.Sequence):
                   if self.grad_spoil is True:
                      met.x_spoil.amplitude = met.spoil_amp * np.sign(met.gx.amplitude)
                      if self.symm_ro is True:
-                         met.y_spoil.amplitude = met.spoil_amp * -1
+                         met.y_spoil.amplitude = met.spoil_amp
                      else:
                         met.y_spoil.amplitude = met.spoil_amp * np.sign(met.gy.amplitude)
                      if self.acq_3d is True and met.size[2] > 1:
@@ -1029,10 +1129,12 @@ class xEPI(pp.Sequence):
                  "no_pe":self.no_pe,
                  "no_slc":self.no_slc,
                  "grad_spoil":self.grad_spoil,
+                 "ramp_samp":self.ramp_samp,
                  "slice_axis":self.slice_axis.upper(),
                  "alt_read":self.alt_read,
                  "alt_pha":self.alt_pha,
                  "alt_slc":self.alt_slc,
+                 "ro_os":self.ro_os,
                  "b0":self.system.B0,
                  "nuc":self.nuc,
                  "max_grad":self.system.max_grad / self.system.gamma * 1E3,
@@ -1076,6 +1178,7 @@ class xEPI(pp.Sequence):
          met_dic['grd_max'] = met.grd_max
          met_dic['grd_delta'] = met.grd_delta * 1E6
          met_dic['z_centric'] = met.z_centric
+         met_dic['size_acq'] = [int(dim) for dim in met.size_acq]
          out_dic['mets'].append(met_dic)
    
       return out_dic

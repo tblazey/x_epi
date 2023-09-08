@@ -25,6 +25,7 @@
   "alt_read": false,
   "alt_pha": false,
   "alt_slc": true,
+  "ramp_samp": true,
   "b0": 3.0,
   "nuc": "13C",
   "max_grad": 60.0,

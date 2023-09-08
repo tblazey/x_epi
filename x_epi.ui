@@ -75,7 +75,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="General">
      <attribute name="title">
@@ -91,8 +91,8 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="6" column="1">
-        <widget class="QDoubleSpinBox" name="dbl_spin_ro_off">
+       <item row="8" column="18">
+        <widget class="QDoubleSpinBox" name="dbl_spin_ro_os">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -124,15 +124,18 @@
           <number>1</number>
          </property>
          <property name="minimum">
-          <double>-100000.000000000000000</double>
+          <double>0.000000000000000</double>
          </property>
          <property name="maximum">
           <double>10000.000000000000000</double>
          </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
         </widget>
        </item>
-       <item row="4" column="12">
-        <widget class="QLabel" name="label_spectra_tr">
+       <item row="3" column="16">
+        <widget class="QLabel" name="label_phase">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -142,62 +145,19 @@
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>TR</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="13">
-        <widget class="QDoubleSpinBox" name="dbl_spin_spec_tr">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
            <height>25</height>
           </size>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flip angle used by the RF pulse for acquiring spectral data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn phase encode gradient on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>10000000.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>2.000000000000000</double>
+         <property name="text">
+          <string>Phase Enc.</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="14">
-        <widget class="QLabel" name="label_spec_tr_unit">
+       <item row="4" column="4">
+        <widget class="QLabel" name="label_band">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -211,12 +171,12 @@
           </size>
          </property>
          <property name="text">
-          <string>ms</string>
+          <string>Bandwidth</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="12">
-        <widget class="QLabel" name="label_n_spec">
+       <item row="2" column="8">
+        <widget class="QLabel" name="label_tv">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -230,7 +190,7 @@
           </size>
          </property>
          <property name="text">
-          <string># Spec</string>
+          <string>Volume Time</string>
          </property>
         </widget>
        </item>
@@ -277,8 +237,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="8">
-        <widget class="QLabel" name="label_tv">
+       <item row="5" column="12">
+        <widget class="QLabel" name="label_n_spec">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -292,48 +252,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Volume Time</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="16">
-        <widget class="QLabel" name="label_phase">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn phase encode gradient on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Phase Enc.</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="4">
-        <widget class="QLabel" name="label_band">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Bandwidth</string>
+          <string># Spec</string>
          </property>
         </widget>
        </item>
@@ -662,6 +581,701 @@
          </property>
          <property name="value">
           <number>420</number>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="17">
+        <widget class="QRadioButton" name="radio_ramp_off">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn phase encode gradient on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Off</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="18">
+        <widget class="QRadioButton" name="radio_ramp_on">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn phase encode gradient on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>On</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="8">
+        <widget class="QLabel" name="label_fov_pe_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>PE</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="8" colspan="2">
+        <widget class="QLabel" name="label_gen_header_12">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>18</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+           <underline>true</underline>
+          </font>
+         </property>
+         <property name="text">
+          <string>Orientation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="9">
+        <widget class="QComboBox" name="combo_pe_dir">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>30</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <property name="maxVisibleItems">
+          <number>3</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>AP</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SI</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="7" column="13">
+        <widget class="QSpinBox" name="spin_n_echo">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Total number of metabolites</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="14">
+        <widget class="QLabel" name="label_delta_te_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ms</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="13">
+        <widget class="QDoubleSpinBox" name="dbl_spin_delta_te">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Total duration of each excitation block. If value is below minimum duration no additional delay is performed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="8">
+        <widget class="QLabel" name="label_fov_slc_3">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Plane</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="12">
+        <widget class="QLabel" name="label_n_echo">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string># Echos</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="12">
+        <widget class="QLabel" name="label_delta_te">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Delta TE</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#006bb6;&quot;&gt;RO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="9" colspan="2">
+        <widget class="QComboBox" name="combo_ori">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <property name="maxVisibleItems">
+          <number>3</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>Transverse</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Coronal</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Sagittal</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="9">
+        <widget class="QDoubleSpinBox" name="dbl_spin_tscan">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Total scan duration. Includes imaging and specta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>180.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>20.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3" rowspan="9">
+        <widget class="Line" name="line">
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="18">
+        <widget class="QCheckBox" name="check_spec_end">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include slice spectra at the beginning and/or end of the acquistion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>End</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">button_group_spec</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="3" column="12">
+        <widget class="QLabel" name="label_spectra_flip">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Flip Angle</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="14">
+        <widget class="QLabel" name="label_spectra_flip_unit">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>deg</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="17">
+        <widget class="QCheckBox" name="check_spec_start">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include slice spectra at the beginning and/or end of the acquistion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Start</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">button_group_spec</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="0" column="7" rowspan="9">
+        <widget class="Line" name="line_2">
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="8">
+        <widget class="QLabel" name="label_gen_header_5">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>18</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+           <underline>true</underline>
+          </font>
+         </property>
+         <property name="text">
+          <string>Timing</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spin_fov_pe">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image field of view.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+         <property name="value">
+          <number>420</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDoubleSpinBox" name="dbl_spin_ro_off">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Total duration of each excitation block. If value is below minimum duration no additional delay is performed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>-100000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="12">
+        <widget class="QLabel" name="label_spectra_tr">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>TR</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="13">
+        <widget class="QDoubleSpinBox" name="dbl_spin_spec_tr">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flip angle used by the RF pulse for acquiring spectral data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10000000.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>2.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="14">
+        <widget class="QLabel" name="label_spec_tr_unit">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ms</string>
          </property>
         </widget>
        </item>
@@ -1634,268 +2248,6 @@ Polarity</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="17">
-        <widget class="QCheckBox" name="check_spec_start">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include slice spectra at the beginning and/or end of the acquistion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Start</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">button_group_spec</string>
-         </attribute>
-        </widget>
-       </item>
-       <item row="6" column="18">
-        <widget class="QCheckBox" name="check_spec_end">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include slice spectra at the beginning and/or end of the acquistion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>End</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">button_group_spec</string>
-         </attribute>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QSpinBox" name="spin_fov_pe">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image field of view.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>1000</number>
-         </property>
-         <property name="value">
-          <number>420</number>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="9">
-        <widget class="QDoubleSpinBox" name="dbl_spin_tscan">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Total scan duration. Includes imaging and specta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="decimals">
-          <number>3</number>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>180.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>20.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="10">
-        <widget class="QLabel" name="label_ts_unit">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>ms</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="8">
-        <widget class="QLabel" name="label_gen_header_5">
-         <property name="minimumSize">
-          <size>
-           <width>40</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>18</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>true</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>Timing</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="12">
-        <widget class="QLabel" name="label_spectra_flip">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Flip Angle</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="14">
-        <widget class="QLabel" name="label_spectra_flip_unit">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>deg</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3" rowspan="9">
-        <widget class="Line" name="line">
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="7" rowspan="9">
-        <widget class="Line" name="line_2">
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="12">
-        <widget class="QLabel" name="label_spectra_band">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Bandwidth</string>
-         </property>
-        </widget>
-       </item>
        <item row="5" column="0" colspan="2">
         <widget class="QLabel" name="label_gen_header_10">
          <property name="minimumSize">
@@ -1923,41 +2275,6 @@ Polarity</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="17">
-        <widget class="QRadioButton" name="radio_spoil_off">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn gradient spoilers (all axes) on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Off</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="15" rowspan="9">
-        <widget class="Line" name="line_4">
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
        <item row="8" column="2">
         <widget class="QLabel" name="label_off_unit_slc">
          <property name="minimumSize">
@@ -1977,8 +2294,8 @@ Polarity</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="18">
-        <widget class="QRadioButton" name="radio_spoil_on">
+       <item row="2" column="12">
+        <widget class="QLabel" name="label_spectra_band">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -1991,59 +2308,47 @@ Polarity</string>
            <height>25</height>
           </size>
          </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn gradient spoilers (all axes) on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
          <property name="text">
-          <string>On</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
+          <string>Bandwidth</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1">
-        <widget class="QDoubleSpinBox" name="dbl_spin_pe_off">
+       <item row="5" column="5" colspan="2">
+        <widget class="QComboBox" name="combo_slice_axis">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
+         <property name="editable">
+          <bool>false</bool>
          </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
+         <property name="currentIndex">
+          <number>0</number>
          </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Total duration of each excitation block. If value is below minimum duration no additional delay is performed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <property name="maxVisibleItems">
+          <number>3</number>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="minimum">
-          <double>-100000.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>10000.000000000000000</double>
-         </property>
+         <item>
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>X</string>
+          </property>
+         </item>
         </widget>
        </item>
-       <item row="8" column="1">
-        <widget class="QDoubleSpinBox" name="dbl_spin_slc_off">
+       <item row="7" column="1">
+        <widget class="QDoubleSpinBox" name="dbl_spin_pe_off">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2101,147 +2406,8 @@ Polarity</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="5" colspan="2">
-        <widget class="QComboBox" name="combo_slice_axis">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="editable">
-          <bool>false</bool>
-         </property>
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <property name="maxVisibleItems">
-          <number>3</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>Z</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Y</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>X</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="6" column="12">
-        <widget class="QLabel" name="label_gen_header_11">
-         <property name="minimumSize">
-          <size>
-           <width>40</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>18</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>true</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>Echos</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="12">
-        <widget class="QLabel" name="label_n_echo">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string># Echos</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="13">
-        <widget class="QSpinBox" name="spin_n_echo">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Total number of metabolites</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="value">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="12">
-        <widget class="QLabel" name="label_delta_te">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Delta TE</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="13">
-        <widget class="QDoubleSpinBox" name="dbl_spin_delta_te">
+       <item row="8" column="1">
+        <widget class="QDoubleSpinBox" name="dbl_spin_slc_off">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2273,15 +2439,15 @@ Polarity</string>
           <number>1</number>
          </property>
          <property name="minimum">
-          <double>0.000000000000000</double>
+          <double>-100000.000000000000000</double>
          </property>
          <property name="maximum">
           <double>10000.000000000000000</double>
          </property>
         </widget>
        </item>
-       <item row="8" column="14">
-        <widget class="QLabel" name="label_delta_te_2">
+       <item row="5" column="18">
+        <widget class="QRadioButton" name="radio_spoil_on">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -2294,13 +2460,19 @@ Polarity</string>
            <height>25</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn gradient spoilers (all axes) on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
-          <string>ms</string>
+          <string>On</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="7" column="8">
-        <widget class="QLabel" name="label_fov_slc_3">
+       <item row="5" column="17">
+        <widget class="QRadioButton" name="radio_spoil_off">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -2313,16 +2485,29 @@ Polarity</string>
            <height>25</height>
           </size>
          </property>
-         <property name="text">
-          <string>Plane</string>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Turn gradient spoilers (all axes) on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <property name="text">
+          <string>Off</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="6" column="8" colspan="2">
-        <widget class="QLabel" name="label_gen_header_12">
+       <item row="0" column="15" rowspan="9">
+        <widget class="Line" name="line_4">
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="12">
+        <widget class="QLabel" name="label_gen_header_11">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -2344,12 +2529,12 @@ Polarity</string>
           </font>
          </property>
          <property name="text">
-          <string>Orientation</string>
+          <string>Echos</string>
          </property>
         </widget>
        </item>
-       <item row="8" column="8">
-        <widget class="QLabel" name="label_fov_pe_2">
+       <item row="3" column="10">
+        <widget class="QLabel" name="label_ts_unit">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -2363,136 +2548,7 @@ Polarity</string>
           </size>
          </property>
          <property name="text">
-          <string>PE</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="9">
-        <widget class="QComboBox" name="combo_pe_dir">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>30</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="editable">
-          <bool>false</bool>
-         </property>
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <property name="maxVisibleItems">
-          <number>3</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>AP</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>SI</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="7" column="9" colspan="2">
-        <widget class="QComboBox" name="combo_ori">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="editable">
-          <bool>false</bool>
-         </property>
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <property name="maxVisibleItems">
-          <number>3</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>Transverse</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Coronal</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Sagittal</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#006bb6;&quot;&gt;RO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#006bb6;&quot;&gt;RO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#00b64b;&quot;&gt;PE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <string>ms</string>
          </property>
         </widget>
        </item>
@@ -2544,6 +2600,84 @@ Polarity</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#006bb6;&quot;&gt;RO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#00b64b;&quot;&gt;PE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="16">
+        <widget class="QLabel" name="label_spectra_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include slice spectra at the beginning and/or end of the acquistion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Ramp Samp.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="16" colspan="2">
+        <widget class="QLabel" name="label_ro_os">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include slice spectra at the beginning and/or end of the acquistion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Readout Oversampling</string>
          </property>
         </widget>
        </item>

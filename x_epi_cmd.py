@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import argparse
+import numpy as np
 import sys
 from x_epi import *
 
@@ -54,7 +55,10 @@ acq_grp.add_argument('-symm_ro', action='store_true',
 acq_grp.add_argument('-acq_3d', action='store_true', help='Use a 3D readout instead of 2D') 
 acq_grp.add_argument('-no_pe', action='store_true', help='Turn phase encoding on/off')
 acq_grp.add_argument('-no_slc', action='store_true', help='Turn off slice gradients')
-acq_grp.add_argument('-grad_spoil', action='store_true', help='Turn gradient spoiling on')                                                                                                           
+acq_grp.add_argument('-grad_spoil', action='store_true', help='Turn gradient spoiling on')
+acq_grp.add_argument('-ramp_samp', action='store_true', help='Turn on ramp sampling')   
+acq_gp.add_arrgument('-ro_os', default=1.0, type=float, metavar='FACTOR',
+                     help='Readout oversampling factor for ramp sampling')                                                                                                         
 acq_grp.add_argument('-slice_axis', choices=['X', 'Y', 'Z'], default='Z', type=str,
                      help='Axis to play slice selection gradients')
 acq_grp.add_argument('-alt_read', action='store_true',
@@ -181,7 +185,10 @@ else:
    seq.add_met(**vars(met_parser.parse_args(['-name', 'default'])))
 
 #Create sequence
-seq.create_seq()
+plot_seq = seq.create_seq(plot_seq=True)
+
+#Save k-space data
+save_k_space(plot_seq, img_args.out)
 
 #Save sequence
 seq.write(img_args.out)
