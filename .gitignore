@@ -4,3 +4,4 @@ ssrf/.DS_Store
 __pycache__/x_epi.cpython-310.pyc
 *.pyc
 .buildinfo
+*.doctree
