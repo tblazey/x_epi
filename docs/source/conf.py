@@ -1,5 +1,9 @@
 # Configuration file for the Sphinx documentation builder.
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../'))
+
 # -- Project information
 
 project = 'x_epi'
@@ -33,3 +37,5 @@ html_theme = 'sphinx_rtd_theme'
 
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
+
+root_doc = 'index'

@@ -3,7 +3,9 @@
 import argparse
 import numpy as np
 import sys
-from x_epi import *
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+from x_epi import * 
 
 #Custom range checker for argparse
 def range_wrapper(v_min, v_max):
@@ -57,7 +59,7 @@ acq_grp.add_argument('-no_pe', action='store_true', help='Turn phase encoding on
 acq_grp.add_argument('-no_slc', action='store_true', help='Turn off slice gradients')
 acq_grp.add_argument('-grad_spoil', action='store_true', help='Turn gradient spoiling on')
 acq_grp.add_argument('-ramp_samp', action='store_true', help='Turn on ramp sampling')   
-acq_gp.add_arrgument('-ro_os', default=1.0, type=float, metavar='FACTOR',
+acq_grp.add_argument('-ro_os', default=1.0, type=float, metavar='FACTOR',
                      help='Readout oversampling factor for ramp sampling')                                                                                                         
 acq_grp.add_argument('-slice_axis', choices=['X', 'Y', 'Z'], default='Z', type=str,
                      help='Axis to play slice selection gradients')
@@ -110,10 +112,10 @@ met_parser.add_argument('-name', help='Metabolite name')
 #Parameters describing metabolite specific waveforms
 wav_grp = met_parser.add_argument_group('Metabolite Specific Waveforms')
 wav_grp.add_argument('-grd_path', type=str, metavar='PATH',
-                     default=f'{ssrf_dir}/siemens_singleband_pyr_3T.GRD',
+                     default=f'{XEPI.ssrf_dir}/siemens_singleband_pyr_3T.GRD',
                      help='Path to gradient file from Spectral-Spatial RF Toolbox')                     
 wav_grp.add_argument('-rf_path', type=str, metavar='PATH',
-                     default=f'{ssrf_dir}/siemens_singleband_pyr_3T.RF',
+                     default=f'{XEPI.ssrf_dir}/siemens_singleband_pyr_3T.RF',
                      help='Path to RF file from Spectral-Spatial RF Toolbox')
 wav_grp.add_argument('-formula', type=str, default='1',
                      help='Formula for scaling SSRF gradient where x is slice' \
@@ -150,7 +152,7 @@ met_grp.add_argument('-z_centric', action='store_true',
 #Parse main arguments and return a list of unparsed metabolite specific arguments
 img_args, met_up_args = main_parser.parse_known_args()
 
-seq = xEPI(**vars(img_args))
+seq = XEPI(**vars(img_args))
 if img_args.run_spec != "NO":
    seq.add_spec(**vars(img_args))
 
@@ -185,7 +187,7 @@ else:
    seq.add_met(**vars(met_parser.parse_args(['-name', 'default'])))
 
 #Create sequence
-plot_seq = seq.create_seq(plot_seq=True)
+plot_seq = seq.create_seq(return_plot=True)
 
 #Save k-space data
 save_k_space(plot_seq, img_args.out)

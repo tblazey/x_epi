@@ -14,8 +14,9 @@ from PyQt5 import QtCore
 import subprocess as sp
 import sys 
 import re
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 import x_epi
-from x_epi_ui import Ui_MainWindow
+from ui import Ui_MainWindow
 import json
 
 class ScalarFormatterForceFormat(ScalarFormatter):
@@ -245,7 +246,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             
    def load_json(self, json_path, use_default=True):
       """
-      Load in json parameter file defining xEPI sequence and save it into param_dic
+      Load in json parameter file defining XEPI sequence and save it into param_dic
       
       Parameters
       ----------
@@ -260,7 +261,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
          self.param_dic = json.load(jid)
       except:
          if use_default is True:
-            jid = open(os.path.join(basedir, 'default.json'), 'r')
+            jid = open(os.path.join(basedir, '..', 'seq', 'default.json'), 'r')
             self.param_dic = json.load(jid)
 
    def toggle_ro_os(self):
@@ -278,7 +279,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       
    def dic_to_seq(self, return_plot=True, no_reps=False):
       """
-      Converts parameter dictionary to xEPI sequence
+      Converts parameter dictionary to XEPI sequence
       
       Parameters
       ----------
@@ -289,7 +290,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       """
       
       #Define common sequence parameters
-      self.seq = x_epi.xEPI(**self.param_dic)
+      self.seq = x_epi.XEPI(**self.param_dic)
       
       #Add spectra options if needed
       try:
@@ -684,7 +685,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       
          #Load in gradient data
          grd_path = QFileDialog.getOpenFileName(self, 'Load Gradient File')[0]
-         _, grd_max, grd_delta = x_epi.load_ssrf_grd(grd_path)
+         _, grd_max, grd_delta = x_epi.load_ssrf_grad(grd_path)
          
          #Update interface
          self.line_grd_path.setText(str(grd_path))
