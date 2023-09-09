@@ -1,5 +1,6 @@
 x_epi
 =====
+
 .. image:: static/x_epi_logo.png
    :width: 300
    :align: center
@@ -21,16 +22,17 @@ Although this package was designed for imaging hyperpolarized :sup:`13`\C agents
 be used for several different nuclei. Please feel free to 
 `ask <https://github.com/tblazey/x_epi/discussions>`_ if you have any questions!
 
+.. image:: static/github-mark.png
+   :width: 50
+   :align: right
+   :target: https://github.com/tblazey/x_epi
 
-.. note::
-
-   This project is under active development.
-
-Contents
---------
+|
+|
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
    
    install
    tutorial
