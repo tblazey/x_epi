@@ -2,6 +2,7 @@
 
 #Load libraries
 import numpy as np
+import os
 import re
 import scipy.integrate as integ
 import scipy.interpolate as interp
@@ -9,6 +10,10 @@ import scipy.interpolate as interp
 """
 Utility functions for XEPI
 """
+
+#Default locations for resource files
+base_dir = os.path.dirname(__file__)
+res_dir = os.path.join(base_dir, 'res')
 
 def nuc_to_gamma(nuc):
    """

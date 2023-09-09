@@ -4,7 +4,6 @@ import argparse
 import numpy as np
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from x_epi import * 
 
 #Custom range checker for argparse
@@ -160,10 +159,10 @@ def make_met_parser(parent=None):
    #Parameters describing metabolite specific waveforms
    wav_grp = met_parser.add_argument_group('Metabolite Specific Waveforms')
    wav_grp.add_argument('-grd_path', type=str, metavar='PATH',
-                        default=f'{XEPI.seq_dir}/siemens_singleband_pyr_3T.GRD',
+                        default=f'{res_dir}/siemens_singleband_pyr_3T.GRD',
                         help='Path to gradient file from Spectral-Spatial RF Toolbox')                     
    wav_grp.add_argument('-rf_path', type=str, metavar='PATH',
-                        default=f'{XEPI.seq_dir}/siemens_singleband_pyr_3T.RF',
+                        default=f'{res_dir}/siemens_singleband_pyr_3T.RF',
                         help='Path to RF file from Spectral-Spatial RF Toolbox')
    wav_grp.add_argument('-formula', type=str, default='1',
                         help='Formula for scaling SSRF gradient where x is slice' \

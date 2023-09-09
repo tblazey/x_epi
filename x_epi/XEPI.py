@@ -16,8 +16,6 @@ from .utils import *
 
 class XEPI(pp.Sequence):
 
-   seq_dir = os.path.join(os.path.dirname(__file__), '../', 'seq')
-
    def __init__(self, fov=[240, 240, 240], rbw=50, n_avg=1, n_rep=1, tr=0, 
                 tv=0, ts=0, ro_off=0, pe_off=0, slc_off=0, slice_axis='Z',
                 n_echo=1, delta_te=0, symm_ro=True, acq_3d=True, no_pe=False,
@@ -194,8 +192,8 @@ class XEPI(pp.Sequence):
 
    def add_met(self, name=None, size=[16, 16, 16], pf_pe=1, pf_pe2=1,
                sinc_frac=0.5, sinc_tbw=4, formula='1', use_sinc=False,
-               grd_path=f'{seq_dir}/siemens_singleband_pyr_3T.GRD',
-               rf_path=f'{seq_dir}/siemens_singleband_pyr_3T.RF',
+               grd_path=f'{res_dir}/siemens_singleband_pyr_3T.GRD',
+               rf_path=f'{res_dir}/siemens_singleband_pyr_3T.RF',
                flip=90, freq_off=0, sinc_dur=4, z_centric=False, **kwargs):
       """
       Add metabolite acquisition to sequence
