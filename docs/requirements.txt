@@ -4,5 +4,5 @@ pypulseq==1.4.0
 scipy==1.11.2
 sphinx
 sphinx-rtd-theme
-
+sphinxarg
 
