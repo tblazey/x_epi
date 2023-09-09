@@ -1,2 +1,6 @@
+matplotlib
+numpy
+pypulseq
+import scicpy
 sphinx
 sphinx-rtd-theme
