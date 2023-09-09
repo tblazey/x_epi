@@ -1,8 +1,7 @@
 matplotlib==3.7.1
+nibabel==4.0.1
 numpy==1.21.6
 pypulseq==1.4.0
+PyQt5==5.15.9
+PyQt5_sip==12.11.0
 scipy==1.11.2
-sphinx
-sphinx-rtd-theme
-
-
