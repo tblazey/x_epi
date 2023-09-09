@@ -1,6 +1,5 @@
 #!/usr/bin/python
-import sys
-print(sys.path)
+
 #Load libraries
 from copy import deepcopy
 import json
