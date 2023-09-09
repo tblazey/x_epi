@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath('../../bin/'))
 # -- Project information
 
 project = 'x_epi'
-copyright = ''
+copyright = '2023, Tyler Blazey'
 author = 'Blazey'
 
 release = '0.1'

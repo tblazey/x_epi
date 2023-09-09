@@ -1,8 +1,25 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "x_epi"
-authors = [{name = "Blazey", email = "tblaze11@gmail.com"}]
-dynamic = ["version", "description"]
+authors = [{name = "Tyler Blazey", email = "blazey@wustl.edu"}]
+dynamic = ["version", "dependencies"]
+description = "A package for creating EPI sequences for X-Nuclues imaging"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+"Homepage" = "https://github.com/tblazey/x_epi"
+
+[tool.setuptools]
+packages = ["x_epi", "gui"]

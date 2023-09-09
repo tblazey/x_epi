@@ -1,8 +1,9 @@
 
-ssrf/.DS_Store
 .DS_Store
-__pycache__/x_epi.cpython-310.pyc
+__pycache__
 *.pyc
 .buildinfo
 *.doctree
-docs/.doctrees/environment.pickle
+docs/.doctrees
+x_epi.egg-info
+dist
