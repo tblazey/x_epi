@@ -5,10 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "x_epi"
 authors = [{name = "Tyler Blazey", email = "blazey@wustl.edu"}]
-dynamic = ["version", "dependencies"]
+dynamic = ["dependencies"]
 description = "A package for creating EPI sequences for X-Nuclues imaging"
 readme = "README.md"
 requires-python = ">=3.10"
+version = "0.0.1"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

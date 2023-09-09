@@ -1,6 +1,6 @@
 matplotlib
 nibabel
-numpy=
+numpy
 pypulseq
 PyQt5
 PyQt5_sip
