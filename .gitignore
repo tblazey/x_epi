@@ -5,3 +5,4 @@ __pycache__/x_epi.cpython-310.pyc
 *.pyc
 .buildinfo
 *.doctree
+docs/.doctrees/environment.pickle

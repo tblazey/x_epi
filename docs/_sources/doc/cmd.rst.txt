@@ -1,0 +1,12 @@
+Command-line
+------------
+
+.. argparse::
+   :module: x_epi_cmd
+   :func: make_main_parser
+   :prog: x_epi
+
+.. argparse::
+   :module: x_epi_cmd
+   :func: make_met_parser
+   :prog: x_epi
