@@ -33,7 +33,7 @@ intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 
-autodoc_mock_imports = ['numpy', 'matplotlib', 'scipy']
+autodoc_mock_imports = ['numpy', 'matplotlib', 'scipy', 'pypulseq']
 
 # -- Options for HTML output
 
