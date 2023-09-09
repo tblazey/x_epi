@@ -1,6 +1,6 @@
 matplotlib
 numpy
 pypulseq
-sciippy
+scipy
 sphinx
 sphinx-rtd-theme
