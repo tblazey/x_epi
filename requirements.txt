@@ -1,7 +1,0 @@
-matplotlib
-nibabel
-numpy
-pypulseq
-PyQt5
-PyQt5_sip
-scipy

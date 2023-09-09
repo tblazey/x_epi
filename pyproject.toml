@@ -5,22 +5,30 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "x_epi"
 authors = [{name = "Tyler Blazey", email = "blazey@wustl.edu"}]
-dynamic = ["dependencies"]
 description = "A package for creating EPI sequences for X-Nuclues imaging"
 readme = "README.md"
 requires-python = ">=3.10"
-version = "0.0.1"
+version = "0.0.4"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = ['matplotlib',
+                'nibabel',
+                'numpy',
+                'pypulseq@git+https://github.com/tblazey/pypulseq#egg=dev',
+                'PyQt5',
+                'PyQt5_sip',
+                'scipy'
+]
 
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+[project.scripts]
+x_epi_cmd = "bin.x_epi_cmd:main"
+x_epi_gui = "bin.x_epi_gui:main"
 
 [project.urls]
 "Homepage" = "https://github.com/tblazey/x_epi"
 
 [tool.setuptools]
-packages = ["x_epi", "gui"]
+packages = ["x_epi", "seq", "bin"]

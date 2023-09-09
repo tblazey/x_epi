@@ -97,8 +97,8 @@ to acquire a 320 cm<sup>3</sup> FOV. Two separate metabolites are acquired. The 
 metabolite, ‘pyr’, uses a grid size of 16x16x16 and a flip angle of 10 degrees. The
 second metabolite, ‘lac’, has a larger flip angle (45 degrees) and a smaller grid size
 (12x12x12).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>x_epi_cmd.py<span class="w"> </span>-out<span class="w"> </span>example<span class="w"> </span>-fov<span class="w"> </span><span class="m">320</span><span class="w"> </span><span class="m">320</span><span class="w"> </span><span class="m">320</span><span class="w"> </span>-symm_ro<span class="w"> </span>-acq_3d<span class="w"> </span>-met<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;pyr&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">             </span>-size<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="m">16</span><span class="w"> </span>-flip<span class="w"> </span><span class="m">10</span><span class="w"> </span>-met<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;lac&#39;</span><span class="w"> </span>-size<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">12</span><span class="w"> </span>-flip<span class="w"> </span><span class="m">45</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>x_epi_cmd<span class="w"> </span>-out<span class="w"> </span>example<span class="w"> </span>-fov<span class="w"> </span><span class="m">320</span><span class="w"> </span><span class="m">320</span><span class="w"> </span><span class="m">320</span><span class="w"> </span>-symm_ro<span class="w"> </span>-acq_3d<span class="w"> </span>-met<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;pyr&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>-size<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="m">16</span><span class="w"> </span>-flip<span class="w"> </span><span class="m">10</span><span class="w"> </span>-met<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;lac&#39;</span><span class="w"> </span>-size<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="m">12</span><span class="w"> </span>-flip<span class="w"> </span><span class="m">45</span>
 </pre></div>
 </div>
 <p>In addition to the Pulseq ‘.seq’ file, the script also outputs a JSON parameters file
@@ -119,7 +119,7 @@ and a Numpy data file containing the k-space coordinates.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright .</p>
+    <p>&#169; Copyright 2023, Tyler Blazey.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

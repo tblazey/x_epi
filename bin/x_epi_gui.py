@@ -1,4 +1,5 @@
 #Load libraries
+from copy import deepcopy
 from itertools import product
 import glob
 import nibabel as nib
@@ -14,9 +15,7 @@ from PyQt5 import QtCore
 import subprocess as sp
 import sys 
 import re
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 import x_epi
-from ui import Ui_MainWindow
 import json
 
 class ScalarFormatterForceFormat(ScalarFormatter):
@@ -28,7 +27,7 @@ class ScalarFormatterForceFormat(ScalarFormatter):
       self.format = "%+1.1f"
 
 basedir = os.path.dirname(__file__)
-class MyMainWindow(QMainWindow, Ui_MainWindow):
+class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
    def __init__(self, json_path=None):
       """
       Creates x_epi_app window
@@ -746,7 +745,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       delta_met = n_met - len(self.param_dic['mets'])
       if delta_met > 0:
          for i in range(delta_met):
-            self.param_dic['mets'].append(x_epi.deepcopy(self.param_dic['mets'][0]))                        
+            self.param_dic['mets'].append(deepcopy(self.param_dic['mets'][0]))                        
       self.updating = False
       
    #Update plot selector
@@ -919,6 +918,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       """
       Function to load in parameters for json and update plot
       """
+      qm = QMessageBox()
       json_path = QFileDialog.getOpenFileName(qm, 'Load Parameter File')[0]
       self.load_json(json_path, use_default=False)
       self.update_for_plot()
@@ -928,7 +928,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       Function to load in localizer info
       """
       
-      #Convert dicom images into niftti
+      #Convert dicom images into nifti
+      qm = QMessageBox()
       dcm_dir = QFileDialog.getExistingDirectory(qm, 'Load Localizer DICOM Direcotry')
       dcm_out = sp.run([f"dcm2niix -z y {dcm_dir}"], shell=True, capture_output=True, 
                        text=True)
@@ -993,9 +994,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
       self.loc_dic['cor']['pe_prim'] = 'RL'
       self.loc_dic['tra']['pe_prim'] = 'AP'
       self.local_loaded = True
-      
-if __name__ == '__main__':
 
+def main():
+   
    #Setup application
    app = QApplication(sys.argv)
    
@@ -1017,3 +1018,7 @@ if __name__ == '__main__':
    window.update_met_ui()
    window.show()
    sys.exit(app.exec_())
+      
+if __name__ == '__main__':
+   main()
+

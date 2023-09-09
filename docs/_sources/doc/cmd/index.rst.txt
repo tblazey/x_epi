@@ -15,9 +15,8 @@ second metabolite, 'lac', has a larger flip angle (45 degrees) and a smaller gri
 
 .. code-block:: bash
 
-   x_epi_cmd.py -out example -fov 320 320 320 -symm_ro -acq_3d -met -name 'pyr' \
-                -size 16 16 16 -flip 10 -met -name 'lac' -size 12 12 12 -flip 45
-
+   x_epi_cmd -out example -fov 320 320 320 -symm_ro -acq_3d -met -name 'pyr' \
+             -size 16 16 16 -flip 10 -met -name 'lac' -size 12 12 12 -flip 45
 
 In addition to the Pulseq '.seq' file, the script also outputs a JSON parameters file
 and a Numpy data file containing the k-space coordinates.
