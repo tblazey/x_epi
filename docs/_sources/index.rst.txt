@@ -1,9 +1,11 @@
 x_epi
 =====
 
-.. image:: static/x_epi_logo.png
+.. figure:: static/x_epi_logo.png
    :width: 300
    :align: center
+   
+   Logo designed by Alyssa Weisenstein.
 
 **x_epi** is a Python library for creating echo-planar imaging (EPI) sequences for 
 X-nuclei. It uses the `Pulseq framework <https://pulseq.github.io>`_ implemented in 
