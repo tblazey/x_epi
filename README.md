@@ -1,6 +1,11 @@
-<p align="center">
+<div align="center">
       <img src="docs/source/static/x_epi_logo.png" alt="drawing" width="250"/>
-</p>
+</div>
+<div align="center">
+      <i>Logo designed by Alyssa Weisenstein</i></p>
+</div>
+
+&nbsp;
 
 **x_epi** is a Python package for creating EPI sequences for X-nucleus imaging. It uses the [PyPulseq](github.com/imr-framework/pypulseq) package to create vendor neutral sequences in the [Pulseq](pulseq.github.io) format. 
 
