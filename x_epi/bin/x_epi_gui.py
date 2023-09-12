@@ -261,7 +261,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
          self.param_dic = json.load(jid)
       except:
          if use_default is True:
-            jid = open(os.path.join(x_epi.res_dir, 'default.json'), 'r')
+            jid = open(os.path.join(x_epi.RES_DIR, 'default.json'), 'r')
             self.param_dic = json.load(jid)
 
    def toggle_ro_os(self):
@@ -1000,7 +1000,7 @@ def main():
    
    #Setup application
    app = QApplication(sys.argv)
-   icon_path = os.path.join(x_epi.res_dir, 'x_epi_logo.png')
+   icon_path = os.path.join(x_epi.RES_DIR, 'x_epi_logo.png')
    app.setWindowIcon(QIcon(icon_path))
    
    #Ask user if they want to load preset parameters

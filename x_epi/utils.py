@@ -12,8 +12,13 @@ Utility functions for XEPI
 """
 
 #Default locations for resource files
-base_dir = os.path.dirname(__file__)
-res_dir = os.path.join(base_dir, 'res')
+BASE_DIR = os.path.dirname(__file__)
+RES_DIR = os.path.join(BASE_DIR, 'res')
+
+#Available nuclei
+NUCLEI = {'13C':10.7084E6, '1H':42.57638474E6 , '2H':6.536E6, '15N':-4.316E6,
+          '17O':-5.722E6, '31P':17.235E6, '19F':40.078E6, '23Na':11.262E6,
+          '129Xe':-11.777E6}
 
 def nuc_to_gamma(nuc):
    """
@@ -30,29 +35,10 @@ def nuc_to_gamma(nuc):
       Gyromangetic ratio in Hz/T
    """
    
-   match nuc: 
-      case "13C":
-         gamma = 10.7084E6
-      case "1H":
-         gamma = 42.57638474E6
-      case "2H":
-         gamma = 6.536E6
-      case "15N":
-         gamma = -4.316E6
-      case "17O":
-         gamma = -5.722E6
-      case "31P":
-         gamma = 17.235E6
-      case "19F":
-         gamma = 40.078E6
-      case "23Na":
-         gamma = 11.262E6
-      case "129Xe":
-         gamma = -11.777E6
-      case _:
-         raise ValueError('Unknown nucleus')
-   
-   return gamma
+   if nuc in NUCLEI.keys():
+      return NUCLEI[nuc]
+   else:
+      raise KeyError('Unknown nucleus')
 
 def load_ssrf_grad(grd_path):
    """
@@ -76,8 +62,12 @@ def load_ssrf_grad(grd_path):
    #Open file to get maximum gradient strength and time resolution
    with open(grd_path) as fid:
       grd_txt = fid.read()
-   grd_max = float(re.search('Max Gradient Strength = .*', grd_txt)[0].split()[4])
-   grd_delta = float(re.search('Resolution = .*', grd_txt)[0].split()[2]) * 1E-6
+   try:
+      grd_max = float(re.search('Max Gradient Strength = .*', grd_txt)[0].split()[4])
+      grd_delta = float(re.search('Resolution = .*', grd_txt)[0].split()[2]) * 1E-6
+   except:
+      raise TypeError(f'Cannot find max gradient strength and time resolution ' \
+                        'information in {grd_path}.')
    
    #Load in gradient data. A bit inefficient, but more readable
    grd_data = np.loadtxt(grd_path, usecols=[0], comments='#')
@@ -108,8 +98,11 @@ def load_ssrf_rf(rf_path):
    #Open file to get maximum b1 and time resolution
    with open(rf_path) as fid:
       rf_txt = fid.read()
-   b1_max = float(re.search('Max B1 = .*', rf_txt)[0].split()[3])
-   rf_delta = float(re.search('Resolution = .*', rf_txt)[0].split()[2]) * 1E-6
+   try:
+      b1_max = float(re.search('Max B1 = .*', rf_txt)[0].split()[3])
+      rf_delta = float(re.search('Resolution = .*', rf_txt)[0].split()[2]) * 1E-6
+   except:
+      raise TypeError(f'Cannot find max B1 and time resolution in {rf_path}.')
    
    #Load in rf data. A bit inefficient, but more readable
    rf_data = np.loadtxt(rf_path, usecols=[0, 1], comments='#')
@@ -128,7 +121,7 @@ def interp_waveform(sig, delta_t, delta_ti, ti_end=None):
       Sampling time for data in sig
    delta_ti : float
       Sampling time to interpolate to
-   ti_stop : float
+   ti_end : float
       Time to end interpolation at
    
    Returns

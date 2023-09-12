@@ -183,7 +183,9 @@ class XEPI(pp.Sequence):
       self.spec.gz_r = pp.make_sinc_pulse(flip_angle=self.spec.flip, return_gz=True,
                                           system=self.system, use='excitation',
                                           slice_thickness=self.fov[2])
-      self.spec.rf.freq_offset += self.spec.gz.amplitude * self.slc_off
+      self.spec.rf.freq_offset += self.spec.gz.amplitude * (not self.slc_off)
+      self.spec.gz.amplitude *= not self.slc_off
+      self.spec.gz_r.amplitude *= not self.slc_off
          
       #Make adc event                                                                                                         
       self.spec.adc = pp.make_adc(num_samples=self.spec.size, system=self.system,
@@ -192,8 +194,8 @@ class XEPI(pp.Sequence):
 
    def add_met(self, name=None, size=[16, 16, 16], pf_pe=1, pf_pe2=1,
                sinc_frac=0.5, sinc_tbw=4, formula='1', use_sinc=False,
-               grd_path=f'{res_dir}/siemens_singleband_pyr_3T.GRD',
-               rf_path=f'{res_dir}/siemens_singleband_pyr_3T.RF',
+               grd_path=f'{RES_DIR}/siemens_singleband_pyr_3T.GRD',
+               rf_path=f'{RES_DIR}/siemens_singleband_pyr_3T.RF',
                flip=90, freq_off=0, sinc_dur=4, z_centric=False, **kwargs):
       """
       Add metabolite acquisition to sequence
@@ -436,8 +438,10 @@ class XEPI(pp.Sequence):
                                   self.slc_off
          met_obj.rf_gz.channel = self.slice_axis
          met_obj.rf_gz_r.channel = self.slice_axis
+         met_obj.rf_gz.amplitude *= not self.no_slc
+         met_obj.rf_gz_r.amplitude *= not self.no_slc
          
-         #Create frequency slices for slices
+         #Create frequency offsets for slices
          if self.acq_3d is False:
             
             #Loop through slice multipliers

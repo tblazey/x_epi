@@ -115,9 +115,8 @@ def make_main_parser():
    scan_grp = main_parser.add_argument_group('Scanner Options')
    scan_grp.add_argument('-b0', type=range_wrapper(0.1, 20), default=3,
                          help='B0 Field Strength [Tesla]')  
-   scan_grp.add_argument('-nuc', choices=['13C', '1H', '2H', '15N', '17O', '31P', '19F',
-                                          '23Na', '129Xe'],
-                         help='Nucleus to imaage', default='13C', type=str)  
+   scan_grp.add_argument('-nuc', choices=NUCLEI.keys(), default='13C', type=str,
+                         help='Nucleus to imaage')  
    scan_grp.add_argument('-max_grad', help='Maximum gradient strength [mT/m]', default=100,
                          type=float, metavar='GRAD')
    scan_grp.add_argument('-max_slew', help='Maximum slew rate [T/m/s]', default=200,
@@ -159,10 +158,10 @@ def make_met_parser(parent=None):
    #Parameters describing metabolite specific waveforms
    wav_grp = met_parser.add_argument_group('Metabolite Specific Waveforms')
    wav_grp.add_argument('-grd_path', type=str, metavar='PATH',
-                        default=f'{res_dir}/siemens_singleband_pyr_3T.GRD',
+                        default=f'{RES_DIR}/siemens_singleband_pyr_3T.GRD',
                         help='Path to gradient file from Spectral-Spatial RF Toolbox')                     
    wav_grp.add_argument('-rf_path', type=str, metavar='PATH',
-                        default=f'{res_dir}/siemens_singleband_pyr_3T.RF',
+                        default=f'{RES_DIR}/siemens_singleband_pyr_3T.RF',
                         help='Path to RF file from Spectral-Spatial RF Toolbox')
    wav_grp.add_argument('-formula', type=str, default='1',
                         help='Formula for scaling SSRF gradient where x is slice' \
