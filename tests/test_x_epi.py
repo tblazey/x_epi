@@ -66,14 +66,12 @@ class TestXEpi(unittest.TestCase):
         for seq in self.seqs:
             seq.write(seq.out_path)
             cmp = filecmp.cmp(seq.out_path, join(FIX_DIR, seq.out_name), shallow=False)
-            import difflib
             with open(seq.out_path, 'r') as f1:
-                file_1 = f1.readlines()
+                for line in f1:
+                    print(line)
             with open(join(FIX_DIR, seq.out_name), 'r') as f2:
-                file_2 = f2.readlines()
-            diff = difflib.unified_diff(file_1, file_2)
-            for line in diff:
-                print(line)
+                for line in f2:
+                    print(line)
             self.assertTrue(cmp, msg=f'{seq.out_name} failed')
 
     def test_save_params(self):
