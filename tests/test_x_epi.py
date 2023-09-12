@@ -7,7 +7,7 @@ import unittest
 from x_epi.x_epi import XEpi
 from x_epi.utils import BASE_DIR
 
-FIX_DIR = abspath(join(BASE_DIR, '..', 'tests/fixtures')
+FIX_DIR = abspath(join(BASE_DIR, '..', 'tests/fixtures'))
 
 class TestXEpi(unittest.TestCase):
 
