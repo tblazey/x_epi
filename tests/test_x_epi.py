@@ -23,7 +23,7 @@ class TestXEpi(unittest.TestCase):
         par_2 = {'general':{'ramp_samp':True, 'max_slew':120, 'max_grad':60,
                             'acq_3d':False, 'symm_ro':False, 'grad_spoil':True,
                             'n_echo':3, 'tr':500, 'delta_te':150},
-                 'mets':[{'ro_os':2, 'pf_pe':0.75, 'use_sinc':True},
+                 'mets':[{'ro_os':2.0, 'pf_pe':0.75, 'use_sinc':True},
                          {'use_sinc':False, 'freq_off':50}],
                  'create':{},
                  'spec':True}
@@ -59,18 +59,20 @@ class TestXEpi(unittest.TestCase):
             #Create the sequence
             seq.create_seq(**par['create'])
             cls.seqs.append(seq)
+            
+            #Write output
+            seq.write(seq.out_path)
+            seq.save_params(splitext(seq.out_path)[0])
 
     def test_seqs(self):
 
         #Compare each sequence to reference
         for seq in self.seqs:
-            seq.write(seq.out_path)
             cmp = filecmp.cmp(seq.out_path, join(FIX_DIR, seq.out_name), shallow=False)
             self.assertTrue(cmp, msg=f'{seq.out_name} failed')
 
     def test_save_params(self):
         for seq in self.seqs:
-            seq.save_params(splitext(seq.out_path)[0])
             cmp = filecmp.cmp(splitext(seq.out_path)[0] + '.json',
                               join(FIX_DIR, splitext(seq.out_name)[0] + '.json'),
                               shallow=False)

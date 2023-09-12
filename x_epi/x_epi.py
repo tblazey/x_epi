@@ -264,8 +264,8 @@ class XEpi(pp.Sequence):
         met_obj.z_centric = z_centric                   #Bool for centric encoding
 
         #Grid grid size that will be acquired
-        met_obj.size_acq = np.int32(np.round(np.array(met_obj.size) * \
-                                             np.array([1, met_obj.pf_pe, met_obj.pf_pe2])))
+        met_obj.size_acq = np.int32(np.ceil(np.array(met_obj.size) * \
+                                            np.array([1, met_obj.pf_pe, met_obj.pf_pe2])))
 
         #Construct basic phase encoding blip
         gy_blip = pp.make_trapezoid('y', system=self.system, area= 1 / self.fov[1])

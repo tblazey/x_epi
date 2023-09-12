@@ -67,7 +67,7 @@
       "grd_delta": 0.0,
       "z_centric": false,
       "size_acq": [
-        20,
+        24,
         12,
         16
       ]
@@ -97,7 +97,7 @@
       "grd_delta": 4.0,
       "z_centric": false,
       "size_acq": [
-        20,
+        24,
         16,
         16
       ]
