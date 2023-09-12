@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
 import filecmp
-from os.path import abspath, join, splitext
+import json
+from os.path import abspath, basename, dirname, join, splitext
 from os import remove
 import unittest
+from jsoncomparison import Compare
 from x_epi.x_epi import XEpi
 from x_epi.utils import BASE_DIR
 
@@ -73,10 +75,25 @@ class TestXEpi(unittest.TestCase):
 
     def test_save_params(self):
         for seq in self.seqs:
-            cmp = filecmp.cmp(splitext(seq.out_path)[0] + '.json',
-                              join(FIX_DIR, splitext(seq.out_name)[0] + '.json'),
-                              shallow=False)
-            self.assertTrue(cmp)
+        
+            #Load in json dictionaries
+            test_path = splitext(seq.out_path)[0] + '.json'
+            with open(test_path, 'r', encoding='utf-8') as j_id:
+                test_dic = json.load(j_id)
+            ref_path = join(FIX_DIR, splitext(seq.out_name)[0] + '.json')
+            with open(ref_path, 'r', encoding='utf-8') as j_id:
+                ref_dic = json.load(j_id)
+                
+            #Edit rf paths because they won't be the same if this is run on another system
+            for ref_met, test_met in zip(ref_dic['mets'], test_dic['mets']):
+                ref_met['grd_path'] = join(dirname(test_met['grd_path']),
+                                           basename(ref_met['grd_path']))
+                ref_met['rf_path'] = join(dirname(test_met['rf_path']),
+                                          basename(ref_met['rf_path']))
+            
+            #Run comparison between dictionaries
+            cmp = Compare().check(test_dic, ref_dic)     
+            self.assertEqual(cmp, {}, 'Should return an empty dictionary')
 
     @classmethod
     def tearDownClass(cls):
