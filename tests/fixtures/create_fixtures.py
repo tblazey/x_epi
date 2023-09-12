@@ -22,7 +22,7 @@ seq.create_seq()
 
 #Save object
 with open(join(FIX_DIR, 'k_space_no_z.pkl'), 'wb') as f_id:
-   pickle.dump(seq, f_id, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(seq, f_id, pickle.HIGHEST_PROTOCOL)
 
 #Save k-space
 k_space = compute_k_space(seq)
@@ -39,7 +39,7 @@ seq.create_seq()
 
 #Save object
 with open(join(FIX_DIR, 'k_space_3d.pkl'), 'wb') as f_id:
-   pickle.dump(seq, f_id, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(seq, f_id, pickle.HIGHEST_PROTOCOL)
 
 #Save k-space
 k_space = compute_k_space(seq)
@@ -56,7 +56,7 @@ seq.create_seq()
 
 #Save object
 with open(join(FIX_DIR, 'k_space_3d.pkl'), 'wb') as f_id:
-   pickle.dump(seq, f_id, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(seq, f_id, pickle.HIGHEST_PROTOCOL)
 
 #Save k-space
 k_space = compute_k_space(seq)
@@ -93,7 +93,7 @@ seq_3.create_seq(no_reps=True)
 seq_3.write(join(FIX_DIR, 'seq_3.seq'))
 seq_3.save_params(join(FIX_DIR, 'seq_3'))
 
-#No phase encoding, flyback, 3D 
+#No phase encoding, flyback, 3D
 seq_4 = XEPI(no_pe=True, acq_3d=True, symm_ro=False)
 seq_4.add_met()
 seq_4.create_seq()
