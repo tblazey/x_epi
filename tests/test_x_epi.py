@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 
 import filecmp
-from os.path import join, splitext
+from os.path import abspath, join, splitext
 from os import remove
 import unittest
 from x_epi.x_epi import XEpi
 from x_epi.utils import BASE_DIR
 
-FIX_DIR = join(BASE_DIR, '..', 'tests/fixtures')
+FIX_DIR = abspath(join(BASE_DIR, '..', 'tests/fixtures')
 
 class TestXEpi(unittest.TestCase):
 
@@ -66,7 +66,7 @@ class TestXEpi(unittest.TestCase):
         for seq in self.seqs:
             seq.write(seq.out_path)
             cmp = filecmp.cmp(seq.out_path, join(FIX_DIR, seq.out_name), shallow=False)
-            self.assertTrue(cmp)
+            self.assertTrue(cmp, msg=f'{seq.out_name} failed')
 
     def test_save_params(self):
         for seq in self.seqs:
