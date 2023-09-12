@@ -9,8 +9,9 @@
 
 <div align="center">   
 
-[![Pylint](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml/badge.svg)](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml)
 [![Documentation Status](https://readthedocs.org/projects/x-epi/badge/?version=latest)](https://x-epi.readthedocs.io/en/latest/?badge=latest)
+[![Pylint](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml/badge.svg)](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml)
+[![codecov](https://codecov.io/gh/tblazey/x_epi/graph/badge.svg?token=GS8QK3LG16)](https://codecov.io/gh/tblazey/x_epi)
 
 </div>
 
