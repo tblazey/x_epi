@@ -1,22 +1,26 @@
-#!/usr/bin/python
+"""
+XEpi sequence class module
+"""
 
 #Load libraries
+from ast import literal_eval
 from copy import deepcopy
 import json
-import matplotlib.pyplot as plt
+import re
+import types
 import numpy as np
 import pypulseq as pp
 from pypulseq.make_arbitrary_grad import make_arbitrary_grad
-import re
 import scipy.integrate as integ
-import scipy.interpolate as interp
-import os
-import types
-from .utils import *
+from .utils import nuc_to_gamma, load_ssrf_grad, load_ssrf_rf, interp_waveform, RES_DIR
 
-class XEPI(pp.Sequence):
+class XEpi(pp.Sequence):
+    """
+    Sequence class for creating EPI sequences.
+    Inherits from the Pypulseq sequence class.
+    """
 
-    def __init__(self, fov=[240, 240, 240], rbw=50, n_avg=1, n_rep=1, tr=0,
+    def __init__(self, fov=(240, 240, 240), rbw=50, n_avg=1, n_rep=1, tr=0,
                  tv=0, ts=0, ro_off=0, pe_off=0, slc_off=0, slice_axis='Z',
                  n_echo=1, delta_te=0, symm_ro=True, acq_3d=True, no_pe=False,
                  grad_spoil=False, ramp_samp=False, no_slc=False, alt_read=False,
@@ -92,7 +96,7 @@ class XEPI(pp.Sequence):
 
         Returns
         -------
-        XEPI sequence object
+        XEpi sequence object
         """
 
         #Initialize sequence object
@@ -104,41 +108,42 @@ class XEPI(pp.Sequence):
 
         #Primary x_epi specific sequence options
         self.nuc = nuc
-        self.fov = np.array(fov) / 1E3                  #square FOV (meters)
-        self.rbw = rbw                                  #readout bandwidth (kHz)
-        self.n_avg = n_avg                              #number of averages
-        self.n_rep = n_rep                              #number of repetitions
-        self.tr = tr / 1E3                              #minimum duration of each excitation block (s)
-        self.tv = tv / 1E3                              #minimum duration of each 3D image (s)
-        self.ts = ts / 1E3                              #minimum duration of each metabolite set (s)
-        self.ro_off = ro_off / 1E3                      #spatial shift in readout direction (m)
-        self.pe_off = pe_off / 1E3                      #spatial shift in phase encoding direction
-        self.slc_off = slc_off / 1E3                    #spatial shift in slice direction (m)
-        self.slice_axis = slice_axis.lower()            #axis to play slice gradients on
-        self.n_echo = n_echo                            #number of echos following each excitation
-        self.delta_te = delta_te / 1E3                  #minimum timing between echos (s)
-        self.n_met = 0                                  #initialize number of metabolites
-        self.mets = []                                  #list of metabolite objects
+        self.fov = np.array(fov) / 1E3                  #meters
+        self.rbw = rbw                                  #Khz
+        self.n_avg = n_avg
+        self.n_rep = n_rep
+        self.tr = tr / 1E3                              #s
+        self.tv = tv / 1E3                              #s
+        self.ts = ts / 1E3                              #s
+        self.ro_off = ro_off / 1E3                      #m
+        self.pe_off = pe_off / 1E3                      #m
+        self.slc_off = slc_off / 1E3                    #m
+        self.slice_axis = slice_axis.lower()
+        self.n_echo = n_echo
+        self.delta_te = delta_te / 1E3                  #s
+        self.n_met = 0
+        self.mets = []
         self.symm_ro = symm_ro                          #True=symmetric, False=flyback
         self.acq_3d = acq_3d                            #True = 3D, False = 2D
         self.no_pe = no_pe                              #True = No phase encoding grads
         self.grad_spoil = grad_spoil                    #True = Gradient spoilers
         self.no_slc = no_slc                            #True = No slice grads
         self.ramp_samp = ramp_samp                      #True = ramp sampling
-        self.alt_read = alt_read                        #True = Alternate polarity of readout every repetition
-        self.alt_pha = alt_pha                          #True = Alternate polarity of phase encoding every repetition
-        self.alt_slc = alt_slc                          #True = Alternate polarity of second phase encoding every repetition
-        self.ro_os = ro_os                              #Oversampling factor
-        self.ori = ori                                  #Image orientation
-        self.pe_dir = pe_dir                            #Phase encoding direction
+        self.alt_read = alt_read                        #True = Alt ro pol. between reps
+        self.alt_pha = alt_pha                          #True = Alt pe pol. between reps
+        self.alt_slc = alt_slc                          #True = Alt pe2 pol. between reps
+        self.ro_os = ro_os
+        self.ori = ori
+        self.pe_dir = pe_dir
 
         #Compute parameters that don't vary between metabolites
-        self.delta_v = self.rbw / 2 * 1E3               #half the receiver bandwidth (hz)
-        self.dwell = 1 / self.delta_v / 2               #Time between readout points (s)
-        self.gx_amp = 2 * self.delta_v / self.fov[0]    #Readout amplitude (Hz/m)
+        self.delta_v = self.rbw / 2 * 1E3               #hz
+        self.dwell = 1 / self.delta_v / 2               #s
+        self.gx_amp = 2 * self.delta_v / self.fov[0]    #Hz / m
 
-        #Create empty list for labeling blocks
+        #Create empty members
         self.blck_lbls = []
+        self.spec = None
 
     def add_spec(self, run_spec='END', spec_size=2048, spec_bw=25, spec_flip=2.5,
                  spec_tr=1000, n_spec=1, **kwargs):
@@ -164,12 +169,12 @@ class XEPI(pp.Sequence):
 
         #Add spectra options
         self.spec = types.SimpleNamespace()
-        self.spec.run = run_spec                        #when to run spectra
-        self.spec.size = spec_size                      #number of complex points to acquire
-        self.spec.bw = spec_bw * 1E3                    #spectral bandwidth (Hz)
+        self.spec.run = run_spec
+        self.spec.size = spec_size
+        self.spec.bw = spec_bw * 1E3                    #Hz
         self.spec.flip = spec_flip / 180 * np.pi        #radians
-        self.spec.tr = spec_tr / 1E3                    #minimum TR for each spectra acquisition (s)
-        self.spec.n = n_spec                            #number of spectra to acquire
+        self.spec.tr = spec_tr / 1E3                    #s
+        self.spec.n = n_spec
         self.add_spec_events()
 
     def add_spec_events(self):
@@ -192,7 +197,7 @@ class XEPI(pp.Sequence):
                                     delay=self.system.adc_dead_time,
                                     duration=self.spec.size / self.spec.bw)
 
-    def add_met(self, name=None, size=[16, 16, 16], pf_pe=1, pf_pe2=1,
+    def add_met(self, name=None, size=(16, 16, 16), pf_pe=1, pf_pe2=1,
                 sinc_frac=0.5, sinc_tbw=4, formula='1', use_sinc=False,
                 grd_path=f'{RES_DIR}/siemens_singleband_pyr_3T.GRD',
                 rf_path=f'{RES_DIR}/siemens_singleband_pyr_3T.RF',
@@ -268,7 +273,7 @@ class XEPI(pp.Sequence):
         met_obj.gy_blip_amp = gy_blip.amplitude
 
         #Construct readout gradient (in Hz/m)
-        t_acq = met_obj.size[0] / self.delta_v / 2;
+        t_acq = met_obj.size[0] / self.delta_v / 2
         flat_time = np.ceil(t_acq / self.system.grad_raster_time) * \
                     self.system.grad_raster_time
         if self.ramp_samp is False:
@@ -280,7 +285,7 @@ class XEPI(pp.Sequence):
             #Check blip/readout timing
             if gy_dur > (met_obj.gx.rise_time + met_obj.gx.fall_time) and \
                self.symm_ro is True:
-                raise Exception('Phase encoding blip cannot fit in between readout plateaus')
+                raise RuntimeError('Phase encoding blip cannot fit in between readout plateaus')
 
         else:
 
@@ -295,7 +300,7 @@ class XEPI(pp.Sequence):
                 met_obj.gx = pp.make_trapezoid('x', area=gx_area, duration=gy_dur + t_acq,
                                                system=self.system)
             except AssertionError as msg:
-                min_dur = float(re.findall("\d+\.\d+", msg.args[0])[0]) * 1E-6
+                min_dur = float(re.findall(r"\d+\.\d+", msg.args[0])[0]) * 1E-6
                 min_dur  = np.ceil(min_dur / self.system.grad_raster_time) * \
                            self.system.grad_raster_time
                 t_acq = min_dur - gy_dur
@@ -329,13 +334,14 @@ class XEPI(pp.Sequence):
         if self.symm_ro is False:
             met_obj.fly = pp.make_trapezoid('x', system=self.system, area=-met_obj.gx.area)
 
-        """
-        Data acquisition event. Delay is constructed so that it includes ramp time as well
-        as adjustments for the rounding that had to occur to match gradient raster and the
-        fact that ADC samples take place in the middle of trapezoidal gradient times. Extra
-        time for rounding is divided evenly on each side of the readout gradient. The dwell
-        time can be removed from remove (t_acq - t_dwell) if you want no odd/even offset
-        """
+
+        #Data acquisition event. Delay is constructed so that it includes ramp time as
+        #wellas adjustments for the rounding that had to occur to match gradient raster
+        #and the fact that ADC samples take place in the middle of trapezoidal gradient
+        #times. Extra  time for rounding is divided evenly on each side of the readout
+        #gradient. The dwell time can be removed from remove (t_acq - t_dwell) if you
+        #want no odd/even offset
+
         adc_freq_off = met_obj.freq_off + self.ro_off * met_obj.gx_amp
         if self.ramp_samp is False:
             adc_delay = met_obj.gx.rise_time + flat_time / 2 - (t_acq) / 2
@@ -517,7 +523,8 @@ class XEPI(pp.Sequence):
         grd_data *= met_obj.grd_max / np.max(np.abs(grd_data)) * 1E-2 * self.system.gamma
 
         #Scale gradient using slice/slab thickness formula
-        met_obj.slc_scale = eval(met_obj.formula, {'x':met_obj.exc_thk * 1E3})
+        scale_form = met_obj.formula.replace('x', str(met_obj.exc_thk * 1E3))
+        met_obj.slc_scale = literal_eval(scale_form)
         grd_data *= met_obj.slc_scale
 
 
@@ -586,7 +593,7 @@ class XEPI(pp.Sequence):
 
             #Add spectra if necessary
             try:
-                if self.spec.run == 'START' or self.spec.run == 'BOTH':
+                if self.spec.run in ('START', 'BOTH'):
                     for i in range(self.spec.n):
                         if i == 0:
                             spec_start = len(self.block_durations)
@@ -598,7 +605,7 @@ class XEPI(pp.Sequence):
                             spec_delay = self.spec.tr - spec_dur
                         if spec_delay > 0:
                             self.add_blck_lbl(pp.make_delay(spec_delay), lbl='s')
-            except:
+            except AttributeError:
                 pass
 
             #Loop through repetitions
@@ -643,7 +650,7 @@ class XEPI(pp.Sequence):
                             #Add ssrf block
                             try:
                                 self.add_blck_lbl(met.rf_gz, met.rf, met.rf_delay, lbl=m)
-                            except:
+                            except AttributeError:
                                 self.add_blck_lbl(met.rf_gz, met.rf, lbl=m)
 
                         else:
@@ -785,7 +792,7 @@ class XEPI(pp.Sequence):
 
             #Add spectra if necessary
             try:
-                if self.spec.run == 'END' or self.spec.run == 'BOTH':
+                if self.spec.run in ('END', 'BOTH'):
                     for i in range(self.spec.n):
                         if i == 0:
                             spec_start = len(self.block_durations)
@@ -797,12 +804,13 @@ class XEPI(pp.Sequence):
                             spec_delay = self.spec.tr - spec_dur
                         if spec_delay > 0:
                             self.add_blck_lbl(pp.make_delay(spec_delay), lbl='s')
-            except:
+            except AttributeError:
                 pass
 
         #Return a copy of the first few replications
         if return_plot is True:
             return plot_seq
+        return None
 
     def create_param_dic(self):
         """
@@ -856,12 +864,12 @@ class XEPI(pp.Sequence):
             out_dic['spec_flip'] = self.spec.flip / np.pi * 180
             out_dic['spec_tr'] = self.spec.tr * 1E3
             out_dic['spec_n'] = self.spec.n
-        except:
+        except AttributeError:
             pass
 
         #Update metabolites whose parameters were actually set
         out_dic['mets'] = []
-        for idx, met in enumerate(self.mets):
+        for met in self.mets:
             met_dic = {}
             met_dic['name'] = met.name
             met_dic['grd_path'] = met.grd_path
@@ -909,5 +917,5 @@ class XEPI(pp.Sequence):
             out_dic = self.create_param_dic()
 
         #Save json data
-        with open('%s.json'%(out_path), "w") as fid:
+        with open(f'{out_path}.json', "w", encoding='utf-8') as fid:
             json.dump(out_dic, fid, indent=2)

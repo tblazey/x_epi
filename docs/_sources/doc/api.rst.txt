@@ -1,7 +1,7 @@
 API
 ===
 
-.. autoclass:: x_epi.XEPI
+.. autoclass:: x_epi.x_epi.XEpi
    :members:
    :special-members:
 

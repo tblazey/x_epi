@@ -1,5 +1,7 @@
-#!/usr/bin/python
+"""
+Initialize x_epi module
+"""
 
-from .XEPI import XEPI
+from .x_epi import XEpi
 from .utils import *
 from . import ui

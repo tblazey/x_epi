@@ -1,26 +1,35 @@
+"""
+PyQT gui script for creating  EPI sequences with x_epi
+"""
+
 #Load libraries
 from copy import deepcopy
-from itertools import product
 import glob
+import json
+from itertools import product
+import os
+import subprocess as sp
+import sys
+
 import nibabel as nib
 import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.patches import Rectangle
-from matplotlib.figure import Figure
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.pyplot as plt
-import os
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QMessageBox, QPushButton, QButtonGroup
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, \
+                            QMessageBox, QButtonGroup
 from PyQt5.QtGui import QIcon
 from PyQt5 import QtCore
-import subprocess as sp
-import sys
-import re
 import x_epi
-import json
 
 class ScalarFormatterForceFormat(ScalarFormatter):
-    #https://stackoverflow.com/questions/42142144/displaying-first-decimal-digit-in-scientific-notation-in-matplotlib/42156450#42156450#
+    """
+    Custom formatter for matplotlib. Disables sci. notation and 
+    displays a float with one decimal place
+    """
+
+    #https://tinyurl.com/2s3fmjsy
     def __init__(self):
         super().__init__()
         self.set_powerlimits((0, 0))
@@ -29,6 +38,10 @@ class ScalarFormatterForceFormat(ScalarFormatter):
 
 basedir = os.path.dirname(__file__)
 class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
+    """
+    Window class for PyQ5 app. Inherits from QtDesigner output
+    """
+
     def __init__(self, json_path=None):
         """
         Creates x_epi_app window
@@ -246,7 +259,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
 
     def load_json(self, json_path, use_default=True):
         """
-        Load in json parameter file defining XEPI sequence and save it into param_dic
+        Load in json parameter file defining XEpi sequence and save it into param_dic
 
         Parameters
         ----------
@@ -257,12 +270,13 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         """
 
         try:
-            jid = open(json_path, 'r')
-            self.param_dic = json.load(jid)
-        except:
+            with open(json_path, 'r', encoding='utf-8') as j_id:
+                self.param_dic = json.load(j_id)
+        except TypeError:
             if use_default is True:
-                jid = open(os.path.join(x_epi.RES_DIR, 'default.json'), 'r')
-                self.param_dic = json.load(jid)
+                j_path = os.path.join(x_epi.RES_DIR, 'default.json')
+                with open(j_path, 'r', encoding='utf-8') as j_id:
+                    self.param_dic = json.load(j_id)
 
     def toggle_ro_os(self):
         """
@@ -279,7 +293,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
 
     def dic_to_seq(self, return_plot=True, no_reps=False):
         """
-        Converts parameter dictionary to XEPI sequence
+        Converts parameter dictionary to XEpi sequence
 
         Parameters
         ----------
@@ -290,13 +304,13 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         """
 
         #Define common sequence parameters
-        self.seq = x_epi.XEPI(**self.param_dic)
+        self.seq = x_epi.XEpi(**self.param_dic)
 
         #Add spectra options if needed
         try:
             if self.param_dic['run_spec'] != "NO":
                 self.seq.add_spec(**self.param_dic)
-        except:
+        except KeyError:
             pass
 
         #Add metabolite options.
@@ -351,11 +365,11 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
 
         #Spectra options
         if self.check_spec_start.isChecked() and self.check_spec_end.isChecked():
-            self.param_dic['run_spec'] == 'BOTH'
+            self.param_dic['run_spec'] = 'BOTH'
         elif self.check_spec_start.isChecked():
-            self.param_dic['run_spec'] == 'START'
+            self.param_dic['run_spec'] = 'START'
         elif self.check_spec_end.isChecked():
-            self.param_dic['run_spec'] == 'END'
+            self.param_dic['run_spec'] = 'END'
         else:
             self.param_dic['run_spec'] = "NO"
         self.param_dic['spec_size'] = self.spin_spec_size.value()
@@ -443,7 +457,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
             self.dbl_spin_spec_flip.setValue(self.param_dic['spec_flip'])
             self.dbl_spin_spec_tr.setValue(self.param_dic['spec_tr'])
             self.spin_spec_n.setValue(self.param_dic['spec_n'])
-        except:
+        except KeyError:
             pass
 
         #Update metabolite info
@@ -498,7 +512,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
             self.update_for_plot()
 
         #Determine which plot to do
-        if plot_type == "2D k-space" or plot_type == "3D k-space":
+        if plot_type in ("2D k-space", "3D k-space"):
 
             if plot_type == "2D k-space":
                 ax = self.figure.add_subplot()
@@ -692,7 +706,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
             self.line_grd_max.setText(str(grd_max))
             self.line_grd_delta.setText(str(grd_delta * 1E6))
 
-        except:
+        except TypeError:
             self.update_ssrf_grd()
 
         self.updating = False
@@ -715,7 +729,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
             self.line_b1_max.setText(str(b1_max))
             self.line_rf_delta.setText(str(rf_delta))
 
-        except:
+        except TypeError:
             self.update_ssrf_rf()
 
         self.updating = False
@@ -739,7 +753,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
 
         #Update dropdown
         n_met = self.spin_n_met.value()
-        met_list = ['Met. %i'%(i + 1) for i in range(n_met)]
+        met_list = [f'Met. {i + 1}' for i in range(n_met)]
         self.combo_met.addItems(met_list)
 
         #Update param dictionary
@@ -825,8 +839,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
 
         #Run timing check
         status = self.seq.check_timing()
-
-        if status[0] == True:
+        if any(status) is True:
             self.time_label.setStyleSheet("background-color: green;"
                                           "color: white;")
             self.time_label.setText('Timing Passed')
@@ -932,15 +945,15 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         #Convert dicom images into nifti
         qm = QMessageBox()
         dcm_dir = QFileDialog.getExistingDirectory(qm, 'Load Localizer DICOM Direcotry')
-        dcm_out = sp.run([f"dcm2niix -z y {dcm_dir}"], shell=True, capture_output=True,
-                         text=True)
+        _ = sp.run([f"dcm2niix -z y {dcm_dir}"], shell=True, capture_output=True,
+                   text=True, check=False)
 
         #Loop through json files
         self.loc_dic = {}
         for j_path in glob.glob(f'{dcm_dir}/*.json'):
 
             #Load in json data
-            with open(j_path, 'r') as j_id:
+            with open(j_path, 'r', encoding='utf-8') as j_id:
                 j_data = json.load(j_id)
 
             #Use json to figure out orientation string
@@ -997,6 +1010,9 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         self.local_loaded = True
 
 def main():
+    """
+    GUI startup function
+    """
 
     #Setup application
     app = QApplication(sys.argv)

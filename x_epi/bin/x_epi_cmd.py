@@ -1,10 +1,11 @@
-#!/usr/bin/python
+"""
+Command line script to create EPI sequences with x_epi
+"""
 
 import argparse
-import numpy as np
 import sys
-import os
-from x_epi import *
+from x_epi.x_epi import XEpi
+from x_epi.utils import NUCLEI, RES_DIR, save_k_space
 
 #Custom range checker for argparse
 def range_wrapper(v_min, v_max):
@@ -198,6 +199,9 @@ def make_met_parser(parent=None):
     return met_parser
 
 def main():
+    """
+    Constructs XEpi sequence, k-space data, and parameter file
+    """
 
     #Get parsers
     main_parser = make_main_parser()
@@ -206,12 +210,11 @@ def main():
     #Parse main arguments and return a list of unparsed metabolite specific arguments
     img_args, met_up_args = main_parser.parse_known_args()
 
-    seq = XEPI(**vars(img_args))
+    seq = XEpi(**vars(img_args))
     if img_args.run_spec != "NO":
         seq.add_spec(**vars(img_args))
 
     #Parse metabolite specific options if necessary
-    met_args = []
     if len(met_up_args) > 0:
 
         #Show help if needed

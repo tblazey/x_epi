@@ -1,15 +1,13 @@
-#!/usr/bin/python
+"""
+Utility functions for XEpi
+"""
 
 #Load libraries
-import numpy as np
 import os
 import re
+import numpy as np
 import scipy.integrate as integ
 import scipy.interpolate as interp
-
-"""
-Utility functions for XEPI
-"""
 
 #Default locations for resource files
 BASE_DIR = os.path.dirname(__file__)
@@ -35,10 +33,9 @@ def nuc_to_gamma(nuc):
        Gyromangetic ratio in Hz/T
     """
 
-    if nuc in NUCLEI.keys():
+    if nuc in NUCLEI:
         return NUCLEI[nuc]
-    else:
-        raise KeyError('Unknown nucleus')
+    raise KeyError('Unknown nucleus')
 
 def load_ssrf_grad(grd_path):
     """
@@ -60,14 +57,14 @@ def load_ssrf_grad(grd_path):
     """
 
     #Open file to get maximum gradient strength and time resolution
-    with open(grd_path) as fid:
+    with open(grd_path, encoding="utf-8") as fid:
         grd_txt = fid.read()
     try:
         grd_max = float(re.search('Max Gradient Strength = .*', grd_txt)[0].split()[4])
         grd_delta = float(re.search('Resolution = .*', grd_txt)[0].split()[2]) * 1E-6
-    except:
-        raise TypeError(f'Cannot find max gradient strength and time resolution ' \
-                          'information in {grd_path}.')
+    except TypeError as e:
+        raise TypeError('Cannot find max gradient strength and time resolution ' \
+                        f'information in {grd_path}.') from e
 
     #Load in gradient data. A bit inefficient, but more readable
     grd_data = np.loadtxt(grd_path, usecols=[0], comments='#')
@@ -96,13 +93,13 @@ def load_ssrf_rf(rf_path):
     """
 
     #Open file to get maximum b1 and time resolution
-    with open(rf_path) as fid:
+    with open(rf_path, encoding="utf-8") as fid:
         rf_txt = fid.read()
     try:
         b1_max = float(re.search('Max B1 = .*', rf_txt)[0].split()[3])
         rf_delta = float(re.search('Resolution = .*', rf_txt)[0].split()[2]) * 1E-6
-    except:
-        raise TypeError(f'Cannot find max B1 and time resolution in {rf_path}.')
+    except TypeError as e:
+        raise TypeError(f'Cannot find max B1 and time resolution in {rf_path}.') from e
 
     #Load in rf data. A bit inefficient, but more readable
     rf_data = np.loadtxt(rf_path, usecols=[0, 1], comments='#')
@@ -146,7 +143,7 @@ def compute_k_space(seq):
 
     Parameters
     ----------
-    seq : XEPI object
+    seq : XEpi object
        Sequence object containing waveforms
 
     Returns
@@ -166,8 +163,7 @@ def compute_k_space(seq):
     """
 
     #Get waveforms
-    [wave_data, tfp_exc, tfp_ref,
-     t_adc, fp_adc] = seq.waveforms_and_times(append_RF=True)
+    [wave_data, _, _, t_adc, _] = seq.waveforms_and_times(append_RF=True)
 
     #Resample gradient times so that they are all the same
     t_max = [wave_data[0][0, -1], wave_data[1][0, -1]]
@@ -194,7 +190,7 @@ def compute_k_space(seq):
     for i in range(1, len(seq.block_events) + 1):
         rf_num = seq.block_events[i][1]
         met_idx = seq.blck_lbls[i - 1]
-        if rf_num > 0 and type(met_idx) is int:
+        if rf_num > 0 and isinstance(met_idx, int):
             rf_edges[met_idx].append(block_edges[i - 1])
             rf_durs[met_idx].append(seq.block_durations[i - 1])
 
@@ -220,20 +216,20 @@ def compute_k_space(seq):
             if idx == len(rf_edges[m]) - 1:
 
                 #Get edge that is common for last rf for all metabolites
-                edge_time = np.round(rf_edges[m][idx] / seq.system.grad_raster_time) * \
+                edge_time = np.round(edge / seq.system.grad_raster_time) * \
                             seq.system.grad_raster_time
                 mask = t_i >= edge_time
 
                 #Edges that very depending on if we are doing last metabolite or not
                 if m == seq.n_met - 1 and idx == 0:
-                    grad_mask =  t_i > (rf_edges[m][idx] - rf_durs[m][0])
+                    grad_mask =  t_i > (edge - rf_durs[m][0])
                 if m != seq.n_met - 1:
                     edge_time_2 = rf_edges[m + 1][0] - rf_durs[m + 1][0]
                     edge_time_2 = np.round(edge_time_2 / seq.system.grad_raster_time) * \
                                   seq.system.grad_raster_time
                     mask = np.logical_and(mask, t_i <= edge_time_2)
                     if idx == 0:
-                        grad_mask = np.logical_and(t_i > (rf_edges[m][idx]- rf_durs[m][0]),
+                        grad_mask = np.logical_and(t_i > (edge - rf_durs[m][0]),
                                                    t_i <= (rf_edges[m + 1][0] -
                                                            rf_durs[m + 1][0]))
             else:
@@ -246,14 +242,14 @@ def compute_k_space(seq):
 
                 #Mask for gradients
                 if idx == 0:
-                    start_time = rf_edges[m][idx] - rf_durs[m][idx]
+                    start_time = edge - rf_durs[m][idx]
                     start_time = np.round(start_time / seq.system.grad_raster_time) * \
                                  seq.system.grad_raster_time
                     start_mask = t_i >= start_time
                     grad_mask = np.logical_and(start_mask, end_mask)
 
                 #Get mask for curent block
-                edge_time = np.round(rf_edges[m][idx] / seq.system.grad_raster_time) * \
+                edge_time = np.round(edge / seq.system.grad_raster_time) * \
                             seq.system.grad_raster_time
                 edge_mask = t_i >= edge_time
                 mask = np.logical_and(edge_mask , end_mask)
@@ -288,7 +284,7 @@ def save_k_space(seq, out):
     """
     Parameters
     ----------
-    seq : XEPI sequence object
+    seq : XEpi sequence object
        Sequence object to compute k-space data
     out : str
        Root for output files

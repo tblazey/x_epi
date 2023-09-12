@@ -4,12 +4,12 @@ import filecmp
 from os.path import join, splitext
 from os import remove
 import unittest
-from x_epi.XEPI import XEPI
+from x_epi.x_epi import XEpi
 from x_epi.utils import *
 
 FIX_DIR = join(BASE_DIR, '..', 'tests/fixtures')
 
-class TestXEPI(unittest.TestCase):
+class TestXEpi(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -42,7 +42,7 @@ class TestXEPI(unittest.TestCase):
         for idx, par in enumerate(pars):
 
             #Add sequence to class
-            seq = XEPI(**par['general'])
+            seq = XEpi(**par['general'])
 
             #Add metabolites
             for met in par['mets']:
