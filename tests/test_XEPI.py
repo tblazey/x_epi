@@ -65,12 +65,12 @@ class TestXEPI(unittest.TestCase):
       #Compare each sequence to reference
       for seq in self.seqs:
          seq.write(seq.out_path)
-         seq.save_params(splitext(seq.out_path)[0])
          cmp = filecmp.cmp(seq.out_path, join(FIX_DIR, seq.out_name), shallow=False)
          self.assertTrue(cmp) 
 
    def test_save_params(self):
       for seq in self.seqs:
+         seq.save_params(splitext(seq.out_path)[0])
          cmp = filecmp.cmp(splitext(seq.out_path)[0] + '.json', 
                            join(FIX_DIR, splitext(seq.out_name)[0] + '.json'),
                            shallow=False)
