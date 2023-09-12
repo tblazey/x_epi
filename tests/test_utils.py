@@ -1,10 +1,14 @@
-#!/usr/bin/python3
+"""
+Testing for x_epi utility funtions
+"""
 
 from os.path import join
 from os import remove
 import pickle
 import unittest
-from x_epi.utils import *
+import numpy as np
+from x_epi.utils import nuc_to_gamma, load_ssrf_grad, load_ssrf_rf, interp_waveform, \
+                        compute_k_space, save_k_space, BASE_DIR, RES_DIR
 
 FIX_DIR = join(BASE_DIR, '..', 'tests/fixtures')
 
@@ -88,7 +92,7 @@ class TestInterpWaveform(unittest.TestCase):
 
 class TestComputeKSpace(unittest.TestCase):
 
-    def test_compute_k_space_no_z(self):
+    def test_c_no_z(self):
 
         #Load in assets for testing
         with open(join(FIX_DIR, 'k_space_no_z.pkl'), 'rb') as f_id:

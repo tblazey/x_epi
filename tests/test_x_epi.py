@@ -5,7 +5,7 @@ from os.path import join, splitext
 from os import remove
 import unittest
 from x_epi.x_epi import XEpi
-from x_epi.utils import *
+from x_epi.utils import BASE_DIR
 
 FIX_DIR = join(BASE_DIR, '..', 'tests/fixtures')
 

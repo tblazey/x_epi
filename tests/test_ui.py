@@ -1,7 +1,9 @@
-#!/usr/bin/python3
+"""
+Very simple test for ui module created by QtDesigner
+"""
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDoubleSpinBox
 import unittest
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDoubleSpinBox
 from x_epi.ui import Ui_MainWindow
 
 
