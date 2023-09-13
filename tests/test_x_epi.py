@@ -1,4 +1,6 @@
-#!/usr/bin/python3
+"""
+Testing for x_epi class
+"""
 
 import filecmp
 import json
