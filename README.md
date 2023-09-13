@@ -13,6 +13,7 @@
 [![Pylint](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml/badge.svg)](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml)
 [![codecov](https://codecov.io/gh/tblazey/x_epi/graph/badge.svg?token=GS8QK3LG16)](https://codecov.io/gh/tblazey/x_epi)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
 
