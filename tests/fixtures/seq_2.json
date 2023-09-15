@@ -35,6 +35,7 @@
   "rf_dead_time": 99.99999999999999,
   "ori": "Transverse",
   "pe_dir": "AP",
+  "version": "0.0.4",
   "run_spec": "BOTH",
   "spec_size": 2048,
   "spec_bw": 25.0,

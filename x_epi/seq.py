@@ -5,6 +5,7 @@ x_epi sequence class module
 # Load libraries
 from ast import literal_eval
 from copy import deepcopy
+from importlib.metadata import version
 import json
 import re
 import types
@@ -1019,6 +1020,7 @@ class XSeq(pp.Sequence):
             "rf_dead_time": self.system.rf_dead_time * 1e6,
             "ori": self.ori,
             "pe_dir": self.pe_dir,
+            "version": version("x_epi")
         }
 
         # Spectra parameters

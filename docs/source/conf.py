@@ -1,5 +1,6 @@
 # Configuration file for the Sphinx documentation builder.
 
+from importlib.metadata import version
 import os
 import sys
 import numpy as np
@@ -13,8 +14,8 @@ project = "x_epi"
 copyright = "2023, Tyler Blazey"
 author = "Blazey"
 
-release = "0.1"
-version = "0.1.0"
+release = "0.0"
+version = version("x_epi")
 
 # -- General configuration
 

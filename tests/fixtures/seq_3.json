@@ -35,6 +35,7 @@
   "rf_dead_time": 99.99999999999999,
   "ori": "Transverse",
   "pe_dir": "AP",
+  "version": "0.0.4",
   "mets": [
     {
       "name": "met_1",

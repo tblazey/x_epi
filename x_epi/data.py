@@ -6,6 +6,7 @@ x_epi data class module
 from itertools import product
 import json
 import types
+from importlib.metadata import version
 import nibabel as nib
 import numpy as np
 from numpy.fft import ifftn, ifftshift, fftn, fftshift, fftfreq
@@ -563,6 +564,7 @@ class XData:
             "pe_dir": self.pe_dir,
             "alt_signs": [int(sign) for sign in self.alt_signs],
             "fft_axes": self.fft_axes,
+            "version": version("x_epi")
         }
 
         # Metabolite specific parameter
@@ -594,6 +596,6 @@ class XData:
         out_root : str
            Path to write json data to. Does not include extension
         """
-
+        
         with open(f"{out_root}.json", "w", encoding="utf-8") as fid:
             json.dump(self.create_param_dic(), fid, indent=2)
