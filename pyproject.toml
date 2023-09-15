@@ -14,7 +14,8 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ['matplotlib',
+dependencies = ['importlib',
+                'matplotlib',
                 'nibabel',
                 'numpy',
                 'pypulseq@git+https://github.com/tblazey/pypulseq#egg=dev',
