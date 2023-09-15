@@ -7,7 +7,8 @@ The easiest way to install **x_epi** is with *pip*:
 
     pip3 install git+https://github.com/tblazey/x_epi.git
 
-This will install the Python libraries as well as the *x_epi_cmd* and *x_epi_gui* tools.
+This will install the Python libraries as well as the *x_epi_cmd*, *x_epi_gui*, and
+*x_epi_recon* tools.
 
 If you desire, you can also download the source directly from the 
 `Github repository <https://github.com/tblazey/x_epi/>`_.

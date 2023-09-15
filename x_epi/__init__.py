@@ -2,6 +2,7 @@
 Initialize x_epi module
 """
 
-from .x_epi import XEpi
+from .data import XData
+from .seq import XSeq
 from .utils import *
 from . import ui

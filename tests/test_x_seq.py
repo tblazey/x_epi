@@ -8,13 +8,13 @@ from os.path import abspath, basename, dirname, join, splitext
 from os import remove
 import unittest
 from jsoncomparison import Compare
-from x_epi.x_epi import XEpi
+from x_epi.seq import XSeq
 from x_epi.utils import BASE_DIR
 
 FIX_DIR = abspath(join(BASE_DIR, "..", "tests/fixtures"))
 
 
-class TestXEpi(unittest.TestCase):
+class TestXSeq(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Define sequence parameters for testing
@@ -70,7 +70,7 @@ class TestXEpi(unittest.TestCase):
         cls.seqs = []
         for idx, par in enumerate(pars):
             # Add sequence to class
-            seq = XEpi(**par["general"])
+            seq = XSeq(**par["general"])
 
             # Add metabolites
             for met in par["mets"]:

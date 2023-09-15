@@ -1,0 +1,77 @@
+{
+	"par_1": {
+		"general": {
+			"grad_spoil": true,
+			"n_rep": 2,
+			"alt_read": true,
+			"alt_pha": true,
+			"alt_slc": true,
+			"n_echo": 3,
+			"tv": 1000,
+			"ts": 2500
+		},
+		"mets": [{
+				"pf_pe2": 0.75,
+				"z_centric": true
+			},
+			{
+				"use_sinc": true
+			}
+		],
+		"create": {
+			"return_plot": true
+		},
+		"spec": false,
+		"name": "seq_1"
+	},
+	"par_2": {
+		"general": {
+			"ramp_samp": true,
+			"max_slew": 120,
+			"max_grad": 60,
+			"acq_3d": false,
+			"symm_ro": false,
+			"grad_spoil": true,
+			"n_echo": 3,
+			"tr": 500,
+			"delta_te": 150
+		},
+		"mets": [{
+				"ro_os": 2.0,
+				"pf_pe": 0.75,
+				"use_sinc": true
+			},
+			{
+				"use_sinc": false,
+				"freq_off": 50
+			}
+		],
+		"create": {},
+		"spec": true,
+		"name": "seq_2"
+	},
+	"par_3": {
+		"general": {
+			"no_pe": true,
+			"no_slc": true,
+			"n_reps": 2
+		},
+		"mets": [{}],
+		"create": {
+			"no_reps": true
+		},
+		"spec": false,
+		"name": "seq_3"
+	},
+	"par_4": {
+		"general": {
+			"no_pe": true,
+			"acq_3d": true,
+			"symm_ro": false
+		},
+		"mets": [{}],
+		"create": {},
+		"spec": false
+		"name": "seq_4"
+	}
+}

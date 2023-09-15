@@ -1,9 +1,15 @@
 API
 ===
 
-.. autoclass:: x_epi.x_epi.XEpi
+.. autoclass:: x_epi.seq.XSeq
    :members:
    :special-members:
+   :exclude-members: __weakref__, __call__
+   
+.. autoclass:: x_epi.data.XData
+   :members:
+   :special-members:
+   :exclude-members: __weakref__, __call__
 
 .. automodule:: x_epi.utils
    :members:

@@ -99,7 +99,7 @@ class TestInterpWaveform(unittest.TestCase):
 
 
 class TestComputeKSpace(unittest.TestCase):
-    def test_c_no_z(self):
+    def test_compute_k_space_no_z(self):
         # Load in assets for testing
         with open(join(FIX_DIR, "k_space_no_z.pkl"), "rb") as f_id:
             seq = pickle.load(f_id)

@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>General Parameters &#8212; x_epi 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../../_static/documentation_options.js?v=1b390748"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'seq_doc/cmd/gen';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Metabolite Specific" href="met.html" />
+    <link rel="prev" title="Command Line" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/x_epi_logo.png" class="logo__image only-light" alt="XEPI Logo"/>
+    <script>document.write(`<img src="../../_static/x_epi_logo.png" class="logo__image only-dark" alt="XEPI Logo"/>`);</script>
+  
+  
+    <p class="title logo__title">Home</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../install.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Sequence Creation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../recon_doc/index.html">
+                        Image Reconstruction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../tutorial.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/numpy/numpydoc" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../install.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Sequence Creation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../recon_doc/index.html">
+                        Image Reconstruction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../tutorial.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/numpy/numpydoc" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ui.html">Graphical User Interface</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Command Line</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">General Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="met.html">Metabolite Specific</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Sequence Creation</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Command Line</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">General Parameters</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="general-parameters">
+<h1>General Parameters<a class="headerlink" href="#general-parameters" title="Link to this heading">#</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">x_epi_cmd</span> <span class="p">[</span><span class="o">-</span><span class="n">out</span> <span class="n">OUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">fov</span> <span class="n">RO</span> <span class="n">PE</span> <span class="n">SLC</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">rbw</span> <span class="n">BW</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n_avg</span> <span class="n">N</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n_rep</span> <span class="n">N</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">tr</span> <span class="n">TR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">tv</span> <span class="n">TV</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ts</span> <span class="n">TS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ro_off</span> <span class="n">OFFSET</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">pe_off</span> <span class="n">OFFSET</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">slc_off</span> <span class="n">OFFSET</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n_echo</span> <span class="n">N</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">delta_te</span> <span class="n">DELTA</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">-</span><span class="n">ori</span> <span class="p">{</span><span class="n">Sagittal</span><span class="p">,</span><span class="n">Coronal</span><span class="p">,</span><span class="n">Transverse</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">pe_dir</span> <span class="p">{</span><span class="n">AP</span><span class="p">,</span><span class="n">RL</span><span class="p">,</span><span class="n">SI</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">symm_ro</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">acq_3d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">no_pe</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">no_slc</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">grad_spoil</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ramp_samp</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ro_os</span> <span class="n">FACTOR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">slice_axis</span> <span class="p">{</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">alt_read</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">-</span><span class="n">alt_pha</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">alt_slc</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">run_spec</span> <span class="p">{</span><span class="n">START</span><span class="p">,</span><span class="n">END</span><span class="p">,</span><span class="n">BOTH</span><span class="p">,</span><span class="n">NO</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">spec_size</span> <span class="n">N</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">spec_bw</span> <span class="n">BW</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">spec_flip</span> <span class="n">ANGLE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">spec_tr</span> <span class="n">TR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n_spec</span> <span class="n">N</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b0</span> <span class="n">B0</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">nuc</span> <span class="p">{</span><span class="mi">13</span><span class="n">C</span><span class="p">,</span><span class="mi">1</span><span class="n">H</span><span class="p">,</span><span class="mi">2</span><span class="n">H</span><span class="p">,</span><span class="mi">15</span><span class="n">N</span><span class="p">,</span><span class="mi">17</span><span class="n">O</span><span class="p">,</span><span class="mi">31</span><span class="n">P</span><span class="p">,</span><span class="mi">19</span><span class="n">F</span><span class="p">,</span><span class="mi">23</span><span class="n">Na</span><span class="p">,</span><span class="mi">129</span><span class="n">Xe</span><span class="p">}]</span>
+                 <span class="p">[</span><span class="o">-</span><span class="n">max_grad</span> <span class="n">GRAD</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">max_slew</span> <span class="n">SLEW</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">rf_ringdown_time</span> <span class="n">RF_RINGDOWN_TIME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">rf_dead_time</span> <span class="n">RF_DEAD_TIME</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="named-arguments">
+<h2>Named Arguments<a class="headerlink" href="#named-arguments" title="Link to this heading">#</a></h2>
+<dl class="option-list">
+<dt><kbd>-out</kbd></dt>
+<dd><p>Root for file outputs</p>
+<p>Default: “epi”</p>
+</dd>
+</dl>
+</section>
+<section id="image-parameters">
+<h2>Image parameters<a class="headerlink" href="#image-parameters" title="Link to this heading">#</a></h2>
+<dl class="option-list">
+<dt><kbd>-fov</kbd></dt>
+<dd><p>Field of view in readout, phase, and slice dimensions [mm]</p>
+<p>Default: [240, 240, 240]</p>
+</dd>
+<dt><kbd>-rbw</kbd></dt>
+<dd><p>Readout bandwidth [kHz]</p>
+<p>Default: 50</p>
+</dd>
+<dt><kbd>-n_avg</kbd></dt>
+<dd><p>Number of averages</p>
+<p>Default: 1</p>
+</dd>
+<dt><kbd>-n_rep</kbd></dt>
+<dd><p>Number of repetitions</p>
+<p>Default: 1</p>
+</dd>
+<dt><kbd>-tr</kbd></dt>
+<dd><p>Minimum repetition time [ms]</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>-tv</kbd></dt>
+<dd><p>Minimum volume time [ms]</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>-ts</kbd></dt>
+<dd><p>Minimum set time [ms]</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>-ro_off</kbd></dt>
+<dd><p>Offset in readout dimension [mm]</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>-pe_off</kbd></dt>
+<dd><p>Offset in phase encoding dimension [mm]</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>-slc_off</kbd></dt>
+<dd><p>Offset in slice/second phase encoding dimension [mm]</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>-n_echo</kbd></dt>
+<dd><p>Number of echos</p>
+<p>Default: 1</p>
+</dd>
+<dt><kbd>-delta_te</kbd></dt>
+<dd><p>Minimum time between echoes [ms]</p>
+<p>Default: 0</p>
+</dd>
+<dt><kbd>-ori</kbd></dt>
+<dd><p>Possible choices: Sagittal, Coronal, Transverse</p>
+<p>Acquistion orientation. Only used for reconstruction</p>
+<p>Default: “Transverse”</p>
+</dd>
+<dt><kbd>-pe_dir</kbd></dt>
+<dd><p>Possible choices: AP, RL, SI</p>
+<p>Phase encoding direction. Only used for reconstruction</p>
+<p>Default: “AP”</p>
+</dd>
+</dl>
+</section>
+<section id="acquisition-options">
+<h2>Acquisition options<a class="headerlink" href="#acquisition-options" title="Link to this heading">#</a></h2>
+<dl class="option-list">
+<dt><kbd>-symm_ro</kbd></dt>
+<dd><p>Replace flyback readout with a symmetric one.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-acq_3d</kbd></dt>
+<dd><p>Use a 3D readout instead of 2D</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-no_pe</kbd></dt>
+<dd><p>Turn phase encoding on/off</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-no_slc</kbd></dt>
+<dd><p>Turn off slice gradients</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-grad_spoil</kbd></dt>
+<dd><p>Turn gradient spoiling on</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-ramp_samp</kbd></dt>
+<dd><p>Turn on ramp sampling</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-ro_os</kbd></dt>
+<dd><p>Readout oversampling factor for ramp sampling</p>
+<p>Default: 1.0</p>
+</dd>
+<dt><kbd>-slice_axis</kbd></dt>
+<dd><p>Possible choices: X, Y, Z</p>
+<p>Axis to play slice selection gradients</p>
+<p>Default: “Z”</p>
+</dd>
+<dt><kbd>-alt_read</kbd></dt>
+<dd><p>Alternate polarity of readout gradient every repeition</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-alt_pha</kbd></dt>
+<dd><p>Alternate polarity of phase encoding gradient every repeition</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-alt_slc</kbd></dt>
+<dd><p>Alternate polarity of second phase encoding every repetition</p>
+<p>Default: False</p>
+</dd>
+</dl>
+</section>
+<section id="spectra-options">
+<h2>Spectra options<a class="headerlink" href="#spectra-options" title="Link to this heading">#</a></h2>
+<dl class="option-list">
+<dt><kbd>-run_spec</kbd></dt>
+<dd><p>Possible choices: START, END, BOTH, NO</p>
+<p>Run a slice selective spectra at the start and/or end of the seqience.</p>
+<p>Default: “NO”</p>
+</dd>
+<dt><kbd>-spec_size</kbd></dt>
+<dd><p>Number of points in spectra</p>
+<p>Default: 2048</p>
+</dd>
+<dt><kbd>-spec_bw</kbd></dt>
+<dd><p>Spectral bandwidth [kHz]</p>
+<p>Default: 25</p>
+</dd>
+<dt><kbd>-spec_flip</kbd></dt>
+<dd><p>Flip angle for slcie selective pulse [deg]</p>
+<p>Default: 2.5</p>
+</dd>
+<dt><kbd>-spec_tr</kbd></dt>
+<dd><p>Minimum repetition time for spectra acquistions [ms]</p>
+<p>Default: 1000</p>
+</dd>
+<dt><kbd>-n_spec</kbd></dt>
+<dd><p>Number of spectra acquisitions</p>
+<p>Default: 1</p>
+</dd>
+</dl>
+</section>
+<section id="scanner-options">
+<h2>Scanner Options<a class="headerlink" href="#scanner-options" title="Link to this heading">#</a></h2>
+<dl class="option-list">
+<dt><kbd>-b0</kbd></dt>
+<dd><p>B0 Field Strength [Tesla]</p>
+<p>Default: 3</p>
+</dd>
+<dt><kbd>-nuc</kbd></dt>
+<dd><p>Possible choices: 13C, 1H, 2H, 15N, 17O, 31P, 19F, 23Na, 129Xe</p>
+<p>Nucleus to imaage</p>
+<p>Default: “13C”</p>
+</dd>
+<dt><kbd>-max_grad</kbd></dt>
+<dd><p>Maximum gradient strength [mT/m]</p>
+<p>Default: 100</p>
+</dd>
+<dt><kbd>-max_slew</kbd></dt>
+<dd><p>Maximum slew rate [T/m/s]</p>
+<p>Default: 200</p>
+</dd>
+<dt><kbd>-rf_ringdown_time</kbd></dt>
+<dd><p>RF ringdown time [us]</p>
+<p>Default: 30</p>
+</dd>
+<dt><kbd>-rf_dead_time</kbd></dt>
+<dd><p>RF dead time [us]</p>
+<p>Default: 100</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#named-arguments">Named Arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-parameters">Image parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acquisition-options">Acquisition options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectra-options">Spectra options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scanner-options">Scanner Options</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/seq_doc/cmd/gen.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, Tyler Blazey.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

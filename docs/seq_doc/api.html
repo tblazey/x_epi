@@ -1,0 +1,1023 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>API &#8212; x_epi 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=1b390748"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'seq_doc/api';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Graphical User Interface" href="ui.html" />
+    <link rel="prev" title="Sequence Creation" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/x_epi_logo.png" class="logo__image only-light" alt="XEPI Logo"/>
+    <script>document.write(`<img src="../_static/x_epi_logo.png" class="logo__image only-dark" alt="XEPI Logo"/>`);</script>
+  
+  
+    <p class="title logo__title">Home</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../install.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Sequence Creation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../recon_doc/index.html">
+                        Image Reconstruction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorial.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/numpy/numpydoc" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../install.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Sequence Creation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../recon_doc/index.html">
+                        Image Reconstruction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorial.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/numpy/numpydoc" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ui.html">Graphical User Interface</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cmd/index.html">Command Line</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="cmd/gen.html">General Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd/met.html">Metabolite Specific</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Sequence Creation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">API</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-x_epi.seq">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-x_epi.seq" title="Link to this heading">#</a></h1>
+<p>x_epi sequence class module</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">x_epi.seq.</span></span><span class="sig-name descname"><span class="pre">XSeq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq" title="Link to this definition">#</a></dt>
+<dd><p>Sequence class for creating EPI sequences.
+Inherits from the Pypulseq sequence class.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.add_blck_lbl" title="x_epi.seq.XSeq.add_blck_lbl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_blck_lbl</span></code></a>(*args[, lbl])</p></td>
+<td><p>Quick function to add events to block and add a label to list</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.add_met" title="x_epi.seq.XSeq.add_met"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_met</span></code></a>([name, size, pf_pe, pf_pe2, ...])</p></td>
+<td><p>Add metabolite acquisition to sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.add_spec" title="x_epi.seq.XSeq.add_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_spec</span></code></a>([run_spec, spec_size, spec_bw, ...])</p></td>
+<td><p>Add spectra acquisition to start and/or end of acquisition</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.add_spec_events" title="x_epi.seq.XSeq.add_spec_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_spec_events</span></code></a>()</p></td>
+<td><p>Creates rf, adc, and slice gradient events for spectra</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.create_param_dic" title="x_epi.seq.XSeq.create_param_dic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_param_dic</span></code></a>()</p></td>
+<td><p>Create a dictionary for sequence parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.create_seq" title="x_epi.seq.XSeq.create_seq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_seq</span></code></a>([return_plot, no_reps])</p></td>
+<td><p>Creates epi sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.create_ssrf_grad_ev" title="x_epi.seq.XSeq.create_ssrf_grad_ev"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_ssrf_grad_ev</span></code></a>(met_idx)</p></td>
+<td><p>Creates gradient event for SSRF pulse</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.create_ssrf_rf_ev" title="x_epi.seq.XSeq.create_ssrf_rf_ev"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_ssrf_rf_ev</span></code></a>(met_idx)</p></td>
+<td><p>Creates RF event for SSRF pulse</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.seq.XSeq.save_params" title="x_epi.seq.XSeq.save_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_params</span></code></a>(out_path)</p></td>
+<td><p>Saves input parameters that define sequence to json</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[240,</span> <span class="pre">240,</span> <span class="pre">240]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ro_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pe_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slc_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Z'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_echo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_te</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symm_ro</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acq_3d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_pe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_spoil</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ramp_samp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_slc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_read</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_pha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_slc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ro_os</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nuc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'13C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_dead_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_ringdown_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_slew</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_grad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Transverse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pe_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AP'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize X EPI sequence object, inherits from pypulseq Sequence object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>XSeq sequence object</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fov</strong><span class="classifier">array_like</span></dt><dd><p>Contains FOV of each dimension (mm)</p>
+</dd>
+<dt><strong>rbw</strong><span class="classifier">float</span></dt><dd><p>Readout bandwidth (kHz)</p>
+</dd>
+<dt><strong>n_avg</strong><span class="classifier">int</span></dt><dd><p>Number of averages</p>
+</dd>
+<dt><strong>n_rep</strong><span class="classifier">int</span></dt><dd><p>Number of repeats</p>
+</dd>
+<dt><strong>tr</strong><span class="classifier">float</span></dt><dd><p>Minimum duration of each excitation block (ms)</p>
+</dd>
+<dt><strong>tv</strong><span class="classifier">float</span></dt><dd><p>Minimum duration of each 3D image (ms)</p>
+</dd>
+<dt><strong>ts</strong><span class="classifier">float</span></dt><dd><p>Minimum durartion of each metabolite set (ms)</p>
+</dd>
+<dt><strong>ro_off</strong><span class="classifier">float</span></dt><dd><p>Spatial offset in readout direction (mm)</p>
+</dd>
+<dt><strong>pe_off</strong><span class="classifier">float</span></dt><dd><p>Spatial offset in phase encoding direction (mm). Only for recon.</p>
+</dd>
+<dt><strong>slc_off: float</strong></dt><dd><p>Spatial offset in slice direction (mm)</p>
+</dd>
+<dt><strong>slice_axis</strong><span class="classifier">str</span></dt><dd><p>Axis to play slic gradient on. Takes X, Y, Z</p>
+</dd>
+<dt><strong>n_echo</strong><span class="classifier">int</span></dt><dd><p>Number of echoes following each excitation</p>
+</dd>
+<dt><strong>delta_te</strong><span class="classifier">float</span></dt><dd><p>Minimum duration between each echo (ms)
+#Extract sequence options</p>
+</dd>
+<dt><strong>symm_ro</strong><span class="classifier">bool</span></dt><dd><p>Uses symmetric readout if True. Otherwise uses flyback.</p>
+</dd>
+<dt><strong>acq_3d</strong><span class="classifier">bool</span></dt><dd><p>Uses a 3D readout if True. Otherwise uses 2D.</p>
+</dd>
+<dt><strong>no_pe</strong><span class="classifier">bool</span></dt><dd><p>Turns off phase encoding gradients is True.</p>
+</dd>
+<dt><strong>grad_spoil</strong><span class="classifier">bool</span></dt><dd><p>Turns on gradient spoilers if True</p>
+</dd>
+<dt><strong>no_slc</strong><span class="classifier">bool</span></dt><dd><p>Turns off slice gradients if True.</p>
+</dd>
+<dt><strong>alt_read</strong><span class="classifier">bool</span></dt><dd><p>Alternate polarity of readout every repetition</p>
+</dd>
+<dt><strong>alt_pha</strong><span class="classifier">bool</span></dt><dd><p>Alternate polarity of phase encoding every repetition</p>
+</dd>
+<dt><strong>alt_slc</strong><span class="classifier">bool</span></dt><dd><p>Alternate polarity of second phase encoding every repetition</p>
+</dd>
+<dt><strong>ro_os</strong><span class="classifier">float</span></dt><dd><p>Readout oversampling factor</p>
+</dd>
+<dt><strong>b0</strong><span class="classifier">float</span></dt><dd><p>Main magnetic field strength (T)</p>
+</dd>
+<dt><strong>nuc</strong><span class="classifier">str</span></dt><dd><p>Nucleus to image</p>
+</dd>
+<dt><strong>rf_dead_time</strong><span class="classifier">float</span></dt><dd><p>Dead time for RF channel (us)</p>
+</dd>
+<dt><strong>rf_ringdown_time</strong><span class="classifier">float</span></dt><dd><p>Ringdown time for RF channel (us)</p>
+</dd>
+<dt><strong>max_slew</strong><span class="classifier">float</span></dt><dd><p>Maximum slew rate (T/m/s)</p>
+</dd>
+<dt><strong>max_grad</strong><span class="classifier">float</span></dt><dd><p>Maximum gradient strength (mT/m)</p>
+</dd>
+<dt><strong>ori</strong><span class="classifier">str</span></dt><dd><p>Image orientation for reconstruction.</p>
+</dd>
+<dt><strong>pe_dir</strong><span class="classifier">str</span></dt><dd><p>Phase encoding direction for reconstruction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.add_blck_lbl">
+<span class="sig-name descname"><span class="pre">add_blck_lbl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.add_blck_lbl" title="Link to this definition">#</a></dt>
+<dd><p>Quick function to add events to block and add a label to list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>args</strong><span class="classifier">SimpleNamespace</span></dt><dd><p>Block structure / items to be added to sequence</p>
+</dd>
+<dt><strong>lbl</strong><span class="classifier">str</span></dt><dd><p>Label to add to self.blck_lbls</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.add_met">
+<span class="sig-name descname"><span class="pre">add_met</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(16,</span> <span class="pre">16,</span> <span class="pre">16)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf_pe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf_pe2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sinc_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sinc_tbw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sinc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grd_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.GRD'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.RF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sinc_dur</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_centric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.add_met" title="Link to this definition">#</a></dt>
+<dd><p>Add metabolite acquisition to sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">str</span></dt><dd><p>Name for metabolite</p>
+</dd>
+<dt><strong>size</strong><span class="classifier">array_like</span></dt><dd><p>Grid size in x, y, and z</p>
+</dd>
+<dt><strong>pf_pe</strong><span class="classifier">float</span></dt><dd><p>Partial Fourier fraction in y dimension</p>
+</dd>
+<dt><strong>pf_pe2</strong><span class="classifier">float</span></dt><dd><p>Partial Fourier fraction in z dimension</p>
+</dd>
+<dt><strong>sinc_frac</strong><span class="classifier">float</span></dt><dd><p>Center fraction of sinc pulse</p>
+</dd>
+<dt><strong>sinc_tbw</strong><span class="classifier">float</span></dt><dd><p>Time-bandwidth product of sinc pulse</p>
+</dd>
+<dt><strong>grd_path</strong><span class="classifier">str</span></dt><dd><p>Path to gradient file from Spectral-Spatial RF Toolbox</p>
+</dd>
+<dt><strong>rf_path</strong><span class="classifier">str</span></dt><dd><p>‘Path to rf file from Spectral-Spatial RF Toolbox</p>
+</dd>
+<dt><strong>formula</strong><span class="classifier">str</span></dt><dd><p>Formula for scaling SSRF gradient where x is slice thickness in mm</p>
+</dd>
+<dt><strong>use_sinc</strong><span class="classifier">bool</span></dt><dd><p>Use a sinc pulse instead of an SSRF pulse</p>
+</dd>
+<dt><strong>flip</strong><span class="classifier">float</span></dt><dd><p>Flip angle (degrees)</p>
+</dd>
+<dt><strong>freq_off</strong><span class="classifier">float</span></dt><dd><p>Frequency offset (Hz) of pulse</p>
+</dd>
+<dt><strong>sinc_dur</strong><span class="classifier">float</span></dt><dd><p>Duration of sinc pulse (ms)</p>
+</dd>
+<dt><strong>z_centric</strong><span class="classifier">bool</span></dt><dd><p>Use centric phase encoding in z direction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.add_spec">
+<span class="sig-name descname"><span class="pre">add_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'END'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec_bw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec_flip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec_tr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.add_spec" title="Link to this definition">#</a></dt>
+<dd><p>Add spectra acquisition to start and/or end of acquisition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>run_spec</strong><span class="classifier">str</span></dt><dd><p>When to run spectra. Takes START, END, or BOTH</p>
+</dd>
+<dt><strong>spec_size</strong><span class="classifier">n</span></dt><dd><p>Number of spectra to acquire</p>
+</dd>
+<dt><strong>spec_bw</strong><span class="classifier">float</span></dt><dd><p>Spectral bandwidth (kHz)</p>
+</dd>
+<dt><strong>spec_flip</strong><span class="classifier">float</span></dt><dd><p>Flip angle for sinc pulse (degrees)</p>
+</dd>
+<dt><strong>spec_tr</strong><span class="classifier">float</span></dt><dd><p>Minimum duration of each excitation block (ms)</p>
+</dd>
+<dt><strong>n_spec</strong><span class="classifier">int</span></dt><dd><p>Number of spectra acquistions (seperated by at least spec_tr)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.add_spec_events">
+<span class="sig-name descname"><span class="pre">add_spec_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.add_spec_events" title="Link to this definition">#</a></dt>
+<dd><p>Creates rf, adc, and slice gradient events for spectra</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.create_param_dic">
+<span class="sig-name descname"><span class="pre">create_param_dic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.create_param_dic" title="Link to this definition">#</a></dt>
+<dd><p>Create a dictionary for sequence parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>param_dic</strong><span class="classifier">dic</span></dt><dd><p>Dictionary of sequence parameters</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.create_seq">
+<span class="sig-name descname"><span class="pre">create_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_reps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.create_seq" title="Link to this definition">#</a></dt>
+<dd><p>Creates epi sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>return_plot</strong><span class="classifier">bool</span></dt><dd><p>If True, returns a sequence object with no repetitions or averages.
+Useful for plotting sequence</p>
+</dd>
+<dt><strong>no_reps</strong><span class="classifier">bool</span></dt><dd><p>If True, turns off replications/averages</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>plot_seq</strong><span class="classifier">X EPI object</span></dt><dd><p>Sequence object with no repetitions or aveages</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.create_ssrf_grad_ev">
+<span class="sig-name descname"><span class="pre">create_ssrf_grad_ev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">met_idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.create_ssrf_grad_ev" title="Link to this definition">#</a></dt>
+<dd><p>Creates gradient event for SSRF pulse</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>met_idx</strong><span class="classifier">int</span></dt><dd><p>Index of metabolite in self.mets</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.create_ssrf_rf_ev">
+<span class="sig-name descname"><span class="pre">create_ssrf_rf_ev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">met_idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.create_ssrf_rf_ev" title="Link to this definition">#</a></dt>
+<dd><p>Creates RF event for SSRF pulse</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>met_idx</strong><span class="classifier">int</span></dt><dd><p>Index of metabolite in self.mets</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.seq.XSeq.save_params">
+<span class="sig-name descname"><span class="pre">save_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.seq.XSeq.save_params" title="Link to this definition">#</a></dt>
+<dd><p>Saves input parameters that define sequence to json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>out_path</strong><span class="classifier">str</span></dt><dd><p>Path to write json data to</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out_dic</strong><span class="classifier">json</span></dt><dd><p>Json file containing parameters</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-x_epi.utils">Utility functions for XSeq</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.compute_k_space">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">compute_k_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.compute_k_space" title="Link to this definition">#</a></dt>
+<dd><p>Computes rf, gradient, and k-space waveforms of current sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seq</strong><span class="classifier">XSeq object</span></dt><dd><p>Sequence object containing waveforms</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>g_list</strong><span class="classifier">list</span></dt><dd><p>Gradient waveforms in X, Y, and Z dimensions for each metabolite</p>
+</dd>
+<dt><strong>rf_list</strong><span class="classifier">list</span></dt><dd><p>Complex rf waveforms for each metabolite</p>
+</dd>
+<dt><strong>k_list</strong><span class="classifier">list</span></dt><dd><p>3D k-space waveforms for each metabolite. Returned if k_3d is True</p>
+</dd>
+<dt><strong>adc_list</strong><span class="classifier">list</span></dt><dd><p>Timings for 3D k-space waveforms for each metabolite. Returned if k_3d is True</p>
+</dd>
+<dt><strong>k_2d_list</strong><span class="classifier">list</span></dt><dd><p>2D k-space waveforms for each metabolite. Returned if k_2d is True</p>
+</dd>
+<dt><strong>adc_2d_list</strong><span class="classifier">list</span></dt><dd><p>Timings for 2D k-space waveforms for each metabolite. Returned if k_2d is True</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.interp_waveform">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">interp_waveform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.interp_waveform" title="Link to this definition">#</a></dt>
+<dd><p>Interpolates signal waveform</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sig</strong><span class="classifier">ndarray</span></dt><dd><p>Array containing waveform data</p>
+</dd>
+<dt><strong>delta_t</strong><span class="classifier">float</span></dt><dd><p>Sampling time for data in sig</p>
+</dd>
+<dt><strong>delta_ti</strong><span class="classifier">float</span></dt><dd><p>Sampling time to interpolate to</p>
+</dd>
+<dt><strong>ti_end</strong><span class="classifier">float</span></dt><dd><p>Time to end interpolation at</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>sig_i</strong><span class="classifier">ndarray</span></dt><dd><p>Array containing interpolated data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.knot_loc">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">knot_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.knot_loc" title="Link to this definition">#</a></dt>
+<dd><p>Calculates location for knots based on sample quantiles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x</strong><span class="classifier">array</span></dt><dd><p>A array of length n containing the x-values</p>
+</dd>
+<dt><strong>n_k: interger</strong></dt><dd><p>Number of knots</p>
+</dd>
+<dt><strong>bounds: array</strong></dt><dd><p>A 2 x 1 array containing percentile bounds.
+If not set then function uses method described below.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>knots</strong><span class="classifier">array</span></dt><dd><p>A set of knot locations</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Uses the same basic algorithm as Hmisc package in R:</dt><dd><p>For 3 knots -&gt; outer percentiles are 10 and 90%
+For 4-6 knots -&gt; outer percentiels are 5% and 95%
+For &gt;6 knots -&gt; outer percentiles are 2.5% and 97.5%
+All other knots are linearly spaced between outer percentiles</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.load_ssrf_grad">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">load_ssrf_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grd_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.load_ssrf_grad" title="Link to this definition">#</a></dt>
+<dd><p>Load in SSRF gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>grd_path</strong><span class="classifier">str</span></dt><dd><p>Path to SSRF gradient file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>grd_data</strong><span class="classifier">ndarray</span></dt><dd><p>Numpy array containing gradient data</p>
+</dd>
+<dt><strong>grd_max</strong><span class="classifier">float</span></dt><dd><p>Maximum gradient value (G/cm)</p>
+</dd>
+<dt><strong>grd_delta</strong><span class="classifier">float</span></dt><dd><p>Sampling time (s)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.load_ssrf_rf">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">load_ssrf_rf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rf_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.load_ssrf_rf" title="Link to this definition">#</a></dt>
+<dd><p>Load in SSRF rf</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>rf_path</strong><span class="classifier">str</span></dt><dd><p>Path to SSRF RF file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>rf_mag</strong><span class="classifier">ndarray</span></dt><dd><p>Numpy array containing rf magnitude</p>
+</dd>
+<dt><strong>rf_pha</strong><span class="classifier">ndarray</span></dt><dd><p>Numpy array containing rf phase</p>
+</dd>
+<dt><strong>b1_max</strong><span class="classifier">float</span></dt><dd><p>Maximum B1 (G)</p>
+</dd>
+<dt><strong>rf_delta</strong><span class="classifier">float</span></dt><dd><p>Sampling time (s)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.nuc_to_gamma">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">nuc_to_gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nuc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.nuc_to_gamma" title="Link to this definition">#</a></dt>
+<dd><p>Returns gyromagnetic ratio given nucleus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nuc</strong><span class="classifier">str</span></dt><dd><p>Nucleus string (e.g., 13C, 1H, etc)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gamma</strong><span class="classifier">float</span></dt><dd><p>Gyromangetic ratio in Hz/T</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.r_spline_basis">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">r_spline_basis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knots</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.r_spline_basis" title="Link to this definition">#</a></dt>
+<dd><p>Calculates a restricted cubic spline basis for X given a set of knots</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x</strong><span class="classifier">array</span></dt><dd><p>A array of length n containing the x-values for cubic spline basis</p>
+</dd>
+<dt><strong>knots: array</strong></dt><dd><p>An array of length p containing knot locations</p>
+</dd>
+<dt><strong>norm: logical</strong></dt><dd><p>If true normalizes spline (see rcspline.eval norm=2 in R)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>basis</strong><span class="classifier">matrix</span></dt><dd><p>an n  xp basis for a restricted cubic spine</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="x_epi.utils.save_k_space">
+<span class="sig-prename descclassname"><span class="pre">x_epi.utils.</span></span><span class="sig-name descname"><span class="pre">save_k_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.utils.save_k_space" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seq</strong><span class="classifier">XSeq sequence object</span></dt><dd><p>Sequence object to compute k-space data</p>
+</dd>
+<dt><strong>out</strong><span class="classifier">str</span></dt><dd><p>Root for output files</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>k_space</strong><span class="classifier">list of ndarrays</span></dt><dd><p>List containing k_space data for each metabolite</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq"><code class="docutils literal notranslate"><span class="pre">XSeq</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.__init__"><code class="docutils literal notranslate"><span class="pre">XSeq.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.add_blck_lbl"><code class="docutils literal notranslate"><span class="pre">XSeq.add_blck_lbl()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.add_met"><code class="docutils literal notranslate"><span class="pre">XSeq.add_met()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.add_spec"><code class="docutils literal notranslate"><span class="pre">XSeq.add_spec()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.add_spec_events"><code class="docutils literal notranslate"><span class="pre">XSeq.add_spec_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.create_param_dic"><code class="docutils literal notranslate"><span class="pre">XSeq.create_param_dic()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.create_seq"><code class="docutils literal notranslate"><span class="pre">XSeq.create_seq()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.create_ssrf_grad_ev"><code class="docutils literal notranslate"><span class="pre">XSeq.create_ssrf_grad_ev()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.create_ssrf_rf_ev"><code class="docutils literal notranslate"><span class="pre">XSeq.create_ssrf_rf_ev()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.seq.XSeq.save_params"><code class="docutils literal notranslate"><span class="pre">XSeq.save_params()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.compute_k_space"><code class="docutils literal notranslate"><span class="pre">compute_k_space()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.interp_waveform"><code class="docutils literal notranslate"><span class="pre">interp_waveform()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.knot_loc"><code class="docutils literal notranslate"><span class="pre">knot_loc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.load_ssrf_grad"><code class="docutils literal notranslate"><span class="pre">load_ssrf_grad()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.load_ssrf_rf"><code class="docutils literal notranslate"><span class="pre">load_ssrf_rf()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.nuc_to_gamma"><code class="docutils literal notranslate"><span class="pre">nuc_to_gamma()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.r_spline_basis"><code class="docutils literal notranslate"><span class="pre">r_spline_basis()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.utils.save_k_space"><code class="docutils literal notranslate"><span class="pre">save_k_space()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/seq_doc/api.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, Tyler Blazey.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

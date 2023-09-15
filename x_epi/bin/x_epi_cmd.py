@@ -4,7 +4,7 @@ Command line script to create EPI sequences with x_epi
 
 import argparse
 import sys
-from x_epi.x_epi import XEpi
+from x_epi.seq import XSeq
 from x_epi.utils import NUCLEI, RES_DIR, save_k_space
 
 
@@ -369,9 +369,9 @@ def make_met_parser(parent=None):
     return met_parser
 
 
-def main():
+def main(argv=None):
     """
-    Constructs XEpi sequence, k-space data, and parameter file
+    Constructs sequence, k-space data, and parameter file
     """
 
     # Get parsers
@@ -379,9 +379,9 @@ def main():
     met_parser = make_met_parser(parent=main_parser)
 
     # Parse main arguments and return a list of unparsed metabolite specific arguments
-    img_args, met_up_args = main_parser.parse_known_args()
+    img_args, met_up_args = main_parser.parse_known_args(argv)
 
-    seq = XEpi(**vars(img_args))
+    seq = XSeq(**vars(img_args))
     if img_args.run_spec != "NO":
         seq.add_spec(**vars(img_args))
 
@@ -395,7 +395,7 @@ def main():
         # Make sure first argument is metabolite flag
         if met_up_args[0] != "-met":
             raise met_parser.error(
-                "Must specify a -met flag when modifying " "metabolite parameters"
+                "Must specify a -met flag when modifying metabolite parameters"
             )
 
         # Split args so we get a separate argument namespace for each metabolite

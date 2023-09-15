@@ -6,7 +6,7 @@ import pickle
 import numpy as np
 import x_epi
 from x_epi.utils import *
-from x_epi.x_epi import XEpi
+from x_epi.seq import XSeq
 
 FIX_DIR = os.path.dirname(__file__)
 
@@ -15,7 +15,7 @@ FIX_DIR = os.path.dirname(__file__)
 ###########################
 
 # Make sequence
-seq = XEpi(acq_3d=False, no_slc=True, slice_axis="X")
+seq = XSeq(acq_3d=False, no_slc=True, slice_axis="X")
 seq.add_met(size=[16, 16, 1], use_sinc=True)
 seq.add_met(size=[16, 16, 1], use_sinc=True)
 seq.create_seq()
@@ -32,7 +32,7 @@ np.save(join(FIX_DIR, "k_space_no_z.npy"), np.array(k_space, dtype=object))
 ### For 3D k-space test ###
 ###########################
 
-seq = XEpi(acq_3d=True)
+seq = XSeq(acq_3d=True)
 seq.add_met(size=[16, 16, 4], use_sinc=True)
 seq.add_met(size=[16, 16, 4], use_sinc=True)
 seq.create_seq()
@@ -49,7 +49,7 @@ np.save(join(FIX_DIR, "k_space_3d.npy"), np.array(k_space, dtype=object))
 ### For 3D k-space test ###
 ###########################
 
-seq = XEpi(acq_3d=True)
+seq = XSeq(acq_3d=True)
 seq.add_met(size=[16, 16, 4], use_sinc=True)
 seq.add_met(size=[16, 16, 4], use_sinc=True)
 seq.create_seq()
@@ -67,7 +67,7 @@ np.save(join(FIX_DIR, "k_space_3d.npy"), np.array(k_space, dtype=object))
 #######################
 
 # 3d sequence, partial fouriuer in z, multi-echo, two time points, alternating directions
-seq_1 = XEpi(
+seq_1 = XSeq(
     grad_spoil=True,
     n_rep=2,
     alt_read=True,
@@ -84,7 +84,7 @@ seq_1.write(join(FIX_DIR, "seq_1.seq"))
 seq_1.save_params(join(FIX_DIR, "seq_1"))
 
 # 2d sequence, ramp sampling, flyback, partial fourier in y
-seq_2 = XEpi(
+seq_2 = XSeq(
     ramp_samp=True,
     max_slew=120,
     max_grad=60,
@@ -103,14 +103,14 @@ seq_2.write(join(FIX_DIR, "seq_2.seq"))
 seq_2.save_params(join(FIX_DIR, "seq_2"))
 
 # No phase encoding gradients, symmetric, 2D
-seq_3 = XEpi(no_pe=True, no_slc=True, n_reps=2)
+seq_3 = XSeq(no_pe=True, no_slc=True, n_reps=2)
 seq_3.add_met()
 seq_3.create_seq(no_reps=True)
 seq_3.write(join(FIX_DIR, "seq_3.seq"))
 seq_3.save_params(join(FIX_DIR, "seq_3"))
 
 # No phase encoding, flyback, 3D
-seq_4 = XEpi(no_pe=True, acq_3d=True, symm_ro=False)
+seq_4 = XSeq(no_pe=True, acq_3d=True, symm_ro=False)
 seq_4.add_met()
 seq_4.create_seq()
 seq_4.write(join(FIX_DIR, "seq_4.seq"))

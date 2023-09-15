@@ -1,5 +1,5 @@
 """
-XEpi sequence class module
+x_epi sequence class module
 """
 
 # Load libraries
@@ -15,7 +15,7 @@ import scipy.integrate as integ
 from .utils import nuc_to_gamma, load_ssrf_grad, load_ssrf_rf, interp_waveform, RES_DIR
 
 
-class XEpi(pp.Sequence):
+class XSeq(pp.Sequence):
     """
     Sequence class for creating EPI sequences.
     Inherits from the Pypulseq sequence class.
@@ -23,7 +23,7 @@ class XEpi(pp.Sequence):
 
     def __init__(
         self,
-        fov=(240, 240, 240),
+        fov=[240, 240, 240],
         rbw=50,
         n_avg=1,
         n_rep=1,
@@ -59,7 +59,7 @@ class XEpi(pp.Sequence):
         """
         Initialize X EPI sequence object, inherits from pypulseq Sequence object
 
-        Parameters
+        Attributes
         ----------
         fov : array_like
            Contains FOV of each dimension (mm)
@@ -125,7 +125,7 @@ class XEpi(pp.Sequence):
 
         Returns
         -------
-        XEpi sequence object
+        XSeq sequence object
         """
 
         # Initialize sequence object
@@ -714,6 +714,7 @@ class XEpi(pp.Sequence):
         -------
         plot_seq : X EPI object
            Sequence object with no repetitions or aveages
+
         """
 
         # Turn off replications to make things go faster
@@ -1061,7 +1062,7 @@ class XEpi(pp.Sequence):
 
     def save_params(self, out_path):
         """
-        Saves input parameters that were used to define section to json
+        Saves input parameters that define sequence to json
 
         Parameters
         ----------

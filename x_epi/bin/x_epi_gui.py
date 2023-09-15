@@ -304,7 +304,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
 
     def load_json(self, json_path, use_default=True):
         """
-        Load in json parameter file defining XEpi sequence and save it into param_dic
+        Load in json parameter file defining XSeq sequence and save it into param_dic
 
         Parameters
         ----------
@@ -338,7 +338,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
 
     def dic_to_seq(self, return_plot=True, no_reps=False):
         """
-        Converts parameter dictionary to XEpi sequence
+        Converts parameter dictionary to XSeq sequence
 
         Parameters
         ----------
@@ -349,7 +349,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         """
 
         # Define common sequence parameters
-        self.seq = x_epi.XEpi(**self.param_dic)
+        self.seq = x_epi.XSeq(**self.param_dic)
 
         # Add spectra options if needed
         try:

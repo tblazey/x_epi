@@ -1,5 +1,5 @@
 """
-Utility functions for XEpi
+Utility functions for XSeq
 """
 
 # Load libraries
@@ -158,7 +158,7 @@ def compute_k_space(seq):
 
     Parameters
     ----------
-    seq : XEpi object
+    seq : XSeq object
        Sequence object containing waveforms
 
     Returns
@@ -317,7 +317,7 @@ def save_k_space(seq, out):
     """
     Parameters
     ----------
-    seq : XEpi sequence object
+    seq : XSeq sequence object
        Sequence object to compute k-space data
     out : str
        Root for output files
@@ -335,3 +335,111 @@ def save_k_space(seq, out):
     k_arr = np.empty(len(k_adc), dtype=object)
     k_arr[:] = k_adc
     np.save(out + "_kspace.npy", k_arr)
+
+
+def r_spline_basis(x, knots, norm=False):
+    """
+    Calculates a restricted cubic spline basis for X given a set of knots
+
+    Parameters
+    ----------
+    x : array
+       A array of length n containing the x-values for cubic spline basis
+    knots: array
+       An array of length p containing knot locations
+    norm: logical
+       If true normalizes spline (see rcspline.eval norm=2 in R)
+
+    Returns
+    -------
+    basis : matrix
+       an n  xp basis for a restricted cubic spine
+    """
+
+    # Check number of knots
+    n_k = knots.shape[0]
+    # if n_k <= 2:
+    #   raise RuntimeError('Number of knots must be at least 3')
+
+    # Get normalization factor
+    if norm is True:
+        norm_fac = np.power(knots[-1] - knots[0], 2)
+    else:
+        norm_fac = 1
+
+    # Create array to store basis matrix
+    n_p = x.shape[0]
+    basis = np.ones((n_p, n_k))
+
+    # Set second basis function to x-value
+    basis[:, 1] = x
+
+    # Loop through free knots
+    for i in range(n_k - 2):
+        # First part of basis function
+        t_one = np.maximum(0, np.power(x - knots[i], 3))
+
+        # Second part of basis function
+        scale_d = knots[n_k - 1] - knots[n_k - 2]
+        scale_two = (knots[n_k - 1] - knots[i]) / scale_d
+        t_two = np.maximum(0, np.power(x - knots[n_k - 2], 3)) * scale_two
+
+        # You get the drill
+        scale_three = (knots[n_k - 2] - knots[i]) / scale_d
+        t_three = np.maximum(0, np.power(x - knots[n_k - 1], 3)) * scale_three
+
+        # Compute the basis function.
+        basis[:, i + 2] = (t_one - t_two + t_three) / norm_fac
+
+    return basis
+
+
+def knot_loc(x, n_k, bounds=None):
+    """
+    Calculates location for knots based on sample quantiles
+
+    Parameters
+    ----------
+    x : array
+       A array of length n containing the x-values
+    n_k: interger
+      Number of knots
+    bounds: array
+       A 2 x 1 array containing percentile bounds.
+       If not set then function uses method described below.
+
+    Returns
+    -------
+    knots : array
+       A set of knot locations
+
+    Notes
+    -----
+    Uses the same basic algorithm as Hmisc package in R:
+       For 3 knots -> outer percentiles are 10 and 90%
+       For 4-6 knots -> outer percentiels are 5% and 95%
+       For >6 knots -> outer percentiles are 2.5% and 97.5%
+       All other knots are linearly spaced between outer percentiles
+    """
+
+    # Set boundary knot percentiles
+    # if n_k <= 2:
+    #   raise RuntimeError('Number of knots must be at least 3')
+    if bounds is not None:
+        b_knots = [bounds[0], bounds[1]]
+    elif 2 >= n_k <= 3:
+        b_knots = [10, 90]
+    elif 4 >= n_k <= 6:
+        b_knots = [5, 95]
+    elif 6 > n_k <= x.shape[0]:
+        b_knots = [2.5, 97.5]
+    else:
+        raise RuntimeError(f'Cannot determine knot locations for {n_k} knots')
+
+    # Get percentiles for all knots
+    knot_per = np.linspace(b_knots[0], b_knots[1], n_k)
+
+    # Get actual knot locations based upon percentiles
+    knots = np.percentile(x, knot_per)
+
+    return knots

@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>API &#8212; x_epi 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=1b390748"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'recon_doc/api';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Command Line" href="cmd.html" />
+    <link rel="prev" title="Image Reconstruction" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/x_epi_logo.png" class="logo__image only-light" alt="XEPI Logo"/>
+    <script>document.write(`<img src="../_static/x_epi_logo.png" class="logo__image only-dark" alt="XEPI Logo"/>`);</script>
+  
+  
+    <p class="title logo__title">Home</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../install.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../seq_doc/index.html">
+                        Sequence Creation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Image Reconstruction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorial.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/numpy/numpydoc" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../install.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../seq_doc/index.html">
+                        Sequence Creation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Image Reconstruction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorial.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/numpy/numpydoc" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmd.html">Command Line</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Image Reconstruction</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">API</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-x_epi.data">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-x_epi.data" title="Link to this heading">#</a></h1>
+<p>x_epi data class module</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="x_epi.data.XData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">x_epi.data.</span></span><span class="sig-name descname"><span class="pre">XData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[240,</span> <span class="pre">240,</span> <span class="pre">240]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ro_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pe_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slc_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_echo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_te</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symm_ro</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acq_3d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ramp_samp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_read</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_pha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_slc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Transverse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pe_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AP'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData" title="Link to this definition">#</a></dt>
+<dd><p>Data class for processing data created with an x_epi sequence</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.data.XData.add_met" title="x_epi.data.XData.add_met"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_met</span></code></a>([name, size, size_acq, pf_pe, ...])</p></td>
+<td><p>Add metabolite acquisition to sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.data.XData.apply_off_res" title="x_epi.data.XData.apply_off_res"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_off_res</span></code></a>([pad])</p></td>
+<td><p>Shifts metabolites that were acquired off-resonance</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.data.XData.create_nii_xfm" title="x_epi.data.XData.create_nii_xfm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_nii_xfm</span></code></a>()</p></td>
+<td><p>Creates NIfTI format affine transforms for each metabolite.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.data.XData.create_param_dic" title="x_epi.data.XData.create_param_dic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_param_dic</span></code></a>()</p></td>
+<td><p>Create a dictionary for sequence parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.data.XData.fft_recon" title="x_epi.data.XData.fft_recon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fft_recon</span></code></a>([ref_data, slice_idx, point, n_k, ...])</p></td>
+<td><p>Reconstructs metabolite data using the FFT.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.data.XData.flip_k_data" title="x_epi.data.XData.flip_k_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flip_k_data</span></code></a>()</p></td>
+<td><p>Performs axis flips common to x_epi data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.data.XData.load_k_coords" title="x_epi.data.XData.load_k_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_k_coords</span></code></a>(coord_path)</p></td>
+<td><p>Loads in k-space coordinates and adds them to each metabolite object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.data.XData.load_k_data" title="x_epi.data.XData.load_k_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_k_data</span></code></a>(twix_path[, recon_dims])</p></td>
+<td><p>Reads k-space data for each metabolite from Siemens twix file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.data.XData.regrid_k_data" title="x_epi.data.XData.regrid_k_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regrid_k_data</span></code></a>()</p></td>
+<td><p>Regrid k-space in readout direction so that we have even spacing with the correct FOV</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#x_epi.data.XData.save_nii" title="x_epi.data.XData.save_nii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_nii</span></code></a>(out_root[, cmplx, mean])</p></td>
+<td><p>Saves image data to nifti</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#x_epi.data.XData.save_param_dic" title="x_epi.data.XData.save_param_dic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_param_dic</span></code></a>(out_root)</p></td>
+<td><p>Saves input parameters to json</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[240,</span> <span class="pre">240,</span> <span class="pre">240]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rbw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ro_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pe_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slc_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_echo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_te</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symm_ro</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acq_3d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ramp_samp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_read</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_pha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_slc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Transverse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pe_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AP'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize X EPI data object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>XData object</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fov</strong><span class="classifier">array_like</span></dt><dd><p>Contains FOV of each dimension (mm)</p>
+</dd>
+<dt><strong>rbw</strong><span class="classifier">float</span></dt><dd><p>Readout bandwidth (kHz)</p>
+</dd>
+<dt><strong>n_avg</strong><span class="classifier">int</span></dt><dd><p>Number of averages</p>
+</dd>
+<dt><strong>n_rep</strong><span class="classifier">int</span></dt><dd><p>Number of repeats</p>
+</dd>
+<dt><strong>ts</strong><span class="classifier">float</span></dt><dd><p>Minimum durartion of each metabolite set (ms)</p>
+</dd>
+<dt><strong>ro_off</strong><span class="classifier">float</span></dt><dd><p>Spatial offset in readout direction (mm)</p>
+</dd>
+<dt><strong>pe_off</strong><span class="classifier">float</span></dt><dd><p>Spatial offset in phase encoding direction (mm). Only for recon.</p>
+</dd>
+<dt><strong>slc_off: float</strong></dt><dd><p>Spatial offset in slice direction (mm)</p>
+</dd>
+<dt><strong>n_echo</strong><span class="classifier">int</span></dt><dd><p>Number of echoes following each excitation</p>
+</dd>
+<dt><strong>delta_te</strong><span class="classifier">float</span></dt><dd><p>Minimum duration between each echo (ms)
+#Extract sequence options</p>
+</dd>
+<dt><strong>symm_ro</strong><span class="classifier">bool</span></dt><dd><p>Uses symmetric readout if True. Otherwise uses flyback.</p>
+</dd>
+<dt><strong>acq_3d</strong><span class="classifier">bool</span></dt><dd><p>Uses a 3D readout if True. Otherwise uses 2D.</p>
+</dd>
+<dt><strong>alt_read</strong><span class="classifier">bool</span></dt><dd><p>Alternate polarity of readout every repetition</p>
+</dd>
+<dt><strong>alt_pha</strong><span class="classifier">bool</span></dt><dd><p>Alternate polarity of phase encoding every repetition</p>
+</dd>
+<dt><strong>alt_slc</strong><span class="classifier">bool</span></dt><dd><p>Alternate polarity of second phase encoding every repetition</p>
+</dd>
+<dt><strong>ori</strong><span class="classifier">str</span></dt><dd><p>Image orientation for reconstruction.</p>
+</dd>
+<dt><strong>pe_dir</strong><span class="classifier">str</span></dt><dd><p>Phase encoding direction for reconstruction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.add_met">
+<span class="sig-name descname"><span class="pre">add_met</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[16,</span> <span class="pre">16,</span> <span class="pre">16]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_acq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[16,</span> <span class="pre">16,</span> <span class="pre">16]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf_pe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pf_pe2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_off</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_centric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">esp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.00048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_acq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.add_met" title="Link to this definition">#</a></dt>
+<dd><p>Add metabolite acquisition to sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">str</span></dt><dd><p>Name for metabolite</p>
+</dd>
+<dt><strong>size</strong><span class="classifier">array_like</span></dt><dd><p>Grid size in x, y, and z</p>
+</dd>
+<dt><strong>size_acq</strong><span class="classifier">array_like</span></dt><dd><p>Acquired dimensions in x, y, z</p>
+</dd>
+<dt><strong>pf_pe</strong><span class="classifier">float</span></dt><dd><p>Partial Fourier fraction in y dimension</p>
+</dd>
+<dt><strong>pf_pe2</strong><span class="classifier">float</span></dt><dd><p>Partial Fourier fraction in z dimension</p>
+</dd>
+<dt><strong>freq_off</strong><span class="classifier">float</span></dt><dd><p>Frequency offset (Hz) of pulse</p>
+</dd>
+<dt><strong>z_centric</strong><span class="classifier">bool</span></dt><dd><p>Use centric phase encoding in z direction</p>
+</dd>
+<dt><strong>esp</strong><span class="classifier">float</span></dt><dd><p>Echo spacing (s)</p>
+</dd>
+<dt><strong>k_acq</strong><span class="classifier">ndarray</span></dt><dd><p>k-space data with dimensions <cite>size_acq</cite>, <cite>n_rep</cite>, <cite>n_echo</cite></p>
+</dd>
+<dt><strong>k_data</strong><span class="classifier">ndarrary</span></dt><dd><p>k-space data with dimensions <cite>size</cite>, <cite>n_rep</cite>, <cite>n_echo</cite></p>
+</dd>
+<dt><strong>img_data</strong><span class="classifier">ndarray</span></dt><dd><p>image data with dimensions <cite>size</cite>, <cite>n_rep</cite>, <cite>n_echo</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.apply_off_res">
+<span class="sig-name descname"><span class="pre">apply_off_res</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.apply_off_res" title="Link to this definition">#</a></dt>
+<dd><p>Shifts metabolites that were acquired off-resonance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pad</strong><span class="classifier">int</span></dt><dd><p>Size to zero pad each dimension when apply shifts</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.create_nii_xfm">
+<span class="sig-name descname"><span class="pre">create_nii_xfm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.create_nii_xfm" title="Link to this definition">#</a></dt>
+<dd><p>Creates NIfTI format affine transforms for each metabolite. Units are in mm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.create_param_dic">
+<span class="sig-name descname"><span class="pre">create_param_dic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.create_param_dic" title="Link to this definition">#</a></dt>
+<dd><p>Create a dictionary for sequence parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>param_dic</strong><span class="classifier">dic</span></dt><dd><p>Dictionary of sequence parameters</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.fft_recon">
+<span class="sig-name descname"><span class="pre">fft_recon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fft_axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.fft_recon" title="Link to this definition">#</a></dt>
+<dd><p>Reconstructs metabolite data using the FFT. Also can apply a phase correction 
+for symmetrically acquired EPI data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ref_data</strong><span class="classifier">XData object</span></dt><dd><p>XData object containing with reference scan data (no phase encoding) for 
+each metabolite</p>
+</dd>
+<dt><strong>slice_idx</strong><span class="classifier">int</span></dt><dd><p>Zero-based slice index to use for reference scan</p>
+</dd>
+<dt><strong>point</strong><span class="classifier">bool</span></dt><dd><p>Run a pointwise (True) or spline-based (False) phase correction</p>
+</dd>
+<dt><strong>n_k</strong><span class="classifier">int</span></dt><dd><p>Number of knots for spline-based phase correction</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.flip_k_data">
+<span class="sig-name descname"><span class="pre">flip_k_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.flip_k_data" title="Link to this definition">#</a></dt>
+<dd><p>Performs axis flips common to x_epi data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.load_k_coords">
+<span class="sig-name descname"><span class="pre">load_k_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.load_k_coords" title="Link to this definition">#</a></dt>
+<dd><p>Loads in k-space coordinates and adds them to each metabolite object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>coord_path</strong><span class="classifier">str</span></dt><dd><p>Path to k-space coordinates written by x_epi apps</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.load_k_data">
+<span class="sig-name descname"><span class="pre">load_k_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">twix_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recon_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.load_k_data" title="Link to this definition">#</a></dt>
+<dd><p>Reads k-space data for each metabolite from Siemens twix file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>twix_path</strong><span class="classifier">str</span></dt><dd><p>Path to twix data file</p>
+</dd>
+<dt><strong>recon_dims</strong><span class="classifier">bool</span></dt><dd><p>If true, saves k-space data with same dimensions as eventual reconstructed 
+image to <cite>k_data</cite>. Zero-padding is used to fill any data skipped due to 
+partial Fourier. If False, k-space data will have dimensions matching 
+acquisition and be saved to <cite>k_acq</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.regrid_k_data">
+<span class="sig-name descname"><span class="pre">regrid_k_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.regrid_k_data" title="Link to this definition">#</a></dt>
+<dd><p>Regrid k-space in readout direction so that we have even spacing with the
+correct FOV</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.save_nii">
+<span class="sig-name descname"><span class="pre">save_nii</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmplx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.save_nii" title="Link to this definition">#</a></dt>
+<dd><p>Saves image data to nifti</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>out_root</strong><span class="classifier">str</span></dt><dd><p>Root for output files. Does not include extension or cmplx/mean suffix.</p>
+</dd>
+<dt><strong>cmplx</strong><span class="classifier">bool</span></dt><dd><p>Saves data as complex is true</p>
+</dd>
+<dt><strong>mean</strong><span class="classifier">bool</span></dt><dd><p>Saves temporal mean</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="x_epi.data.XData.save_param_dic">
+<span class="sig-name descname"><span class="pre">save_param_dic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_root</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#x_epi.data.XData.save_param_dic" title="Link to this definition">#</a></dt>
+<dd><p>Saves input parameters to json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>out_root</strong><span class="classifier">str</span></dt><dd><p>Path to write json data to. Does not include extension</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData"><code class="docutils literal notranslate"><span class="pre">XData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.__init__"><code class="docutils literal notranslate"><span class="pre">XData.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.add_met"><code class="docutils literal notranslate"><span class="pre">XData.add_met()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.apply_off_res"><code class="docutils literal notranslate"><span class="pre">XData.apply_off_res()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.create_nii_xfm"><code class="docutils literal notranslate"><span class="pre">XData.create_nii_xfm()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.create_param_dic"><code class="docutils literal notranslate"><span class="pre">XData.create_param_dic()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.fft_recon"><code class="docutils literal notranslate"><span class="pre">XData.fft_recon()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.flip_k_data"><code class="docutils literal notranslate"><span class="pre">XData.flip_k_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.load_k_coords"><code class="docutils literal notranslate"><span class="pre">XData.load_k_coords()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.load_k_data"><code class="docutils literal notranslate"><span class="pre">XData.load_k_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.regrid_k_data"><code class="docutils literal notranslate"><span class="pre">XData.regrid_k_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.save_nii"><code class="docutils literal notranslate"><span class="pre">XData.save_nii()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#x_epi.data.XData.save_param_dic"><code class="docutils literal notranslate"><span class="pre">XData.save_param_dic()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/recon_doc/api.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, Tyler Blazey.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
