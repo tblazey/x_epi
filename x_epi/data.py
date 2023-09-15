@@ -127,7 +127,7 @@ class XData:
         z_centric=False,
         esp=0.48e-3,
         k_acq=None,
-        k_coords=None,
+        k_coord=None,
         k_data=None,
         img_data=None,
         **kwargs,
@@ -541,7 +541,6 @@ class XData:
         """
 
         # Generic parameters
-        print(self.fov)
         out_dic = {
             "fov": [int(dim) for dim in self.fov],
             "rbw": self.rbw / 1e3,

@@ -9,7 +9,7 @@ X_EPI Documentation
 
 **x_epi** is a Python library for creating echo-planar imaging (EPI) sequences for 
 X-nuclei. It uses the `Pulseq framework <https://pulseq.github.io>`_ implemented in 
-`PyPulseq <https://github.com/imr-framework/pypulse/>`_.
+`PyPulseq <https://github.com/imr-framework/pypulseq/>`_.
 
 Users can create custom EPI sequences using :doc:`several different methods <seq_doc/index>`.
 Multiple features are available including:

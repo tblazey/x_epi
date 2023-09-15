@@ -427,11 +427,11 @@ def knot_loc(x, n_k, bounds=None):
     #   raise RuntimeError('Number of knots must be at least 3')
     if bounds is not None:
         b_knots = [bounds[0], bounds[1]]
-    elif 2 >= n_k <= 3:
+    elif 2 <= n_k <= 3:
         b_knots = [10, 90]
-    elif 4 >= n_k <= 6:
+    elif 4 <= n_k <= 6:
         b_knots = [5, 95]
-    elif 6 > n_k <= x.shape[0]:
+    elif 6 < n_k <= x.shape[0]:
         b_knots = [2.5, 97.5]
     else:
         raise RuntimeError(f'Cannot determine knot locations for {n_k} knots')
