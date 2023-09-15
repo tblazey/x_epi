@@ -17,7 +17,7 @@
 
 </div>
 
-**x_epi** is a Python package for creating EPI sequences for X-nucleus imaging. It uses the [PyPulseq](github.com/imr-framework/pypulseq) package to create vendor neutral sequences in the [Pulseq](pulseq.github.io) format. 
+**x_epi** is a Python package for creating EPI sequences for X-nucleus imaging. It uses the [PyPulseq](https://github.com/imr-framework/pypulseq) package to create vendor neutral sequences in the [Pulseq](https://pulseq.github.io) format. 
 
 Users can create a custom EPI sequence using python functions, a command line program, or a simple graphical user interface. Please see the [documentation](https://x-epi.readthedocs.io) for more details.
 
