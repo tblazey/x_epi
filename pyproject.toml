@@ -20,7 +20,9 @@ dependencies = ['matplotlib',
                 'pypulseq@git+https://github.com/tblazey/pypulseq#egg=dev',
                 'PyQt5',
                 'PyQt5_sip',
-                'scipy'
+                'scipy',
+                'twixtools',
+                'fslpy'
 ]
 
 [project.scripts]
