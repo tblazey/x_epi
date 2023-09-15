@@ -3,7 +3,7 @@ x_epi sequence class module
 """
 
 # Load libraries
-from ast import literal_eval
+import ast
 from copy import deepcopy
 from importlib.metadata import version
 import json
@@ -651,8 +651,29 @@ class XSeq(pp.Sequence):
         )
 
         # Scale gradient using slice/slab thickness formula
+        # https://stackoverflow.com/a/72834811
         scale_form = met_obj.formula.replace("x", str(met_obj.exc_thk * 1e3))
-        met_obj.slc_scale = literal_eval(scale_form)
+        scale_tree = ast.parse(scale_form, mode="eval")
+        for node in ast.walk(scale_tree):
+            if not isinstance(
+                node,
+                (
+                    ast.Expression,
+                    ast.Constant,
+                    ast.Add,
+                    ast.Sub,
+                    ast.Mult,
+                    ast.Div,
+                    ast.Mod,
+                    ast.Pow,
+                    ast.BinOp,
+                    ast.USub,
+                    ast.UAdd,
+                    ast.UnaryOp,
+                ),
+            ):
+                raise RuntimeError(f"Error: Invalid node: {node.__class__.__name__}")
+        met_obj.slc_scale = eval(scale_form)
         grd_data *= met_obj.slc_scale
 
         # Interpolate gradient waveform to raster
