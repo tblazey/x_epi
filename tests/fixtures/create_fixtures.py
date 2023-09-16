@@ -94,8 +94,9 @@ seq_2 = XSeq(
     n_echo=3,
     tr=500,
     delta_te=150,
+    ro_os=2.0
 )
-seq_2.add_met(ro_os=2, pf_pe=0.75, use_sinc=True)
+seq_2.add_met(pf_pe=0.75, use_sinc=True)
 seq_2.add_met(use_sinc=False, freq_off=50)
 seq_2.add_spec(run_spec="BOTH")
 seq_2.create_seq()
@@ -103,7 +104,7 @@ seq_2.write(join(FIX_DIR, "seq_2.seq"))
 seq_2.save_params(join(FIX_DIR, "seq_2"))
 
 # No phase encoding gradients, symmetric, 2D
-seq_3 = XSeq(no_pe=True, no_slc=True, n_reps=2)
+seq_3 = XSeq(no_pe=True, no_slc=True)
 seq_3.add_met()
 seq_3.create_seq(no_reps=True)
 seq_3.write(join(FIX_DIR, "seq_3.seq"))

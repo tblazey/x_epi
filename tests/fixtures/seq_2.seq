@@ -2986,8 +2986,8 @@ RadiofrequencyRasterTime 1e-06
 # ..  ..    ns    us   Hz   rad
 [ADC]
 1 2048 40000 20 0 0
-2 24 14000 72 0 0
-3 24 14000 72 50 0
+2 48 7000 72 0 0
+3 48 7000 72 50 0
 
 # Sequence Shapes
 [SHAPES]
@@ -265194,4 +265194,4 @@ num_samples 20881
 # It can be reproduced/verified with md5sum if the file trimmed to the position right above [SIGNATURE]
 # The new line character preceding [SIGNATURE] BELONGS to the signature (and needs to be stripped away for recalculating/verification)
 Type md5
-Hash ca1b48258299d03d0dd808263a7c5036
+Hash a1242b81b39f4810c2e6c0b8f481e66c

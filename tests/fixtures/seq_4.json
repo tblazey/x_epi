@@ -26,7 +26,7 @@
   "alt_read": false,
   "alt_pha": false,
   "alt_slc": false,
-  "ro_os": 1,
+  "ro_os": 1.0,
   "b0": 3,
   "nuc": "13C",
   "max_grad": 100.0,

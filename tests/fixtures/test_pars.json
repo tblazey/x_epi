@@ -34,10 +34,10 @@
 			"grad_spoil": true,
 			"n_echo": 3,
 			"tr": 500,
-			"delta_te": 150
+			"delta_te": 150,
+			"ro_os": 2.0
 		},
 		"mets": [{
-				"ro_os": 2.0,
 				"pf_pe": 0.75,
 				"use_sinc": true
 			},
@@ -53,8 +53,7 @@
 	"par_3": {
 		"general": {
 			"no_pe": true,
-			"no_slc": true,
-			"n_reps": 2
+			"no_slc": true
 		},
 		"mets": [{}],
 		"create": {
@@ -71,7 +70,7 @@
 		},
 		"mets": [{}],
 		"create": {},
-		"spec": false
+		"spec": false,
 		"name": "seq_4"
 	}
 }

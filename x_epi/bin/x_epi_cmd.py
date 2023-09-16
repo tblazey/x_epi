@@ -411,7 +411,7 @@ def main(argv=None):
 
     else:
         # If no metabolites are specified, add one to the list
-        seq.add_met(**vars(met_parser.parse_args(["-name", "default"])))
+        seq.add_met(**vars(met_parser.parse_args(["-name", "met_1"])))
 
     # Create sequence
     plot_seq = seq.create_seq(return_plot=True)
