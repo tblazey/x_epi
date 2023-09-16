@@ -6,13 +6,15 @@ Testing for x_epi command line utility
 import argparse
 import filecmp
 import json
-from os.path import abspath, join
+from os.path import abspath, dirname, join
 from os import remove
+import sys
 import unittest
 import numpy as np
 from x_epi.bin.x_epi_cmd import range_wrapper, main
 from x_epi.utils import BASE_DIR
-from .test_x_seq import comp_json
+sys.path.insert(0, dirname(__file__))
+from test_x_seq import comp_json
 
 FIX_DIR = abspath(join(BASE_DIR, "..", "tests/fixtures"))
 
