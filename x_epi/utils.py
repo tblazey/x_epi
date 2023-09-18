@@ -434,7 +434,7 @@ def knot_loc(x, n_k, bounds=None):
     elif 6 < n_k <= x.shape[0]:
         b_knots = [2.5, 97.5]
     else:
-        raise RuntimeError(f'Cannot determine knot locations for {n_k} knots')
+        raise RuntimeError(f"Cannot determine knot locations for {n_k} knots")
 
     # Get percentiles for all knots
     knot_per = np.linspace(b_knots[0], b_knots[1], n_k)

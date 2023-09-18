@@ -1041,7 +1041,7 @@ class XSeq(pp.Sequence):
             "rf_dead_time": self.system.rf_dead_time * 1e6,
             "ori": self.ori,
             "pe_dir": self.pe_dir,
-            "version": version("x_epi")
+            "version": version("x_epi"),
         }
 
         # Spectra parameters

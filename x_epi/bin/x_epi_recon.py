@@ -89,7 +89,7 @@ def extract_pars(json_path, n_avg=None, n_rep=None, ts=None, freq_off=None):
     """
 
     # Read in json file containing sequence pars
-    with open(json_path, "r", encoding='utf-8') as jid:
+    with open(json_path, "r", encoding="utf-8") as jid:
         param_dic = json.load(jid)
 
     # Update temporal parameters
@@ -163,7 +163,7 @@ def run_preproc(
 def save_xfms(anat_path, met_list, out_root):
     """
     Creates transformation between reconstructed images and a anatomical reference
-    
+
     Parameters
     ----------
     anat_path : str
@@ -173,7 +173,7 @@ def save_xfms(anat_path, met_list, out_root):
     out_root : str
         Root for all output files (no extensions)
     """
-        
+
     # Load in anatomical image
     anat_img = Image(anat_path)
 
@@ -213,6 +213,9 @@ def main(argv=None):
 
     # Shift off resonance metabolites
     x_data.apply_off_res()
+
+    # Phase shift(s) for off-center FOV
+    x_data.apply_phase_shift()
 
     # Save images
     x_data.save_nii(args.out)

@@ -94,7 +94,7 @@ seq_2 = XSeq(
     n_echo=3,
     tr=500,
     delta_te=150,
-    ro_os=2.0
+    ro_os=2.0,
 )
 seq_2.add_met(pf_pe=0.75, use_sinc=True)
 seq_2.add_met(use_sinc=False, freq_off=50)

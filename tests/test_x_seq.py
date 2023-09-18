@@ -13,6 +13,7 @@ from x_epi.utils import BASE_DIR
 
 FIX_DIR = abspath(join(BASE_DIR, "..", "tests/fixtures"))
 
+
 def comp_json(test_path, ref_path):
     # Load in json dictionaries
     with open(test_path, "r", encoding="utf-8") as j_id:
@@ -32,17 +33,17 @@ def comp_json(test_path, ref_path):
     # Run comparison between dictionaries
     return Compare().check(test_dic, ref_dic)
 
+
 class TestXSeq(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        #Load in testing parameters
-        with open(join(FIX_DIR, 'test_pars.json') , "r", encoding="utf-8") as j_id:
+        # Load in testing parameters
+        with open(join(FIX_DIR, "test_pars.json"), "r", encoding="utf-8") as j_id:
             pars = json.load(j_id)
 
         # Loop through parameters
         cls.seqs = []
         for idx, par in enumerate(pars.values()):
-
             # Add sequence to class
             seq = XSeq(**par["general"])
 
@@ -84,6 +85,7 @@ class TestXSeq(unittest.TestCase):
         for seq in cls.seqs:
             remove(seq.out_path)
             remove(splitext(seq.out_path)[0] + ".json")
+
 
 if __name__ == "__main__":
     unittest.main()

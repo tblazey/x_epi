@@ -39,7 +39,14 @@ templates_path = ["_templates"]
 
 numpydoc_class_members_toctree = False
 
-autodoc_mock_imports = ["numpy", "matplotlib", "scipy", "pypulseq", "nibabel", "twixtools"]
+autodoc_mock_imports = [
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "pypulseq",
+    "nibabel",
+    "twixtools",
+]
 
 # -- Options for HTML output
 

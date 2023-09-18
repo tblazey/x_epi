@@ -447,14 +447,73 @@ class XData:
                 )
 
                 # Pad to allow subvoxel shifts
-                x_pad = (met.img_data.shape[0] * pad - met.img_data.shape[0]) // 2
-                y_pad = (met.img_data.shape[1] * pad - met.img_data.shape[1]) // 2
-                pad_list = [[x_pad, x_pad], [y_pad, y_pad], [0, 0], [0, 0], [0, 0]]
-                shifted_pad = np.pad(shifted, pad_list)
-
+                shifted_pad = self._pad_image(shifted, pads=(pad, pad, 0, 0, 0))
                 met.img_data = fftn(shifted_pad, axes=self.fft_axes)[
                     0::pad, 0::pad, :, :, :
                 ]
+
+    def _pad_image(self, img, pads=(8, 8, 8, 0, 0)):
+        """
+        Apply padding to an image
+
+        Parameters
+        ----------
+        img : ndarrray
+            Five dimensional array containing image data to pad
+        pads : list
+            List of ints pad scales in each dimension
+
+        Returns
+        -------
+        img_pad : ndarray
+            Padded dimensions with dimensions equal to `img` dimensions * `pad`
+        """
+
+        # Figure out number of elements to pad from pad scales
+        pad_list = []
+        for idx, pad in enumerate(pads):
+            if pad > 0:
+                i_pad = (img.shape[idx] * pad - img.shape[idx]) // 2
+            else:
+                i_pad = 0
+            pad_list.append([i_pad, i_pad])
+
+        return np.pad(img, pad_list)
+
+    def apply_phase_shift(self, pad=8):
+        """
+        Shifts images in phase encoding directions if image was acquired with an off
+        center field of view.
+
+        Parameters
+        ----------
+        pad : int
+            Size to zero pad each dimension when apply shifts
+        """
+
+        if self.acq_3d is True and (self.pe_off != 0 or self.slc_off != 0):
+            for met in self.mets[0:1]:
+                # Get coordinate grids in image space (mm)
+                x_c = fftfreq(met.size[0], met.vox_dims[0]) + 1.0 / 2.0 / self.fov[0]
+                y_c = fftfreq(met.size[1], met.vox_dims[1]) + 1.0 / 2.0 / self.fov[1]
+                z_c = fftfreq(met.size[2], met.vox_dims[2]) + 1.0 / 2.0 / self.fov[2]
+                _, y_g, z_g = np.meshgrid(x_c, y_c, z_c, indexing="ij")
+
+                # Shift via Fourier domain
+                shift = np.zeros(met.dims, dtype=np.complex128)
+                if self.pe_off != 0:
+                    shift += np.exp(2 * 1j * np.pi * y_g * self.pe_off)[
+                        :, :, :, np.newaxis, np.newaxis
+                    ]
+                if self.slc_off != 0:
+                    shift += np.exp(2 * 1j * np.pi * z_g * self.slc_off)[
+                        :, :, :, np.newaxis, np.newaxis
+                    ]
+                shifted = ifftshift(
+                    ifftn(met.img_data, axes=[1, 2]) * shift, axes=[1, 2]
+                )
+                shifted_pad = self._pad_image(shifted, pads=(0, pad, pad, 0, 0))
+                met.img_data = fftn(shifted_pad, axes=[1, 2])[:, 0::pad, 0::pad, :, :]
 
     def create_nii_xfm(self):
         """
@@ -563,7 +622,7 @@ class XData:
             "pe_dir": self.pe_dir,
             "alt_signs": [int(sign) for sign in self.alt_signs],
             "fft_axes": self.fft_axes,
-            "version": version("x_epi")
+            "version": version("x_epi"),
         }
 
         # Metabolite specific parameter
@@ -595,6 +654,6 @@ class XData:
         out_root : str
            Path to write json data to. Does not include extension
         """
-        
+
         with open(f"{out_root}.json", "w", encoding="utf-8") as fid:
             json.dump(self.create_param_dic(), fid, indent=2)
