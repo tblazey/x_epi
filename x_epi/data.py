@@ -442,13 +442,13 @@ class XData:
 
                 # Apply off resonance correction to the image.
                 shifted = ifftshift(
-                    ifftn(met.img_data, axes=self.fft_axes) * img_shift,
-                    axes=self.fft_axes,
+                    ifftn(met.img_data, axes=[0, 1]) * img_shift,
+                    axes=[0, 1],
                 )
 
                 # Pad to allow subvoxel shifts
                 shifted_pad = self._pad_image(shifted, pads=(pad, pad, 0, 0, 0))
-                met.img_data = fftn(shifted_pad, axes=self.fft_axes)[
+                met.img_data = fftn(shifted_pad, axes=[0, 1])[
                     0::pad, 0::pad, :, :, :
                 ]
 
@@ -492,7 +492,7 @@ class XData:
         """
 
         if self.acq_3d is True and (self.pe_off != 0 or self.slc_off != 0):
-            for met in self.mets[0:1]:
+            for met in self.mets:
                 # Get coordinate grids in image space (mm)
                 x_c = fftfreq(met.size[0], met.vox_dims[0]) + 1.0 / 2.0 / self.fov[0]
                 y_c = fftfreq(met.size[1], met.vox_dims[1]) + 1.0 / 2.0 / self.fov[1]
