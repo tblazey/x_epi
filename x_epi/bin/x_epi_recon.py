@@ -17,7 +17,9 @@ def create_parser():
     """
 
     # Create parser
-    parser = argparse.ArgumentParser(description="Example list of options")
+    parser = argparse.ArgumentParser(
+        description="Reconstruction for data acquired with x_epi"
+    )
     parser.add_argument("twix", help="Twix file containing EPI data")
     parser.add_argument("json", help="Json file describing sequence from x_epi_app.py")
     parser.add_argument("out", help="Root for file outputs")
