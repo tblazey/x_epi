@@ -9,7 +9,8 @@ import types
 from importlib.metadata import version
 import nibabel as nib
 import numpy as np
-from numpy.fft import ifftn, ifftshift, fftn, fftshift, fftfreq
+from numpy.fft import ifftn, ifftshift, fft, fftn, fftshift, fftfreq
+from pynufft import NUFFT
 from scipy.interpolate import interp1d
 import twixtools
 from .utils import r_spline_basis, knot_loc
@@ -264,10 +265,17 @@ class XData:
 
                 line_idx += 1
 
-    def regrid_k_data(self):
+    def regrid_k_data(self, method='cubic', nufft_size=6):
         """
         Regrid k-space in readout direction so that we have even spacing with the
         correct FOV
+        
+        Parameters
+        ----------
+        method : str
+            Cubic uses cubic spline interpolation, nufft performs a non-uniform NFFT
+        nufft_size : int
+            Size of nufft interpolator
         """
 
         for met in self.mets:
@@ -297,13 +305,30 @@ class XData:
             iter_prod = product(*[range(i) for i in met.dims_acq[1:]])
             for pe_1, pe_2, rep, echo in iter_prod:
                 alt_idx = rep % 2
+                k_x = k_coord[0, :, pe_1, pe_2, alt_idx, echo]
+                k_y = met.k_acq[:, pe_1, pe_2, rep, echo]
+                
+                # Switch for regridding method
+                if method == 'cubic':
                 k_line_i = interp1d(
-                    k_coord[0, :, pe_1, pe_2, alt_idx, echo],
-                    met.k_acq[:, pe_1, pe_2, rep, echo],
-                    bounds_error=False,
-                    fill_value=0,
-                    kind="cubic",
+                        k_x, k_y, bounds_error=False, fill_value=0, kind="cubic"
                 )(x_coord[:, alt_idx])
+                elif method == 'nufft':
+                    k_x *= np.pi / np.max(np.abs(k_x))
+                    
+                    # Setup non-uniform fft
+                    nufft = NUFFT()
+                    nufft.plan(
+                        k_x[:, np.newaxis],
+                        (met.size[0], ),
+                        (met.size_acq[0], ),
+                        (nufft_size, )
+                    )
+                    k_line_i = fft(fftshift(nufft.solve(k_y, 'cg', maxiter=100)))
+
+                    # Flip if necessary
+                    if pe_1 % 2 == 1:
+                        k_line_i = k_line_i[::-1]
 
                 # Add data to complete k-space matrix
                 pe_1_idx = met.pe_start + pe_1

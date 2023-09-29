@@ -23,13 +23,15 @@ dependencies = ['importlib',
                 'PyQt5_sip',
                 'scipy',
                 'twixtools@git+https://github.com/pehses/twixtools#egg=master',
-                'fslpy'
+                'fslpy',
+                'pynufft'
 ]
 
 [project.scripts]
 x_epi_cmd = "x_epi.bin.x_epi_cmd:main"
 x_epi_gui = "x_epi.bin.x_epi_gui:main"
 x_epi_recon = "x_epi.bin.x_epi_recon:main"
+x_epi_cal = "x_epi.bin.x_epi_cal:main"
 
 [project.urls]
 "Homepage" = "https://github.com/tblazey/x_epi"

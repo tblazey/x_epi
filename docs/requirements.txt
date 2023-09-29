@@ -11,4 +11,5 @@ twixtools@git+https://github.com/pehses/twixtools#egg=master
 fslpy
 numpydoc
 pydata_sphinx_theme
+pynufft
 -e .
