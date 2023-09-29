@@ -310,9 +310,9 @@ class XData:
                 
                 # Switch for regridding method
                 if method == 'cubic':
-                k_line_i = interp1d(
+                    k_line_i = interp1d(
                         k_x, k_y, bounds_error=False, fill_value=0, kind="cubic"
-                )(x_coord[:, alt_idx])
+                    )(x_coord[:, alt_idx])
                 elif method == 'nufft':
                     k_x *= np.pi / np.max(np.abs(k_x))
                     
