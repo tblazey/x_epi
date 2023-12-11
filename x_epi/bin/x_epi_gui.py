@@ -511,7 +511,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
             ):
                 self.check_spec_end.setChecked(True)
             self.spin_spec_size.setValue(self.param_dic["spec_size"])
-            self.spin_spec_bw.setValue(self.param_dic["spec_bw"])
+            self.spin_spec_bw.setValue(int(self.param_dic["spec_bw"]))
             self.dbl_spin_spec_flip.setValue(self.param_dic["spec_flip"])
             self.dbl_spin_spec_tr.setValue(self.param_dic["spec_tr"])
             self.spin_spec_n.setValue(self.param_dic["spec_n"])
@@ -534,7 +534,7 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         self.spin_spec_size.setEnabled(state)
         self.spin_spec_bw.setEnabled(state)
         self.dbl_spin_spec_flip.setEnabled(state)
-        self.spin_n_spec.setEnabled(state)
+        self.spin_spec_n.setEnabled(state)
         self.dbl_spin_spec_tr.setEnabled(state)
 
     def update_rf_type(self):

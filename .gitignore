@@ -9,3 +9,4 @@ x_epi.egg-info
 dist
 .coverage
 .pylintrc
+build
