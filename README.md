@@ -17,9 +17,32 @@
 
 </div>
 
-**x_epi** is a Python package for creating EPI sequences for X-nucleus imaging. It uses the [PyPulseq](https://github.com/imr-framework/pypulseq) package to create vendor neutral sequences in the [Pulseq](https://pulseq.github.io) format. 
+**x_epi** is a Python package for creating EPI sequences for X-nucleus imaging. It was designed for hyperpolarized <sup>13</sup>C imaging, but can be used for <sup>1</sup>H and other NMR sensitive nuclei. It uses the [PyPulseq](https://github.com/imr-framework/pypulseq) package to create vendor neutral sequences in the [Pulseq](https://pulseq.github.io) format. 
 
-Users can create a custom EPI sequence using python functions, a command line program, or a simple graphical user interface. Please see the [documentation](https://x-epi.readthedocs.io) for more details.
+Users can create a custom EPI sequence using python functions, a command line program, or a simple graphical user interface. 
 
+A paper using the package is currently under review.
 
-      
+## Installation
+
+If you have Python 3.10, you can install the package using pip:
+
+```
+pip install git+https://github.com/tblazey/x_epi.git
+```
+
+Please see the [documentation](https://x-epi.readthedocs.io/en/latest/install.html) for more details on installation.
+
+## Quick start
+
+Once installed, you can type `x_epi_gui` in a command prompt to launch the user interface. You will then be prompted to either load a custom JSON configuration file or use the default. If you don't have a JSON configuration, simply click 'Use Default' to get started.
+
+You can also create a sequence using `x_epi_cmd`:
+
+```
+x_epi_cmd -out example -fov 320 320 320 -symm_ro -acq_3d -met -name 'pyr' \
+          -size 16 16 16 -flip 10 -met -name 'lac' -size 12 12 12 -flip 45
+```
+
+The command above creates a 3D EPI sequence with two different metabolites. For more
+information about creating sequences, see the [documentation](https://x-epi.readthedocs.io/en/latest/seq_doc/index.html)

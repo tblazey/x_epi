@@ -45,8 +45,8 @@
   "mets": [
     {
       "name": "met_1",
-      "grd_path": "/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.GRD",
-      "rf_path": "/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.RF",
+      "grd_path": "siemens_singleband_pyr_3T.GRD",
+      "rf_path": "siemens_singleband_pyr_3T.RF",
       "formula": "1",
       "use_sinc": true,
       "flip": 90.0,
@@ -75,8 +75,8 @@
     },
     {
       "name": "met_2",
-      "grd_path": "/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.GRD",
-      "rf_path": "/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.RF",
+      "grd_path": "siemens_singleband_pyr_3T.GRD",
+      "rf_path": "siemens_singleband_pyr_3T.RF",
       "formula": "1",
       "use_sinc": false,
       "flip": 90.0,

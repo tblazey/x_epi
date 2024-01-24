@@ -17,8 +17,10 @@ def create_parser():
     Creates argparse argument parser for calibration script
     """
 
-    parser = argparse.ArgumentParser(description="Estimates power for x_epi sequences")
-    parser.add_argument("twix", help="Twix file containing EPI data")
+    parser = argparse.ArgumentParser(
+        description="Estimates power for x_epi sequences on Siemens scanners"
+    )
+    parser.add_argument("twix", help="Siemsn Twix file containing EPI data")
     parser.add_argument("-n_avg", default=1, help="Number of averages")
     parser.add_argument(
         "-angle",

@@ -243,6 +243,21 @@ def make_main_parser():
     scan_grp.add_argument(
         "-rf_dead_time", help="RF dead time [us]", default=100, type=float
     )
+    scan_grp.add_argument(
+        "-adc_dead_time", help="ADC dead time [us]", default=20, type=float
+    )
+    scan_grp.add_argument(
+        "-adc_raster_time", help="ADC raster time [ns]", default=100, type=float
+    )
+    scan_grp.add_argument(
+        "-block_duration_raster", help="Block raster time [us]", default=10, type=float
+    )
+    scan_grp.add_argument(
+        "-grad_raster_time", help="Gradient raster time [us]", default=10, type=float
+    )
+    scan_grp.add_argument(
+        "-rf_raster_time", help="RF raster time [us]", default=1, type=float
+    )
 
     return main_parser
 

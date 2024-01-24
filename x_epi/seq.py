@@ -51,8 +51,13 @@ class XSeq(pp.Sequence):
         nuc="13C",
         rf_dead_time=100,
         rf_ringdown_time=30,
+        adc_dead_time=20,
         max_slew=200,
         max_grad=100,
+        adc_raster_time=100,
+        block_duration_raster=10,
+        grad_raster_time=10,
+        rf_raster_time=1,
         ori="Transverse",
         pe_dir="AP",
         **kwargs,
@@ -118,7 +123,15 @@ class XSeq(pp.Sequence):
         max_slew : float
            Maximum slew rate (T/m/s)
         max_grad : float
-           Maximum gradient strength (mT/m)
+            Maximum gradient strength (mT/m)
+        adc_raster_time : float
+            Raster time for ADC (ns)
+        block_duration_raster : float
+            Raster time for Pulseq blocks (us)
+        grad_raster_time : float
+            Raster time for gradients (us)
+        rf_raster_time : float
+            Raster time for RF events (us)
         ori : str
            Image orientation for reconstruction.
         pe_dir : str
@@ -139,7 +152,11 @@ class XSeq(pp.Sequence):
             rf_dead_time=rf_dead_time * 1e-6,
             gamma=nuc_to_gamma(nuc),
             B0=b0,
-            adc_dead_time=20e-6,
+            adc_dead_time=adc_dead_time * 1e-6,
+            adc_raster_time=adc_raster_time * 1e-9,
+            block_duration_raster=block_duration_raster * 1e-6,
+            grad_raster_time=grad_raster_time * 1e-6,
+            rf_raster_time=rf_raster_time * 1e-6,
         )
         super().__init__(lims)
 
@@ -424,7 +441,7 @@ class XSeq(pp.Sequence):
         # and the fact that ADC samples take place in the middle of trapezoidal gradient
         # times. Extra  time for rounding is divided evenly on each side of the readout
         # gradient. The dwell time can be removed from remove (t_acq - t_dwell) if you
-        # want no odd/even offset
+        # want no odd/even offset (is currently removed)
 
         adc_freq_off = met_obj.freq_off + self.ro_off * met_obj.gx_amp
         if self.ramp_samp is False:
@@ -433,7 +450,6 @@ class XSeq(pp.Sequence):
                 met_obj.size[0],
                 duration=t_acq,
                 system=self.system,
-                delay=adc_delay,
                 freq_offset=adc_freq_off,
             )
         else:
@@ -446,9 +462,19 @@ class XSeq(pp.Sequence):
             met_obj.adc = pp.make_adc(
                 met_obj.size_acq[0],
                 system=self.system,
-                delay=adc_delay,
                 freq_offset=adc_freq_off,
                 dwell=met_obj.dwell,
+            )
+        met_obj.adc.delay = adc_delay
+
+        # Account for long adc delays
+        if self.system.adc_dead_time - adc_delay > 0:
+            met_obj.gx.delay = (
+                np.ceil(
+                    (self.system.adc_dead_time - adc_delay)
+                    / self.system.block_duration_raster
+                )
+                * self.system.block_duration_raster
             )
 
         # Construct x prephasing gradient
@@ -1039,6 +1065,11 @@ class XSeq(pp.Sequence):
             "max_slew": self.system.max_slew / self.system.gamma,
             "rf_ringdown_time": self.system.rf_ringdown_time * 1e6,
             "rf_dead_time": self.system.rf_dead_time * 1e6,
+            "adc_dead_time": self.system.adc_dead_time * 1e6,
+            "adc_raster_time": self.system.adc_raster_time * 1e9,
+            "block_duration_raster": self.system.block_duration_raster * 1e6,
+            "grad_raster_time": self.system.grad_raster_time * 1e6,
+            "rf_raster_time": self.system.rf_raster_time * 1e6,
             "ori": self.ori,
             "pe_dir": self.pe_dir,
             "version": version("x_epi"),

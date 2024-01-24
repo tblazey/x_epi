@@ -45,9 +45,6 @@ class ScalarFormatterForceFormat(ScalarFormatter):
         self.format = "%+1.1f"
 
 
-basedir = os.path.dirname(__file__)
-
-
 class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
     """
     Window class for PyQ5 app. Inherits from QtDesigner output
@@ -260,10 +257,17 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         # Misc
         self.dbl_spin_b0.valueChanged.connect(self.ui_to_dic)
         self.combo_nuc.currentIndexChanged.connect(self.ui_to_dic)
+        self.dbl_spin_adc_dead_time.valueChanged.connect(self.ui_to_dic)
 
         # RF timing
         self.dbl_spin_rf_ringdown_time.valueChanged.connect(self.ui_to_dic)
         self.dbl_spin_rf_dead_time.valueChanged.connect(self.ui_to_dic)
+
+        # Raster times
+        self.dbl_spin_adc_raster_time.valueChanged.connect(self.ui_to_dic)
+        self.dbl_spin_block_duration_raster.valueChanged.connect(self.ui_to_dic)
+        self.dbl_spin_grad_raster_time.valueChanged.connect(self.ui_to_dic)
+        self.dbl_spin_rf_raster_time.valueChanged.connect(self.ui_to_dic)
 
         ###################
         ###Menu Updates###
@@ -409,6 +413,13 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         self.param_dic["max_slew"] = self.dbl_spin_max_slew.value()
         self.param_dic["rf_ringdown_time"] = self.dbl_spin_rf_ringdown_time.value()
         self.param_dic["rf_dead_time"] = self.dbl_spin_rf_dead_time.value()
+        self.param_dic["adc_dead_time"] = self.dbl_spin_adc_dead_time.value()
+        self.param_dic["adc_raster_time"] = self.dbl_spin_adc_raster_time.value()
+        self.param_dic[
+            "block_duration_raster"
+        ] = self.dbl_spin_block_duration_raster.value()
+        self.param_dic["grad_raster_time"] = self.dbl_spin_grad_raster_time.value()
+        self.param_dic["rf_raster_time"] = self.dbl_spin_rf_raster_time.value()
         self.param_dic["ori"] = self.combo_ori.currentText()
         self.param_dic["pe_dir"] = self.combo_pe_dir.currentText()
 
@@ -495,6 +506,13 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         self.dbl_spin_max_slew.setValue(self.param_dic["max_slew"])
         self.dbl_spin_rf_ringdown_time.setValue(self.param_dic["rf_ringdown_time"])
         self.dbl_spin_rf_dead_time.setValue(self.param_dic["rf_dead_time"])
+        self.dbl_spin_adc_dead_time.setValue(self.param_dic["adc_dead_time"])
+        self.dbl_spin_adc_raster_time.setValue(self.param_dic["adc_raster_time"])
+        self.dbl_spin_block_duration_raster.setValue(
+            self.param_dic["block_duration_raster"]
+        )
+        self.dbl_spin_grad_raster_time.setValue(self.param_dic["grad_raster_time"])
+        self.dbl_spin_rf_raster_time.setValue(self.param_dic["rf_raster_time"])
         self.combo_ori.setCurrentText(self.param_dic["ori"])
         self.combo_pe_dir.setCurrentText(self.param_dic["pe_dir"])
 
@@ -1047,7 +1065,9 @@ class MyMainWindow(QMainWindow, x_epi.ui.Ui_MainWindow):
         Function to load in parameters for json and update plot
         """
         qm = QMessageBox()
-        json_path = QFileDialog.getOpenFileName(qm, "Load Parameter File")[0]
+        json_path = QFileDialog.getOpenFileName(
+            qm, "Load JSON Parameter File", filter="*.json"
+        )[0]
         self.load_json(json_path, use_default=False)
         self.update_for_plot()
 
@@ -1159,7 +1179,9 @@ def main():
     if q_val == 1:
         json_path = None
     else:
-        json_path = QFileDialog.getOpenFileName(qm, "Load Parameter File")[0]
+        json_path = QFileDialog.getOpenFileName(
+            qm, "Load JSON Parameter File", filter="*.json"
+        )[0]
 
     # Load app
     window = MyMainWindow(json_path=json_path)
