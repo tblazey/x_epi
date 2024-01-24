@@ -40,7 +40,7 @@
   "rf_raster_time": 1.0,
   "ori": "Transverse",
   "pe_dir": "AP",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "mets": [
     {
       "name": "met_1",
