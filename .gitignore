@@ -10,3 +10,4 @@ dist
 .coverage
 .pylintrc
 build
+htmlcov/
