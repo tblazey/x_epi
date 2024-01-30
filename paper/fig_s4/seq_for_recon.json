@@ -1,0 +1,101 @@
+{
+  "fov": [
+    240,
+    240,
+    300
+  ],
+  "rbw": 50,
+  "n_avg": 1,
+  "n_rep": 1,
+  "tr": 1500.0,
+  "tv": 0.0,
+  "ts": 0.0,
+  "ro_off": 0.0,
+  "pe_off": 0.0,
+  "slc_off": 40,
+  "n_echo": 1,
+  "delta_te": 0.0,
+  "n_met": 2,
+  "symm_ro": false,
+  "acq_3d": false,
+  "no_pe": false,
+  "no_slc": false,
+  "grad_spoil": true,
+  "ramp_samp": false,
+  "slice_axis": "Z",
+  "alt_read": false,
+  "alt_pha": false,
+  "alt_slc": false,
+  "ro_os": 1.0,
+  "b0": 3.0,
+  "nuc": "13C",
+  "max_grad": 60.0,
+  "max_slew": 140.0,
+  "rf_ringdown_time": 29.999999999999996,
+  "rf_dead_time": 99.99999999999999,
+  "ori": "Coronal",
+  "pe_dir": "RL",
+  "version": "0.0.4",
+  "mets": [
+    {
+      "name": "eg",
+      "grd_path": "/Users/blazeyt/Library/CloudStorage/Box-Box/data/hp/pulseq/siemens_tests/test/ucsf_grad.txt",
+      "rf_path": "/Users/blazeyt/Library/CloudStorage/Box-Box/data/hp/pulseq/siemens_tests/test/ucsf_rf.txt",
+      "formula": "13.578 * x ** -1.004",
+      "use_sinc": false,
+      "flip": 90.0,
+      "freq_off": 0.0,
+      "sinc_dur": 4.0,
+      "sinc_frac": 0.5,
+      "sinc_tbw": 4.0,
+      "size": [
+        24,
+        24,
+        12
+      ],
+      "pf_pe": 1.0,
+      "pf_pe2": 1.0,
+      "esp": 0.00136,
+      "b1_max": 0.1751,
+      "rf_delta": 4.0,
+      "grd_max": 4.9574,
+      "grd_delta": 4.0,
+      "z_centric": false,
+      "size_acq": [
+        24,
+        24,
+        12
+      ]
+    },
+    {
+      "name": "me",
+      "grd_path": "/Users/blazeyt/Library/CloudStorage/Box-Box/data/hp/pulseq/siemens_tests/test/ucsf_grad.txt",
+      "rf_path": "/Users/blazeyt/Library/CloudStorage/Box-Box/data/hp/pulseq/siemens_tests/test/ucsf_rf.txt",
+      "formula": "13.578 * x ** -1.004",
+      "use_sinc": false,
+      "flip": 90.0,
+      "freq_off": -365.0,
+      "sinc_dur": 4.0,
+      "sinc_frac": 0.5,
+      "sinc_tbw": 4.0,
+      "size": [
+        24,
+        24,
+        12
+      ],
+      "pf_pe": 1.0,
+      "pf_pe2": 1.0,
+      "esp": 0.00136,
+      "b1_max": 0.1751,
+      "rf_delta": 4.0,
+      "grd_max": 4.9574,
+      "grd_delta": 4.0,
+      "z_centric": false,
+      "size_acq": [
+        24,
+        24,
+        12
+      ]
+    }
+  ]
+}

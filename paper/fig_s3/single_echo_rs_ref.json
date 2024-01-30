@@ -1,0 +1,100 @@
+{
+  "fov": [
+    240,
+    240,
+    240
+  ],
+  "rbw": 50,
+  "n_avg": 1,
+  "n_rep": 1,
+  "tr": 1500.0,
+  "tv": 0.0,
+  "ts": 0.0,
+  "ro_off": 0.0,
+  "pe_off": 0.0,
+  "slc_off": 0.0,
+  "n_echo": 1,
+  "delta_te": 0.0,
+  "n_met": 2,
+  "symm_ro": true,
+  "acq_3d": true,
+  "no_pe": true,
+  "no_slc": false,
+  "grad_spoil": false,
+  "ramp_samp": true,
+  "slice_axis": "Z",
+  "alt_read": false,
+  "alt_pha": false,
+  "alt_slc": false,
+  "ro_os": 2.0,
+  "b0": 3.0,
+  "nuc": "13C",
+  "max_grad": 60.0,
+  "max_slew": 120.0,
+  "rf_ringdown_time": 29.999999999999996,
+  "rf_dead_time": 99.99999999999999,
+  "ori": "Coronal",
+  "pe_dir": "RL",
+  "mets": [
+    {
+      "name": "eg",
+      "grd_path": "/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.GRD",
+      "rf_path": "/Users/blazeyt/Documents/code/x_epi/x_epi/res/siemens_singleband_pyr_3T.RF",
+      "formula": "1",
+      "use_sinc": false,
+      "flip": 45.0,
+      "freq_off": 0.0,
+      "sinc_dur": 4.0,
+      "sinc_frac": 0.5,
+      "sinc_tbw": 4.0,
+      "size": [
+        24,
+        24,
+        24
+      ],
+      "pf_pe": 1.0,
+      "pf_pe2": 0.66,
+      "esp": 0.0006000000000000001,
+      "b1_max": 0.1176,
+      "rf_delta": 4.0,
+      "grd_max": 1.3698,
+      "grd_delta": 4.0,
+      "z_centric": false,
+      "size_acq": [
+        76,
+        24,
+        16
+      ]
+    },
+    {
+      "name": "me",
+      "grd_path": "/Users/blazeyt/Library/CloudStorage/Box-Box/paper_working/code/fig_s2/siemens_singleband_pyr_3T.GRD",
+      "rf_path": "/Users/blazeyt/Library/CloudStorage/Box-Box/paper_working/code/fig_s2/siemens_singleband_pyr_3T.RF",
+      "formula": "1",
+      "use_sinc": false,
+      "flip": 45.0,
+      "freq_off": 0.0,
+      "sinc_dur": 4.0,
+      "sinc_frac": 0.5,
+      "sinc_tbw": 4.0,
+      "size": [
+        16,
+        16,
+        16
+      ],
+      "pf_pe": 1.0,
+      "pf_pe2": 1.0,
+      "esp": 0.00048000000000000007,
+      "b1_max": 0.1176,
+      "rf_delta": 4.0,
+      "grd_max": 1.3698,
+      "grd_delta": 4.0,
+      "z_centric": false,
+      "size_acq": [
+        48,
+        16,
+        16
+      ]
+    }
+  ]
+}

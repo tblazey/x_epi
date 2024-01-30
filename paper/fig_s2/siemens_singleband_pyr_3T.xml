@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svk_data_acquisition_description>
+   <version>0</version>
+   <encoding>
+      <excitation>
+         <spectralType>selective</spectralType>
+         <spatialType>selective</spatialType>
+         <pulseName>siemens_singleband_pyr_3T</pulseName>
+         <flipAngle_deg frequencyMax_Hz="501.228" frequencyMin_Hz="107.6355">90</flipAngle_deg>
+         <duration_us>20816</duration_us>
+         <numPoints>5204</numPoints>
+         <isodelay_us>10408</isodelay_us>
+         <maxB1_G>0.11762</maxB1_G>
+         <intB1Sqr>0.017567</intB1Sqr>
+         <rmsB1>0.0004027</rmsB1>
+         <nominalThickness_mm>240</nominalThickness_mm>
+         <nominalMaxGradient_Gcm>1.3698</nominalMaxGradient_Gcm>
+         <nucleus>Carbon</nucleus>
+      </excitation>
+   </encoding>
+</svk_data_acquisition_description>

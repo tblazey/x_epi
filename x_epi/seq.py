@@ -152,11 +152,11 @@ class XSeq(pp.Sequence):
             rf_dead_time=rf_dead_time * 1e-6,
             gamma=nuc_to_gamma(nuc),
             B0=b0,
-            adc_dead_time=adc_dead_time * 1e-6,
-            adc_raster_time=adc_raster_time * 1e-9,
-            block_duration_raster=block_duration_raster * 1e-6,
-            grad_raster_time=grad_raster_time * 1e-6,
-            rf_raster_time=rf_raster_time * 1e-6,
+            adc_dead_time=np.round(adc_dead_time * 1e-6, 7),
+            adc_raster_time=np.round(adc_raster_time * 1e-9, 10),
+            block_duration_raster=np.round(block_duration_raster * 1e-6, 7),
+            grad_raster_time=np.round(grad_raster_time * 1e-6, 7),
+            rf_raster_time=np.round(rf_raster_time * 1e-6, 7)
         )
         super().__init__(lims)
 
