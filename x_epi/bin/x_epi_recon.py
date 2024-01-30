@@ -18,7 +18,7 @@ def create_parser():
 
     # Create parser
     parser = argparse.ArgumentParser(
-        description="Reconstruction for data acquired with x_epi"
+        description="Reconstruction for Siemens data acquired with x_epi"
     )
     parser.add_argument("twix", help="Twix file containing EPI data")
     parser.add_argument("json", help="Json file describing sequence from x_epi_app.py")
