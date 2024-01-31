@@ -18,7 +18,7 @@ def create_parser():
 
     # Create parser
     parser = argparse.ArgumentParser(
-        description="Reconstruction for data acquired with x_epi"
+        description="Reconstruction for Siemens data acquired with x_epi"
     )
     parser.add_argument("twix", help="Twix file containing EPI data")
     parser.add_argument("json", help="Json file describing sequence from x_epi_app.py")
@@ -58,7 +58,7 @@ def create_parser():
         "-ref_info", help="Twix data and json file for reference scan", nargs=2
     )
     parser.add_argument("-ts", type=float, help="Sampling time (s)")
-    parser.add_argument("-save_k", action='store_true', help="Saves k-space data")
+    parser.add_argument("-save_k", action="store_true", help="Saves k-space data")
 
     return parser
 
@@ -155,7 +155,7 @@ def run_preproc(
     # Regrid if necessary
     if k_coord is not None:
         x_data.load_k_coords(k_coord)
-        x_data.regrid_k_data(method='nufft')
+        x_data.regrid_k_data(method="nufft")
 
     # Flip axes
     x_data.flip_k_data()
@@ -233,14 +233,14 @@ def main(argv=None):
 
     # Save metabolite parameters to json
     x_data.save_param_dic(args.out)
-    
+
     # Save k-space data
     if args.save_k is True:
         for met in x_data.mets:
             if met.k_acq is not None:
-                np.save(f'{args.out}_{met.name}_k_acq.npy', met.k_acq)
-            np.save(f'{args.out}_{met.name}_k_data.npy', met.k_data)
-            
+                np.save(f"{args.out}_{met.name}_k_acq.npy", met.k_acq)
+            np.save(f"{args.out}_{met.name}_k_data.npy", met.k_data)
+
 
 if __name__ == "__main__":
     main()

@@ -7,8 +7,8 @@ name = "x_epi"
 authors = [{name = "Tyler Blazey", email = "blazey@wustl.edu"}]
 description = "A package for creating EPI sequences for X-Nuclues imaging"
 readme = "README.md"
-requires-python = ">=3.10"
-version = "0.0.4"
+requires-python = "==3.10.*"
+version = "1.0.0"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -23,7 +23,8 @@ dependencies = ['matplotlib',
                 'scipy',
                 'twixtools@git+https://github.com/pehses/twixtools#egg=master',
                 'fslpy',
-                'pynufft'
+                'pynufft',
+                'nmrglue'
 ]
 
 [project.scripts]
@@ -37,6 +38,9 @@ x_epi_cal = "x_epi.bin.x_epi_cal:main"
 
 [tool.setuptools.package-data]
 "x_epi.res" = ["*.json", "*.seq", "*.GRD", "*.RF", "*.png"]
+
+[tool.setuptools.packages.find]
+exclude = ["paper"]
 
 [tool.coverage.run]
 branch = true

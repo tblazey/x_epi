@@ -66,6 +66,11 @@ def load_ssrf_grad(grd_path):
        Sampling time (s)
     """
 
+    # Check for files that are in the resource directory
+    grd_res_path = os.path.join(RES_DIR, os.path.basename(grd_path))
+    if os.path.exists(grd_path) is False and os.path.exists(grd_res_path) is True:
+        grd_path = grd_res_path
+
     # Open file to get maximum gradient strength and time resolution
     with open(grd_path, encoding="utf-8") as fid:
         grd_txt = fid.read()
@@ -104,6 +109,11 @@ def load_ssrf_rf(rf_path):
     rf_delta : float
        Sampling time (s)
     """
+
+    # Check for files that are in the resource directory
+    rf_res_path = os.path.join(RES_DIR, os.path.basename(rf_path))
+    if os.path.exists(rf_path) is False and os.path.exists(rf_res_path) is True:
+        rf_path = rf_res_path
 
     # Open file to get maximum b1 and time resolution
     with open(rf_path, encoding="utf-8") as fid:

@@ -20,4 +20,4 @@ jobs:
         pip install pylint matplotlib numpy pypulseq scipy pypulseq@git+https://github.com/tblazey/pypulseq#egg=dev PyQt5 nibabel
     - name: Analysing the code with pylint
       run: |
-        pylint --extension-pkg-whitelist=PyQt5 --fail-under=8 $(git ls-files '*.py')
+        pylint --extension-pkg-whitelist=PyQt5 --fail-under=8 $(git ls-files 'x_epi/*.py')

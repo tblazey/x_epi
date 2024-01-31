@@ -265,11 +265,11 @@ class XData:
 
                 line_idx += 1
 
-    def regrid_k_data(self, method='cubic', nufft_size=6):
+    def regrid_k_data(self, method="cubic", nufft_size=6):
         """
         Regrid k-space in readout direction so that we have even spacing with the
         correct FOV
-        
+
         Parameters
         ----------
         method : str
@@ -307,24 +307,24 @@ class XData:
                 alt_idx = rep % 2
                 k_x = k_coord[0, :, pe_1, pe_2, alt_idx, echo]
                 k_y = met.k_acq[:, pe_1, pe_2, rep, echo]
-                
+
                 # Switch for regridding method
-                if method == 'cubic':
+                if method == "cubic":
                     k_line_i = interp1d(
                         k_x, k_y, bounds_error=False, fill_value=0, kind="cubic"
                     )(x_coord[:, alt_idx])
-                elif method == 'nufft':
+                elif method == "nufft":
                     k_x *= np.pi / np.max(np.abs(k_x))
-                    
+
                     # Setup non-uniform fft
                     nufft = NUFFT()
                     nufft.plan(
                         k_x[:, np.newaxis],
-                        (met.size[0], ),
-                        (met.size_acq[0], ),
-                        (nufft_size, )
+                        (met.size[0],),
+                        (met.size_acq[0],),
+                        (nufft_size,),
                     )
-                    k_line_i = fft(fftshift(nufft.solve(k_y, 'cg', maxiter=100)))
+                    k_line_i = fft(fftshift(nufft.solve(k_y, "cg", maxiter=100)))
 
                     # Flip if necessary
                     if pe_1 % 2 == 1:
@@ -473,9 +473,7 @@ class XData:
 
                 # Pad to allow subvoxel shifts
                 shifted_pad = self._pad_image(shifted, pads=(pad, pad, 0, 0, 0))
-                met.img_data = fftn(shifted_pad, axes=[0, 1])[
-                    0::pad, 0::pad, :, :, :
-                ]
+                met.img_data = fftn(shifted_pad, axes=[0, 1])[0::pad, 0::pad, :, :, :]
 
     def _pad_image(self, img, pads=(8, 8, 8, 0, 0)):
         """
