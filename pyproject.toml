@@ -8,7 +8,7 @@ authors = [{name = "Tyler Blazey", email = "blazey@wustl.edu"}]
 description = "A package for creating EPI sequences for X-Nuclues imaging"
 readme = "README.md"
 requires-python = "==3.10.*"
-version = "0.0.5"
+version = "1.0.0"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
