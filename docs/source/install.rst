@@ -1,11 +1,11 @@
 Installation
 ------------
 
-Currently, x_epi requries Python 3.10. If you don't have 3.10, please 
+Currently, **x_epi** requries Python 3.10. If you don't have 3.10, please 
 `install <https://www.python.org/downloads/release/python-31010>`_ it first. 
 
 If you have multiple versions of Python, it is often makes things to use a virtual 
-environment specific for x_epi:
+environment specific for **x_epi**:
 
 .. code-block:: bash
 

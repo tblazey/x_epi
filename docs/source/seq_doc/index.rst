@@ -1,7 +1,7 @@
 Sequence Creation
 =================
 
-x_epi can be used three ways:
+**x_epi** can be used three ways:
 
 #. Directly calling the :doc:`XSeq <api>` Python class
 #. A simple :doc:`graphical user interace <ui>`
