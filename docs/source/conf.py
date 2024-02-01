@@ -57,7 +57,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/numpy/numpydoc",
+            "url": "https://github.com/tblazey/x_epi",
             "icon": "fab fa-github-square",
             "type": "fontawesome",
         },
