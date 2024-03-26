@@ -3,9 +3,9 @@ Tutorial
 
 The purpose of this tutorial is to show new users how to get started with **x_epi**. In
 the first part of the tutorial, we will show how you can use **x_epi** to create the 
-sequence  used in Figure 2 of the upcoming paper. Then in the second part of the tutorial 
-we will show how you can use **x_epi** to reconstruct the data acquired using the
-sequence created in part one.
+sequence used in Figure 2 of our `paper <https://doi.org/10.1002/mrm.30090>`_. Then in
+the second part of the tutorial  we will show how you can use **x_epi** to reconstruct
+the data acquired using the sequence created in part one.
 
 Sequence Creation
 -----------------

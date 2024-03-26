@@ -13,6 +13,7 @@
 [![Pylint](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml/badge.svg)](https://github.com/tblazey/x_epi/actions/workflows/pylint.yml)
 [![codecov](https://codecov.io/gh/tblazey/x_epi/graph/badge.svg?token=GS8QK3LG16)](https://codecov.io/gh/tblazey/x_epi)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Static Badge](https://img.shields.io/badge/10.1002%2Fmrm.30090-doi?label=doi&labelColor=828282&color=0f52ba&cacheSeconds=https%3A%2F%2Fdoi.org%2F10.1002%2Fmrm.30090)](https://doi.org/10.1002/mrm.30090)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
@@ -21,7 +22,7 @@
 
 Users can create a custom EPI sequence using python functions, a command line program, or a simple graphical user interface. 
 
-A paper using the package is currently under review.
+A paper describing the sequence/program has been [published](https://doi.org/10.1002/mrm.30090) in Magnetic Resonance in Medicine.
 
 ## Installation
 
