@@ -13,6 +13,7 @@ from numpy.fft import ifftn, ifftshift, fft, fftn, fftshift, fftfreq
 from pynufft import NUFFT
 from scipy.interpolate import interp1d
 import twixtools
+from tqdm.contrib.itertools import product as tqdm_product
 from .utils import r_spline_basis, knot_loc
 
 
@@ -26,6 +27,7 @@ class XData:
         fov=[240, 240, 240],
         rbw=50,
         n_avg=1,
+        n_chan=1,
         n_rep=1,
         ts=1000,
         ro_off=0,
@@ -54,6 +56,8 @@ class XData:
            Readout bandwidth (kHz)
         n_avg : int
            Number of averages
+        n_chan : int
+            Number of coil channels
         n_rep : int
            Number of repeats
         ts : float
@@ -93,6 +97,7 @@ class XData:
         self.fov = np.array(fov)
         self.rbw = rbw * 1e3  # Hz
         self.n_avg = n_avg
+        self.n_chan = n_chan
         self.n_rep = n_rep
         self.ts = ts / 1e3  # s
         self.ro_off = ro_off
@@ -179,8 +184,8 @@ class XData:
         met_obj.size_acq = size_acq
         met_obj.pe_start = size[1] - size_acq[1]
         met_obj.pe_2_start = size[2] - size_acq[2]
-        met_obj.dims = size + [self.n_rep] + [self.n_echo]
-        met_obj.dims_acq = size_acq + [self.n_rep] + [self.n_echo]
+        met_obj.dims = size + [self.n_rep, self.n_echo, self.n_chan]
+        met_obj.dims_acq = size_acq + [self.n_rep, self.n_echo, self.n_chan]
         met_obj.vox_dims = np.array(self.fov) / np.array(size)
         met_obj.k_acq = k_acq
         met_obj.k_data = k_data
@@ -205,19 +210,23 @@ class XData:
 
         # Reshape coordinates for each metabolite
         for idx, met in enumerate(self.mets):
-            coord_dims = (
+            coord_dims = [
                 3,
                 met.dims_acq[0],
                 met.dims_acq[1],
                 met.dims_acq[4],
                 met.dims_acq[2],
                 met.dims_acq[3],
-            )
+            ]
+            if np.prod(coord_dims) != np.prod(k_coord[idx].shape):
+                coord_dims[5] = 1
             k_coord[idx] = (
                 k_coord[idx]
                 .reshape(coord_dims, order="F")
                 .transpose([0, 1, 2, 4, 5, 3])
             )
+            if k_coord[idx].shape[4] != met.dims_acq[3] and k_coord[idx].shape[4] == 1:
+                k_coord[idx] = np.repeat(k_coord[idx], met.dims_acq[3], axis=4)
             met.k_coord = k_coord[idx]
 
     def load_k_data(self, twix_path, recon_dims=True):
@@ -255,7 +264,9 @@ class XData:
                 range(met.size_acq[1]),
             )
             for pe_2, echo, pe_1 in iter_prod_in:
-                k_line = twix_data[-1]["mdb"][line_idx].data.squeeze()
+                k_line = twix_data[-1]["mdb"][line_idx].data.squeeze().T
+                if self.n_chan == 1:
+                    k_line = k_line[:, np.newaxis]
                 if recon_dims is True:
                     pe_1_idx = met.pe_start + pe_1
                     pe_2_idx = met.pe_2_start + pe_2
@@ -273,7 +284,8 @@ class XData:
         Parameters
         ----------
         method : str
-            Cubic uses cubic spline interpolation, nufft performs a non-uniform NFFT
+            Cubic uses cubic spline interpolation, nufft performs a non-uniform FFT,
+            and linear performs linear interpolation
         nufft_size : int
             Size of nufft interpolator
         """
@@ -302,16 +314,18 @@ class XData:
             met.k_data = np.zeros(met.dims, dtype=np.complex128)
 
             # Interpolate oversampled lines to desired resolution
-            iter_prod = product(*[range(i) for i in met.dims_acq[1:]])
-            for pe_1, pe_2, rep, echo in iter_prod:
+            iter_prod = tqdm_product(
+                *[range(i) for i in met.dims_acq[1:]], desc="Regridding"
+            )
+            for pe_1, pe_2, rep, echo, chan in iter_prod:
                 alt_idx = rep % 2
                 k_x = k_coord[0, :, pe_1, pe_2, alt_idx, echo]
-                k_y = met.k_acq[:, pe_1, pe_2, rep, echo]
+                k_y = met.k_acq[:, pe_1, pe_2, rep, echo, chan]
 
                 # Switch for regridding method
-                if method == "cubic":
+                if method in ["cubic", "linear"]:
                     k_line_i = interp1d(
-                        k_x, k_y, bounds_error=False, fill_value=0, kind="cubic"
+                        k_x, k_y, bounds_error=False, fill_value=0, kind=method
                     )(x_coord[:, alt_idx])
                 elif method == "nufft":
                     k_x *= np.pi / np.max(np.abs(k_x))
@@ -333,7 +347,7 @@ class XData:
                 # Add data to complete k-space matrix
                 pe_1_idx = met.pe_start + pe_1
                 pe_2_idx = met.pe_2_start + pe_2
-                met.k_data[:, pe_1_idx, pe_2_idx, rep, echo] = k_line_i
+                met.k_data[:, pe_1_idx, pe_2_idx, rep, echo, chan] = k_line_i
 
     def flip_k_data(self):
         """
@@ -350,16 +364,15 @@ class XData:
 
             # Flip odd time points if necessary.
             if self.n_rep > 1:
-                met.k_data[:, :, :, 1::2, :] = met.k_data[
+                met.k_data[:, :, :, 1::2] = met.k_data[
                     :: self.alt_signs[0],
                     :: self.alt_signs[1],
                     :: self.alt_signs[2],
                     1::2,
-                    :,
                 ]
 
     def fft_recon(
-        self, ref_data=None, slice_idx=None, point=True, n_k=6, fft_axes=[0, 1, 2]
+        self, ref_data=None, point=True, n_k=2
     ):
         """
         Reconstructs metabolite data using the FFT. Also can apply a phase correction
@@ -370,8 +383,6 @@ class XData:
         ref_data : XData object
             XData object containing with reference scan data (no phase encoding) for
             each metabolite
-        slice_idx : int
-            Zero-based slice index to use for reference scan
         point : bool
             Run a pointwise (True) or spline-based (False) phase correction
         n_k : int
@@ -380,60 +391,64 @@ class XData:
 
         # Loop through metabolite dimension
         for idx, met in enumerate(self.mets):
-            # Get projection of first dimension of reference scan
             if ref_data is not None:
-                ref_proj = fftn(ref_data.mets[idx].k_data, axes=[0])
+                # Get projection of first dimension of reference scan
+                ref_proj = fftshift(fftn(ref_data.mets[idx].k_data, axes=[0]), axes=[0])
 
-                # Get phase correction angle
-                if point is True:
-                    # Do pointwise phase correction
-                    if slice_idx is not None:
-                        pha = np.exp(
-                            -1j * np.angle(ref_proj[:, :, slice_idx : slide_idx + 1])
-                        )
-                    else:
-                        pha = np.exp(-1j * np.angle(ref_proj))
+                # Sum over slices of first echos at first timepoint, may not be wise for 2D
+                ref_sum = np.sum(ref_proj[:, :, :, 0, 0], axis=2)
 
-                # Do a spline phase correction
-                else:
-                    # Sum over slices of first echos at first timepoint, may not be wise for 2D
-                    ref_sum = np.sum(ref_proj[:, :, :, 0, 0], axis=2)
+                # Average "positive" reference lines (see Heid, 1997)
+                ref_lines = (ref_sum[:, 0::4] + ref_sum[:, 2::4]) / 2
 
-                    # Average "positive" reference lines (see Heid, 1997)
-                    ref_lines = (ref_sum[:, 0::4] + ref_sum[:, 2::4]) / 2
+                # Get "negative" lines in between ref lines
+                mov_lines = ref_sum[:, 1::4]
 
-                    # Get "negative" lines in between ref lines
-                    mov_lines = ref_sum[:, 1::4]
+                # Get phase difference after summing up ref/mov pairs
+                pha_diff = np.angle(np.sum(ref_lines * np.conj(mov_lines), axis=1))
 
-                    # Get phase difference after summing up ref/mov pairs
-                    pha_diff = fftshift(
-                        np.angle(np.sum(ref_lines * np.conj(mov_lines), axis=1))
-                    )
-
-                    # Fit spline to phase difference
+                # Either fit the phase difference, or do a pointwise correction
+                if point is False:
+                    # Setup spline for fitting phase differences
                     x = np.arange(pha_diff.shape[0])
                     knots = knot_loc(x, n_k)
                     basis = r_spline_basis(x, knots)
-                    coef, _, _, _ = np.linalg.lstsq(basis, pha_diff, rcond=None)
-                    pha_hat = basis @ coef
-                    pha = np.ones(met.k_data.shape, dtype=np.complex128)
+                    pha_hat = np.zeros(pha_diff.shape)
 
-                    # Flip phase for odd echos
-                    for i in range(pha.shape[-1]):
-                        if i % 2 == 0:
-                            sign = 1
-                        else:
-                            sign = -1
-                        pha[:, :, :, :, i] = np.exp(1j * fftshift(pha_hat) * sign)[
-                            :, np.newaxis, np.newaxis, np.newaxis
-                        ]
+                    for chan in range(self.n_chan):
+                        # Mask out regions with low signal
+                        # From: https://github.com/fil-physics/ISMRM2023_educational
+                        ref_amp = np.abs(ref_sum[:, 0, chan])
+                        pha_mask = ref_amp / np.max(ref_amp) > 0.5
+
+                        # Fit spline to phase difference
+                        coef, _, _, _ = np.linalg.lstsq(
+                            basis[pha_mask, :], pha_diff[pha_mask, chan], rcond=None
+                        )
+                        pha_hat[:, chan] = basis @ coef
+                else:
+                    pha_hat = pha_diff
+
+                # Flip phase for odd echos
+                pha = np.ones(met.k_data.shape, dtype=np.complex128)
+                for i in range(self.n_echo):
+                    if i % 2 == 0:
+                        sign = 1
+                    else:
+                        sign = -1
+
+                    pha[:, :, :, :, i, :] = np.exp(1j * pha_hat * sign)[
+                        :, np.newaxis, np.newaxis, np.newaxis
+                    ]
 
             else:
-                pha = np.ones(list(met.k_data.shape[0:3]) + [1, 1])
+                pha = np.ones(list(met.k_data.shape[0:3]) + [1, 1, 1])
 
             # Apply reference scan and transform to image
+            k_proj = fftshift(fftn(met.k_data, axes=[0]), axes=[0])
+            k_proj[:, 1::2] *= pha[:, 1::2]
             met.img_data = fftshift(
-                fftn(fftn(met.k_data, axes=[0]) * pha, axes=self.fft_axes[1::]),
+                fftn(ifftshift(k_proj, axes=0), axes=self.fft_axes[1:]),
                 axes=self.fft_axes,
             )
 
@@ -451,9 +466,9 @@ class XData:
             if met.freq_off != 0:
                 # Construct time vector for image acquisition
                 ro_t = np.arange(met.img_data.shape[0]) / self.rbw
-                pe_t = np.arange(met.img_data.shape[0]) * met.esp
+                pe_t = np.arange(met.img_data.shape[1]) * met.esp
                 t = ro_t[:, np.newaxis] + pe_t[np.newaxis, :]
-                ec_t = np.arange(met.dims[4]) * (met.esp + t[-1, -1])
+                ec_t = np.arange(self.n_echo) * (met.esp + t[-1, -1])
                 t = t[:, :, np.newaxis] + ec_t[np.newaxis, np.newaxis, :]
 
                 # Flip echos
@@ -462,7 +477,11 @@ class XData:
 
                 # Shift according to fourier shift theorem
                 img_shift = np.exp(
-                    -2 * np.pi * 1j * t[:, :, np.newaxis, np.newaxis, :] * met.freq_off
+                    -2
+                    * np.pi
+                    * 1j
+                    * t[:, :, np.newaxis, np.newaxis, :, np.newaxis]
+                    * met.freq_off
                 )
 
                 # Apply off resonance correction to the image.
@@ -472,10 +491,11 @@ class XData:
                 )
 
                 # Pad to allow subvoxel shifts
-                shifted_pad = self._pad_image(shifted, pads=(pad, pad, 0, 0, 0))
-                met.img_data = fftn(shifted_pad, axes=[0, 1])[0::pad, 0::pad, :, :, :]
+                pad_dims = [pad, pad] + np.zeros(shifted.ndim - 2, dtype=int).tolist()
+                shifted_pad = self._pad_image(shifted, pads=pad_dims)
+                met.img_data = fftn(shifted_pad, axes=[0, 1])[0::pad, 0::pad]
 
-    def _pad_image(self, img, pads=(8, 8, 8, 0, 0)):
+    def _pad_image(self, img, pads=(8, 8, 8, 0, 0, 0)):
         """
         Apply padding to an image
 
@@ -524,19 +544,38 @@ class XData:
 
                 # Shift via Fourier domain
                 shift = np.zeros(met.dims, dtype=np.complex128)
+                new_dims = np.maximum(0, shift.ndim - 3)
                 if self.pe_off != 0:
                     shift += np.exp(2 * 1j * np.pi * y_g * self.pe_off)[
-                        :, :, :, np.newaxis, np.newaxis
+                        (...,) + (np.newaxis,) * new_dims
                     ]
                 if self.slc_off != 0:
                     shift += np.exp(2 * 1j * np.pi * z_g * self.slc_off)[
-                        :, :, :, np.newaxis, np.newaxis
+                        (...,) + (np.newaxis,) * new_dims
                     ]
                 shifted = ifftshift(
                     ifftn(met.img_data, axes=[1, 2]) * shift, axes=[1, 2]
                 )
-                shifted_pad = self._pad_image(shifted, pads=(0, pad, pad, 0, 0))
-                met.img_data = fftn(shifted_pad, axes=[1, 2])[:, 0::pad, 0::pad, :, :]
+                pad_dims = [0, pad, pad] + np.zeros(
+                    shifted.ndim - 3, dtype=int
+                ).tolist()
+                shifted_pad = self._pad_image(shifted, pads=pad_dims)
+                met.img_data = fftn(shifted_pad, axes=[1, 2])[:, 0::pad, 0::pad]
+
+    def combine_coils(self):
+        """
+        Perform sum-of-squares coil combination.
+        """
+
+        for met in self.mets:
+            if met.img_data is None:
+                msg = "Image needs to be reconstructed with fft_recon before combinding coils"
+                raise RuntimeError(msg)
+            if met.img_data.ndim != 6:
+                msg = "Image needs to have 6 dimensions. Has combine_coils already been run?"
+                raise RuntimeError(msg)
+
+            met.img_data = np.linalg.norm(np.abs(met.img_data), axis=5)
 
     def create_nii_xfm(self):
         """
@@ -588,9 +627,14 @@ class XData:
         for met in self.mets:
             out_data = met.img_data
             suff = ""
+            zooms = np.append(met.vox_dims, [1])
+            if met.img_data.ndim == 6:
+                zooms = np.append(zooms, [1])
             if mean is True:
                 out_data = np.mean(out_data, axis=3)
                 suff += "_mean"
+            else:
+                zooms = np.insert(zooms, 3, self.ts)
             if cmplx is False:
                 out_data = np.abs(out_data)
             else:
@@ -604,9 +648,6 @@ class XData:
             nii = nib.Nifti1Image(out_data, affine=met.xfm)
             nii.set_qform(met.xfm, "scanner")
             nii.header.set_xyzt_units(xyz="mm", t="sec")
-            zooms = np.append(met.vox_dims, [1])
-            if len(out_data.shape) == 5:
-                zooms = np.insert(zooms, 3, self.ts)
             nii.header.set_zooms(zooms)
 
             # Save image
@@ -627,6 +668,7 @@ class XData:
             "fov": [int(dim) for dim in self.fov],
             "rbw": self.rbw / 1e3,
             "n_avg": self.n_avg,
+            "n_chan": self.n_chan,
             "n_rep": self.n_rep,
             "ts": self.ts * 1e3,
             "ro_off": self.ro_off,

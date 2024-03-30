@@ -1,5 +1,11 @@
 #!/bin/tcsh -f
-set force = 0
+
+if ( $#argv == 1 ) then
+    set force = $1
+else
+    set force = 0
+endif
+
 #Loop through figure directories
 foreach fig ( `ls -d fig_*` )
 
@@ -12,7 +18,7 @@ foreach fig ( `ls -d fig_*` )
          julia sim_pulse.jl
       endif
       if ( -e ${fig}.tcsh ) then
-         ./${fig}.tcsh
+         ./${fig}.tcsh $force
       else
          python3 ${fig}.py
       endif

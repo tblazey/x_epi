@@ -1,4 +1,11 @@
-#!/bin/tcsh
+#!/bin/tcsh -f
+
+#Usage
+if ( $#argv == 1 ) then
+    set force = $1
+else
+    set force = 0
+endif
 
 #Define data inputs
 set twix = meas_MID00656_FID232958_pulseq.dat
@@ -6,7 +13,6 @@ set ref = meas_MID00659_FID232961_pulseq.dat
 set json = single_echo_seq.json
 set ref_json = single_echo_ref.json
 set out = single_echo
-set force = 1
 
 #Run recon script
 if ( ! -e ${out}_pyr.nii.gz || $force == 1 ) then

@@ -39,16 +39,16 @@ def create_parser():
     parser.add_argument("-mean", help="Output temporal means", action="store_true")
     parser.add_argument(
         "-n_k",
-        default=6,
+        default=2,
         type=int,
         metavar="KNOTS",
-        help="Number of knots for spline. Default is 6. "
-        "Using 2 knots will give linear fit",
+        help="Number of knots for spline. Default is 2, which is a linear fit.",
     )
     parser.add_argument("-n_avg", type=int, help="Number of total averages", default=1)
     parser.add_argument(
         "-n_rep", type=int, help="Number of total repetitions", default=1
     )
+    parser.add_argument("-n_chan", type=int, help="Number of coil channels", default=1)
     parser.add_argument(
         "-point",
         action="store_true",
@@ -59,11 +59,20 @@ def create_parser():
     )
     parser.add_argument("-ts", type=float, help="Sampling time (s)")
     parser.add_argument("-save_k", action="store_true", help="Saves k-space data")
+    parser.add_argument("-combine", action="store_true", help="Combine coils")
+    parser.add_argument(
+        "-regrid",
+        help="Regriding method. Default is nufft.",
+        choices=["cubic", "nufft", "linear"],
+        default="nufft",
+    )
 
     return parser
 
 
-def extract_pars(json_path, n_avg=None, n_rep=None, ts=None, freq_off=None):
+def extract_pars(
+    json_path, n_avg=None, n_rep=None, ts=None, freq_off=None, n_chan=None
+):
     """
     Extract image parameters for x_epi json file
 
@@ -79,6 +88,8 @@ def extract_pars(json_path, n_avg=None, n_rep=None, ts=None, freq_off=None):
         Temporal sampling time. Overrides value in json file.
     freq_off : float
         Additional off-resonance term (Hz) added to each metabolite.
+    n_chan : int
+        Number of coil channels
 
     Returns
     -------
@@ -102,6 +113,8 @@ def extract_pars(json_path, n_avg=None, n_rep=None, ts=None, freq_off=None):
         param_dic["n_rep"] = n_rep
     if ts is not None:
         param_dic["ts"] = ts
+    if n_chan is not None:
+        param_dic["n_chan"] = n_chan
 
     # Add general parameters
     seq_dic = {key: param_dic[key] for key in param_dic if key != "mets"}
@@ -118,7 +131,15 @@ def extract_pars(json_path, n_avg=None, n_rep=None, ts=None, freq_off=None):
 
 
 def run_preproc(
-    twix_path, json_path, n_avg=None, n_rep=None, ts=None, freq_off=None, k_coord=None
+    twix_path,
+    json_path,
+    n_avg=None,
+    n_rep=None,
+    ts=None,
+    freq_off=None,
+    k_coord=None,
+    n_chan=None,
+    regrid="nufft",
 ):
     """
     Runs preprocessing of x_epi data
@@ -139,6 +160,10 @@ def run_preproc(
         Additional frequency offset for each metabolite
     k_coord : str
         Path to k-space coordinates from x_epi apps
+    n_chan : int
+        Number of coil channels
+    regrid : str
+        Method for regridding data. Takes nufft, cubic, or linear
 
     Returns
     -------
@@ -147,7 +172,9 @@ def run_preproc(
     """
 
     # Create XData object from json parameter file
-    x_data = extract_pars(json_path, n_avg=n_avg, n_rep=n_rep, ts=ts, freq_off=freq_off)
+    x_data = extract_pars(
+        json_path, n_avg=n_avg, n_rep=n_rep, ts=ts, freq_off=freq_off, n_chan=n_chan
+    )
 
     # Get k-space data from twix file
     x_data.load_k_data(twix_path, recon_dims=k_coord is None)
@@ -155,7 +182,7 @@ def run_preproc(
     # Regrid if necessary
     if k_coord is not None:
         x_data.load_k_coords(k_coord)
-        x_data.regrid_k_data(method="nufft")
+        x_data.regrid_k_data(method=regrid)
 
     # Flip axes
     x_data.flip_k_data()
@@ -201,24 +228,34 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     # Get k-space data and parameters for scan
-    run_keys = ["n_avg", "n_rep", "ts", "freq_off", "k_coord"]
+    run_keys = ["n_avg", "n_rep", "ts", "freq_off", "k_coord", "n_chan", "regrid"]
     kwargs = {key: value for key, value in vars(args).items() if key in run_keys}
     x_data = run_preproc(args.twix, args.json, **kwargs)
 
     # Get k-space data and pars for reference scan
     if args.ref_info is not None:
-        x_ref = run_preproc(args.ref_info[0], args.ref_info[1], k_coord=args.k_coord)
+        x_ref = run_preproc(
+            args.ref_info[0],
+            args.ref_info[1],
+            k_coord=args.k_coord,
+            n_chan=args.n_chan,
+            regrid=args.regrid,
+        )
     else:
         x_ref = None
 
     # Reconstruct images, applying phase correction if reference scan is supplied
-    x_data.fft_recon(ref_data=x_ref, slice_idx=None, n_k=args.n_k, point=args.point)
+    x_data.fft_recon(ref_data=x_ref, n_k=args.n_k, point=args.point)
 
     # Shift off resonance metabolites
     x_data.apply_off_res()
 
     # Phase shift(s) for off-center FOV
     x_data.apply_phase_shift()
+
+    # Combine coils if necessary
+    if args.combine is True:
+        x_data.combine_coils()
 
     # Save images
     x_data.save_nii(args.out)

@@ -1,12 +1,13 @@
 #!/bin/tcsh -f
-set force = 1
-#Run recon
+
+#Usage
 if ( $#argv == 1 ) then
-    set force = $argv
+    set force = $1
 else
     set force = 0
 endif
 
+#Run recon
 if ( ! -e multi_echo_eg.nii.gz || $force == 1 ) then
    x_epi_recon meas_MID00123_FID231462_pulseq.dat multi_echo_no_rs.json multi_echo \
                -n_avg 32 -anat ../fig_2/mag.nii.gz -complex \
@@ -100,7 +101,7 @@ foreach met ( eg me )
          else
           
             #Swap dims
-            python3 ../py/swap_dims.py ${img_in}.nii.gz ${img_in}_swap 0 1 2 4 3
+            python3 ../py/swap_dims.py ${img_in}.nii.gz ${img_in}_swap 0 1 2 4 3 5
             
             #Apply transformation
             flirt -in ${img_in}_swap -ref ../fig_2/anat -applyxfm -interp spline \
@@ -108,7 +109,7 @@ foreach met ( eg me )
                   
             #Swap back
             python3 ../py/swap_dims.py ${img_in}_swap_on_anat.nii.gz ${img_in}_on_anat \
-                                       0 1 2 4 3 -add 1
+                                       0 1 2 4 3 5 -add 2
           
          endif
          

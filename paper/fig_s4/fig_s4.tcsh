@@ -1,5 +1,11 @@
 #!/bin/tcsh -f
-set force = 1
+
+#Usage
+if ( $#argv == 1 ) then
+    set force = $1
+else
+    set force = 0
+endif
 
 set out = slice
 
