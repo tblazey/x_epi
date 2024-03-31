@@ -1,0 +1,74 @@
+{
+  "fov": [
+    256,
+    256,
+    4
+  ],
+  "rbw": 200.0,
+  "n_avg": 1,
+  "n_chan": 32,
+  "n_rep": 5,
+  "ts": 1.0,
+  "ro_off": 0.0,
+  "pe_off": 0.0,
+  "slc_off": 0.0,
+  "n_echo": 1,
+  "delta_te": 0.0,
+  "n_met": 1,
+  "symm_ro": true,
+  "acq_3d": false,
+  "ramp_samp": false,
+  "alt_read": false,
+  "alt_pha": false,
+  "alt_slc": false,
+  "ori": "Transverse",
+  "pe_dir": "AP",
+  "alt_signs": [
+    1,
+    1,
+    1
+  ],
+  "fft_axes": [
+    0,
+    1
+  ],
+  "version": "1.0.1",
+  "mets": [
+    {
+      "name": "proton",
+      "size": [
+        64,
+        64,
+        1
+      ],
+      "pf_pe": 1.0,
+      "pf_pe2": 0.67,
+      "freq_off": 0.0,
+      "z_centric": false,
+      "esp": 0.0005600000000000001,
+      "size_acq": [
+        64,
+        64,
+        1
+      ],
+      "pe_start": 0,
+      "pe_2_start": 0,
+      "dims": [
+        64,
+        64,
+        1,
+        5,
+        1,
+        32
+      ],
+      "dims_acq": [
+        64,
+        64,
+        1,
+        5,
+        1,
+        32
+      ]
+    }
+  ]
+}

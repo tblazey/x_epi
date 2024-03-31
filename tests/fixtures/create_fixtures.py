@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 
 # Load libs
+import json
 from os.path import join
 import pickle
 import numpy as np
 import x_epi
 from x_epi.utils import *
+from x_epi.data import XData
 from x_epi.seq import XSeq
+
 
 FIX_DIR = os.path.dirname(__file__)
 
@@ -116,3 +119,151 @@ seq_4.add_met()
 seq_4.create_seq()
 seq_4.write(join(FIX_DIR, "seq_4.seq"))
 seq_4.save_params(join(FIX_DIR, "seq_4"))
+
+
+########################
+###  XData Ramp Test ###
+########################
+
+# Load in json data describing data/sequence
+json_path = f'{FIX_DIR}/ramp_samp.json'
+with open(json_path, "r", encoding="utf-8") as jid:
+    param_dic = json.load(jid)
+    
+# Do the same thing for reference
+json_ref_path = f'{FIX_DIR}/ramp_samp_ref.json'
+with open(json_ref_path, "r", encoding="utf-8") as jid:
+    param_ref_dic = json.load(jid)
+
+# Extract parameters common to all metabolites
+param_dic["n_avg"] = 32
+seq_dic = {key: param_dic[key] for key in param_dic if key != "mets"}
+seq_ref_dic = {key: param_ref_dic[key] for key in param_ref_dic if key != "mets"}
+
+# Create class for recon
+x_data = XData(**seq_dic)
+x_data.add_met(**param_dic["mets"][0])
+x_data.add_met(**param_dic["mets"][1])
+
+# Load in k-space data
+twix_path = f'{FIX_DIR}/ramp_samp.dat'
+coord_path = f'{FIX_DIR}/ramp_samp_k_data.npy'
+x_data.load_k_data(twix_path, recon_dims=False)
+x_data.load_k_coords(coord_path)
+x_data.regrid_k_data(method='nufft')
+x_data.flip_k_data()
+
+# Create class for reference data
+x_ref = XData(**seq_ref_dic)
+x_ref.add_met(**param_ref_dic["mets"][0])
+x_ref.add_met(**param_ref_dic["mets"][1])
+
+# Load in reference k-space data
+ref_path = f'{FIX_DIR}/ramp_samp_ref.dat'
+x_ref.load_k_data(ref_path, recon_dims=False)
+x_ref.load_k_coords(coord_path)
+x_ref.regrid_k_data(method='nufft')
+x_ref.flip_k_data()
+
+# Run fft recon
+x_data.fft_recon(ref_data=x_ref, point=False)
+x_data.apply_off_res()
+x_data.combine_coils()
+
+# Save output
+x_data.save_nii(f'{FIX_DIR}/ramp_samp')
+test_json_path = f'{FIX_DIR}/ramp_samp_params'
+x_data.save_param_dic(test_json_path)
+
+######################
+###  XData 3D Test ###
+######################
+
+# Load in json data describing data/sequence
+json_path = f'{FIX_DIR}/epi_3d.json'
+with open(json_path, "r", encoding="utf-8") as jid:
+    param_dic = json.load(jid)
+    
+# Do the same thing for reference
+json_ref_path = f'{FIX_DIR}/epi_3d_ref.json'
+with open(json_ref_path, "r", encoding="utf-8") as jid:
+    param_ref_dic = json.load(jid)
+
+# Extract parameters common to all metabolites
+param_dic["n_rep"] = 20
+seq_dic = {key: param_dic[key] for key in param_dic if key != "mets"}
+seq_ref_dic = {key: param_ref_dic[key] for key in param_ref_dic if key != "mets"}
+
+# Create class for recon
+x_data = XData(**seq_dic)
+x_data.add_met(**param_dic["mets"][0])
+x_data.add_met(**param_dic["mets"][1])
+
+# Load in k-space data
+twix_path = f'{FIX_DIR}/epi_3d.dat'
+x_data.load_k_data(twix_path)
+x_data.flip_k_data()
+
+# Create class for reference data
+x_ref = XData(**seq_ref_dic)
+x_ref.add_met(**param_ref_dic["mets"][0])
+x_ref.add_met(**param_ref_dic["mets"][1])
+
+# Load in reference k-space data
+ref_path = f'{FIX_DIR}/epi_3d_ref.dat'
+x_ref.load_k_data(ref_path)
+x_ref.flip_k_data()
+
+# Run fft recon
+x_data.fft_recon(ref_data=x_ref, point=False)
+x_data.apply_off_res()
+x_data.apply_phase_shift()
+x_data.combine_coils()
+
+# Save output
+x_data.save_nii(f'{FIX_DIR}/epi_3d')
+x_data.save_param_dic(f'{FIX_DIR}/epi_3d_params')
+
+##########################
+###  XData Proton Test ###
+##########################
+
+# Load in json data describing data/sequence
+json_path = f'{FIX_DIR}/phantom.json'
+with open(json_path, "r", encoding="utf-8") as jid:
+    param_dic = json.load(jid)
+
+# Extract parameters common to all metabolites
+param_dic["n_rep"] = 5
+param_dic["ts"] = 1
+param_dic["n_chan"] = 32
+seq_dic = {key: param_dic[key] for key in param_dic if key != "mets"}
+
+# Create class for recon
+x_data = XData(**seq_dic)
+x_data.add_met(**param_dic["mets"][0])
+
+# Load in k-space data
+twix_path = f'{FIX_DIR}/phantom.dat'
+x_data.load_k_data(twix_path)
+x_data.flip_k_data()
+
+# Create class for reference data
+x_ref = XData(**seq_dic)
+x_ref.add_met(**param_dic["mets"][0])
+
+# Load in reference k-space data
+ref_path = f'{FIX_DIR}/phantom_ref.dat'
+x_ref.load_k_data(ref_path)
+x_ref.flip_k_data()
+
+# Run fft recon
+x_data.fft_recon(ref_data=x_ref)
+x_data.combine_coils()
+
+# Save output
+x_data.save_nii('phantom')
+x_data.save_nii('phantom', mean=True)
+x_data.save_param_dic('phantom_params')
+
+

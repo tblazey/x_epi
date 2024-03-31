@@ -1,0 +1,111 @@
+{
+  "fov": [
+    240,
+    240,
+    240
+  ],
+  "rbw": 50.0,
+  "n_avg": 1,
+  "n_chan": 1,
+  "n_rep": 20,
+  "ts": 3000.0,
+  "ro_off": 0.0,
+  "pe_off": 0.0,
+  "slc_off": -30.0,
+  "n_echo": 1,
+  "delta_te": 0.0,
+  "n_met": 2,
+  "symm_ro": true,
+  "acq_3d": true,
+  "ramp_samp": false,
+  "alt_read": false,
+  "alt_pha": false,
+  "alt_slc": false,
+  "ori": "Coronal",
+  "pe_dir": "RL",
+  "alt_signs": [
+    1,
+    1,
+    1
+  ],
+  "fft_axes": [
+    0,
+    1,
+    2
+  ],
+  "version": "1.0.1",
+  "mets": [
+    {
+      "name": "pyr",
+      "size": [
+        24,
+        24,
+        24
+      ],
+      "pf_pe": 1.0,
+      "pf_pe2": 0.66,
+      "freq_off": 0.0,
+      "z_centric": false,
+      "esp": 0.0008200000000000001,
+      "size_acq": [
+        24,
+        24,
+        16
+      ],
+      "pe_start": 0,
+      "pe_2_start": 8,
+      "dims": [
+        24,
+        24,
+        24,
+        20,
+        1,
+        1
+      ],
+      "dims_acq": [
+        24,
+        24,
+        16,
+        20,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "lac",
+      "size": [
+        16,
+        16,
+        16
+      ],
+      "pf_pe": 1.0,
+      "pf_pe2": 1.0,
+      "freq_off": 385.5,
+      "z_centric": false,
+      "esp": 0.00066,
+      "size_acq": [
+        16,
+        16,
+        16
+      ],
+      "pe_start": 0,
+      "pe_2_start": 0,
+      "dims": [
+        16,
+        16,
+        16,
+        20,
+        1,
+        1
+      ],
+      "dims_acq": [
+        16,
+        16,
+        16,
+        20,
+        1,
+        1
+      ]
+    }
+  ]
+}

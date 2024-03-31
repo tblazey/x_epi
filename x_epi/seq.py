@@ -710,7 +710,7 @@ class XSeq(pp.Sequence):
         )
 
         # Interpolate k-space vector to rf raster time
-        kz = integ.cumtrapz(grd_data, dx=met_obj.grd_delta, initial=0)
+        kz = integ.cumulative_trapezoid(grd_data, dx=met_obj.grd_delta, initial=0)
         kz_end = (grd_data.shape[0] - 1) * met_obj.grd_delta
         kz_end = (
             np.ceil(kz_end / self.system.grad_raster_time)

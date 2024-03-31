@@ -50,8 +50,8 @@
   "mets": [
     {
       "name": "met_1",
-      "grd_path": "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.GRD",
-      "rf_path": "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.RF",
+      "grd_path": "/Users/blazeyt/Documents/venvs/x_epi_testing/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.GRD",
+      "rf_path": "/Users/blazeyt/Documents/venvs/x_epi_testing/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.RF",
       "formula": "1",
       "use_sinc": true,
       "flip": 90.0,
@@ -80,8 +80,8 @@
     },
     {
       "name": "met_2",
-      "grd_path": "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.GRD",
-      "rf_path": "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.RF",
+      "grd_path": "/Users/blazeyt/Documents/venvs/x_epi_testing/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.GRD",
+      "rf_path": "/Users/blazeyt/Documents/venvs/x_epi_testing/lib/python3.10/site-packages/x_epi/res/siemens_singleband_pyr_3T.RF",
       "formula": "1",
       "use_sinc": false,
       "flip": 90.0,
