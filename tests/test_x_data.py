@@ -136,7 +136,7 @@ class TestXData(unittest.TestCase):
         x_data.combine_coils()
         
         # Run tests
-        save_test_output(x_data, mean=True)
+        save_test_output(x_data)
         self.compare_imgs(['eg', 'me'], 'ramp_samp')
         self.compare_json('ramp_samp')
 
@@ -162,14 +162,9 @@ class TestXData(unittest.TestCase):
         x_data.apply_off_res()
         x_data.apply_phase_shift()
         x_data.combine_coils()
-        
-        # Save output
-        x_data.save_nii(f'{FIX_DIR}/test')
-        test_json_path = f'{FIX_DIR}/test'
-        x_data.save_param_dic(test_json_path)
-        
+
         # Run tests
-        save_test_output(x_data, mean=True)
+        save_test_output(x_data)
         self.compare_imgs(['pyr', 'lac'], 'epi_3d')
         self.compare_json('epi_3d')
                 
