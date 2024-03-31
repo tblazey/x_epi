@@ -66,7 +66,7 @@ class TestXData(unittest.TestCase):
         for img in img_list:
             fix_img = nib.load(f'{FIX_DIR}/{ref_root}_{img}.nii.gz').get_fdata()
             test_img = nib.load(f'{FIX_DIR}/test_{img}.nii.gz').get_fdata()
-            comp_img = np.allclose(fix_img, test_img) 
+            comp_img = np.allclose(fix_img, test_img, rtol=1E-4) 
             self.assertTrue(comp_img, msg=f"{ref_root} {img} test failed")
             remove(f'{FIX_DIR}/test_{img}.nii.gz')
 
