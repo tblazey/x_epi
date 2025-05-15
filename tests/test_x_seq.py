@@ -71,6 +71,18 @@ class TestXSeq(unittest.TestCase):
         # Compare each sequence to reference
         for seq in self.seqs:
             cmp = filecmp.cmp(seq.out_path, join(FIX_DIR, seq.out_name), shallow=False)
+            if cmp is False:
+                import difflib
+
+                with open(seq.out_path) as file_1:
+                    file_1_text = file_1.readlines()
+
+                with open(join(FIX_DIR, seq.out_name)) as file_2:
+                    file_2_text = file_2.readlines()
+
+                # Find and print the diff:
+                for line in difflib.unified_diff(file_1_text, file_2_text):
+                    print(line)
             self.assertTrue(cmp, msg=f"{seq.out_name} failed")
 
     def test_save_params(self):
