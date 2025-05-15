@@ -250,6 +250,7 @@ class XSeq(pp.Sequence):
             system=self.system,
             use="excitation",
             slice_thickness=self.fov[2],
+            delay=self.system.rf_dead_time
         )
         self.spec.rf.freq_offset += self.spec.gz.amplitude * (not self.slc_off)
         self.spec.gz.amplitude *= not self.slc_off
@@ -391,7 +392,7 @@ class XSeq(pp.Sequence):
                     "x", area=gx_area, duration=gy_dur + t_acq, system=self.system
                 )
             except AssertionError as msg:
-                min_dur = float(re.findall(r"\d+\.\d+", msg.args[0])[0]) * 1e-6
+                min_dur = float(re.findall(r"\d+", msg.args[0])[0]) * 1e-6
                 min_dur = (
                     np.ceil(min_dur / self.system.grad_raster_time)
                     * self.system.grad_raster_time
@@ -451,6 +452,7 @@ class XSeq(pp.Sequence):
                 duration=t_acq,
                 system=self.system,
                 freq_offset=adc_freq_off,
+                delay=self.system.adc_dead_time
             )
         else:
             adc_delay = (
@@ -464,6 +466,7 @@ class XSeq(pp.Sequence):
                 system=self.system,
                 freq_offset=adc_freq_off,
                 dwell=met_obj.dwell,
+                delay=self.system.adc_dead_time
             )
         met_obj.adc.delay = adc_delay
 
@@ -573,6 +576,7 @@ class XSeq(pp.Sequence):
                 time_bw_product=met_obj.sinc_tbw,
                 duration=met_obj.sinc_dur,
                 center_pos=met_obj.sinc_frac,
+                delay=self.system.rf_dead_time
             )
             met_obj.rf.freq_offset = (
                 met_obj.freq_off + met_obj.rf_gz.amplitude * self.slc_off
@@ -642,8 +646,9 @@ class XSeq(pp.Sequence):
             ssrf,
             2 * np.pi,
             system=self.system,
-            norm=False,
+            no_signal_scaling=True,
             freq_offset=met_obj.freq_off,
+            delay=self.system.rf_dead_time
         )
 
         # Construct delay to make RF event a multiple of block duration if necessary
@@ -721,7 +726,7 @@ class XSeq(pp.Sequence):
         )
 
         # Make gradient event
-        met_obj.rf_gz = make_arbitrary_grad(
+        met_obj.rf_gz = pp.make_arbitrary_grad(
             self.slice_axis,
             grd_data_i,
             system=self.system,
@@ -785,7 +790,9 @@ class XSeq(pp.Sequence):
                         self.add_blck_lbl(self.spec.gz_r, lbl="s")
                         self.add_blck_lbl(self.spec.adc, lbl="s")
                         if i == 0:
-                            spec_dur = np.sum(self.block_durations[spec_start::])
+                            spec_dur = np.sum(
+                                list(self.block_durations.values())[spec_start:]
+                            )
                             spec_delay = self.spec.tr - spec_dur
                         if spec_delay > 0:
                             self.add_blck_lbl(pp.make_delay(spec_delay), lbl="s")
@@ -945,7 +952,9 @@ class XSeq(pp.Sequence):
 
                             # Add a delta te delay if necessary
                             if self.n_echo > 1:
-                                ro_dur = np.sum(self.block_durations[ro_start::])
+                                ro_dur = np.sum(
+                                    list(self.block_durations.values())[ro_start:]
+                                )
                                 delta_delay = self.delta_te - ro_dur
                                 if delta_delay > 0:
                                     delta_delay = (
@@ -975,7 +984,9 @@ class XSeq(pp.Sequence):
                             )
 
                         # Add TR delay
-                        exc_dur = np.sum(self.block_durations[block_start::])
+                        exc_dur = np.sum(
+                            list(self.block_durations.values())[block_start:]
+                        )
                         tv_delay -= exc_dur
                         ts_delay -= exc_dur
                         if self.tr > 0:
@@ -1011,7 +1022,9 @@ class XSeq(pp.Sequence):
                         self.add_blck_lbl(self.spec.gz_r, lbl="s")
                         self.add_blck_lbl(self.spec.adc, lbl="s")
                         if i == 0:
-                            spec_dur = np.sum(self.block_durations[spec_start::])
+                            spec_dur = np.sum(
+                                list(self.block_durations.values())[spec_start:]
+                            )
                             spec_delay = self.spec.tr - spec_dur
                         if spec_delay > 0:
                             self.add_blck_lbl(pp.make_delay(spec_delay), lbl="s")
