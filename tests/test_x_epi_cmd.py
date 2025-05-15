@@ -84,7 +84,7 @@ class TestMain(unittest.TestCase):
         # Compare each sequence to reference
         for seq in self.seqs:
             cmp = filecmp.cmp(seq, seq.replace("test_", ""), shallow=False)
-            self.assertTrue(cmp, msg=f"{seq} failed")
+            self.assertTrue(cmp, msg=cmp)
 
     def test_main_json(self):
         for seq in self.seqs:

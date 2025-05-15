@@ -71,8 +71,7 @@ class TestXSeq(unittest.TestCase):
         # Compare each sequence to reference
         for seq in self.seqs:
             cmp = filecmp.cmp(seq.out_path, join(FIX_DIR, seq.out_name), shallow=False)
-            print(cmp)
-            self.assertTrue(cmp, msg=f"{seq.out_name} failed")
+            self.assertTrue(cmp, msg=cmp)
 
     def test_save_params(self):
         for seq in self.seqs:
