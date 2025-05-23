@@ -26,7 +26,7 @@ A paper describing the sequence/program has been [published](https://doi.org/10.
 
 ## Installation
 
-If you have Python 3.10, you can install the package using pip:
+If you have Python 3.10 or greater, you can install the package using pip:
 
 ```
 pip install git+https://github.com/tblazey/x_epi.git
