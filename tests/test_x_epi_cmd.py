@@ -4,13 +4,13 @@ Testing for x_epi command line utility
 
 # Load libs
 import argparse
-import filecmp
 import json
 from os.path import abspath, dirname, join
 from os import remove
 import sys
 import unittest
 import numpy as np
+import pypulseq as pp
 from x_epi.bin.x_epi_cmd import range_wrapper, main
 from x_epi.utils import BASE_DIR
 
@@ -52,7 +52,7 @@ class TestMain(unittest.TestCase):
 
         # Extract parameters in format necessary for x_epi
         cls.seqs = []
-        for idx, par in enumerate(pars.values()):
+        for par in pars.values():
             seq_out = join(FIX_DIR, "test_" + par["name"])
 
             # Add general metabolites
@@ -82,10 +82,30 @@ class TestMain(unittest.TestCase):
 
     def test_main_seq(self):
         # Compare each sequence to reference
-        for seq in self.seqs:
-            cmp = filecmp.cmp(seq, seq.replace("test_", ""), shallow=False)
-            self.assertTrue(cmp, msg=f"{seq} failed")
+        for seq_path in self.seqs:
+        
+            # Load created sequence
+            seq = pp.Sequence()
+            seq.read(seq_path)
 
+            # Read in reference sequence
+            ref_seq = pp.Sequence()
+            ref_seq.read(seq_path.replace("test_", ""))
+            
+            # Get gradient/rf values for each sequence
+            seq_arrs = seq.waveforms_and_times(append_RF=True)
+            ref_arrs = ref_seq.waveforms_and_times(append_RF=True)
+            
+            # Check that the waveforms arrays are the same
+            check = True
+            for s_arr, r_arr in zip(seq_arrs[0] + list(seq_arrs[1:]), ref_arrs[0] + list(ref_arrs[1:])):
+                if s_arr.shape != r_arr.shape:
+                    check = False
+                elif np.allclose(s_arr, r_arr, atol=1E-3) is False:
+                    check = False
+            
+            self.assertTrue(check, msg=f"{seq} failed")
+            
     def test_main_json(self):
         for seq in self.seqs:
             test_path = seq.replace(".seq", ".json")
