@@ -11,7 +11,6 @@ import re
 import types
 import numpy as np
 import pypulseq as pp
-from pypulseq.make_arbitrary_grad import make_arbitrary_grad
 import scipy.integrate as integ
 from .utils import nuc_to_gamma, load_ssrf_grad, load_ssrf_rf, interp_waveform, RES_DIR
 
