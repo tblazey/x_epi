@@ -218,13 +218,13 @@ def compute_k_space(seq):
     # Find right edges of rf/blocks
     rf_edges = [[] for i in range(seq.n_met)]
     rf_durs = [[] for i in range(seq.n_met)]
-    block_edges = np.cumsum(seq.block_durations)
+    block_edges = np.cumsum(list(seq.block_durations.values()))
     for i in range(1, len(seq.block_events) + 1):
         rf_num = seq.block_events[i][1]
         met_idx = seq.blck_lbls[i - 1]
         if rf_num > 0 and isinstance(met_idx, int):
             rf_edges[met_idx].append(block_edges[i - 1])
-            rf_durs[met_idx].append(seq.block_durations[i - 1])
+            rf_durs[met_idx].append(seq.block_durations[i])
 
     # Make empty arrays for storing data
     k_list = []  # k-space points in 3d plane

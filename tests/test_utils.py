@@ -140,6 +140,9 @@ class TestSaveKSpace(unittest.TestCase):
         # Load in assets for testing
         with open(join(FIX_DIR, "k_space_3d.pkl"), "rb") as f_id:
             seq = pickle.load(f_id)
+            if not hasattr(seq, 'use_block_cache'):
+                seq.use_block_cache = False
+                
         output_ref = np.load(join(FIX_DIR, "k_space_3d.npy"), allow_pickle=True)
 
         # Save k-space to temporary file

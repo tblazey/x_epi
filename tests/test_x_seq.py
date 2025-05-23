@@ -2,12 +2,13 @@
 Testing for x_epi class
 """
 
-import filecmp
 import json
 from os.path import abspath, basename, dirname, join, splitext
 from os import remove
 import unittest
 from jsoncomparison import Compare
+import numpy as np
+import pypulseq as pp
 from x_epi.seq import XSeq
 from x_epi.utils import BASE_DIR
 
@@ -70,8 +71,24 @@ class TestXSeq(unittest.TestCase):
     def test_seqs(self):
         # Compare each sequence to reference
         for seq in self.seqs:
-            cmp = filecmp.cmp(seq.out_path, join(FIX_DIR, seq.out_name), shallow=False)
-            self.assertTrue(cmp, msg=f"{seq.out_name} failed")
+        
+            # Read in reference sequence
+            ref_seq = pp.Sequence()
+            ref_seq.read(join(FIX_DIR, seq.out_name))
+            
+            # Get gradient/rf values for each sequence
+            seq_arrs = seq.waveforms_and_times(append_RF=True)
+            ref_arrs = ref_seq.waveforms_and_times(append_RF=True)
+            
+            # Check that the waveforms arrays are the same
+            check = True
+            for s_arr, r_arr in zip(seq_arrs[0] + list(seq_arrs[1:]), ref_arrs[0] + list(ref_arrs[1:])):
+                if s_arr.shape != r_arr.shape:
+                    check = False
+                elif np.allclose(s_arr, r_arr, atol=1E-3) is False:
+                    check = False
+
+            self.assertTrue(check, msg=f"{seq.out_name} failed")
 
     def test_save_params(self):
         for seq in self.seqs:

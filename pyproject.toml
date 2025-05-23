@@ -7,17 +7,18 @@ name = "x_epi"
 authors = [{name = "Tyler Blazey", email = "blazey@wustl.edu"}]
 description = "A package for creating EPI sequences for X-Nuclues imaging"
 readme = "README.md"
-requires-python = "==3.10.*"
-version = "1.0.1"
+requires-python = ">=3.10"
+version = "1.0.2"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ['matplotlib',
+dependencies = ['jsoncomparison',
+                'matplotlib',
                 'nibabel',
                 'numpy',
-                'pypulseq@git+https://github.com/tblazey/pypulseq#egg=dev',
+                'pypulseq@git+https://github.com/imr-framework/pypulseq#egg=master',
                 'PyQt5',
                 'PyQt5_sip',
                 'scipy',
