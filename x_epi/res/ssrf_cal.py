@@ -37,14 +37,14 @@ rf_name = "siemens_singleband_pyr_3T.RF"
 max_grd = 1.3698
 grd_scale = 1
 max_b1 = 0.1176
-seq_out = "./ssrf_cal_fine.seq"
-cal_mode = "coarse"
+cal_mode = "fine"
+seq_out = f"./ssrf_cal_{cal_mode}.seq"
 
 # Define pulse scales
 if cal_mode == "fine":
     scales = np.linspace(0.75, 1.25, 12)
 else:
-    scale = np.arange(0.25, 3.25, 0.25)
+    scales = np.arange(0.25, 3.25, 0.25)
 
 # Load in ssrf gradient
 grd_path = os.path.join(ssrf_dir, grd_name)
@@ -92,7 +92,10 @@ adc = pp.make_adc(n_x, duration=t_acq, system=lims, delay=20e-6)
 for scale in scales:
     # Make rf event
     rf_ev = pp.make_arbitrary_rf(
-        scale * mag_i * np.exp(1j * pha_i), 2 * np.pi, system=lims, norm=False
+        scale * mag_i * np.exp(1j * pha_i),
+        2 * np.pi, system=lims,
+        no_signal_scaling=True,
+        delay=seq.system.rf_dead_time
     )
     rf_dur = rf_ev.dead_time + rf_ev.ringdown_time + rf_ev.shape_dur
     delay_aug = (
@@ -114,7 +117,7 @@ for scale in scales:
         seq.add_block(adc)
 
         # Relaxation delay
-        tr_delay = tr - np.sum(seq.block_durations[block_start::])
+        tr_delay = tr - np.sum(list(seq.block_durations.values())[block_start::])
         if tr_delay > 0:
             seq.add_block(pp.make_delay(tr_delay))
 
@@ -125,4 +128,4 @@ seq.write(seq_out)
 if plot_traj == 1:
     seq.plot()
 
-print("Total sequence duration: %f (s)", np.sum(seq.block_durations))
+print("Total sequence duration: %f (s)", np.sum(list(seq.block_durations.values())))
