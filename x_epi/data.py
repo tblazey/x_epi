@@ -264,6 +264,11 @@ class XData:
                 range(met.size_acq[1]),
             )
             for pe_2, echo, pe_1 in iter_prod_in:
+                
+                # Skip non-image lines
+                while not twix_data[-1]["mdb"][line_idx].is_image_scan():
+                    line_idx += 1
+            
                 k_line = twix_data[-1]["mdb"][line_idx].data.squeeze().T
                 if self.n_chan == 1:
                     k_line = k_line[:, np.newaxis]
